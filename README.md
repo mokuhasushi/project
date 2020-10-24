@@ -10,41 +10,15 @@
 
 * Learn the application of design patterns
 
-## Due Dates
-
-Milestone 1: 5pm Sunday Week 5 (Demonstration: Week 7 Lab)
-
-Milestone 2: 5PM Sunday Week 7 (Demonstration: Week 8 Lab)
-
-Final milestone: 5PM Sunday Week 9 (Demonstration: Week 10 Lab)
-
-**NOTE:** There is **NO** provision for late submissions with a late penalty. Not submitting by the deadline is considered non-submission.
-
-## Value: 35 marks
-
----
 
 ## Overview
 
 You have received a request from a client for an application to play a "Risk" style video game. With a partner from your lab class, you will follow an agile development process to design and implement a desktop Java application that satisfies the requirements of the client (see below). The final piece of software you deliver is expected to be of professional quality, user-friendly, and demonstrate the knowledge and skills you have acquired in this course.
 
-## Partner
-
-You should by now have a partner and group set-up on webcms3, after following the week-02 lab instructions. Your repositories will be created from these webcms3 groups.
-
-Only groups of 2 are allowed by default. Groups of 1 are never allowed without special consideration, since this violates course learning outcomes requiring teamwork.
-
-Once created, your group Gitlab repository will be available here (replace *GROUP_NAME* with your group's name):
-
-https://gitlab.cse.unsw.edu.au/COMP2511/20T3/GROUP_NAME
 
 ## Project setup
 
 ### Virtual Machine Setup
-
-**NOTE**: For the first milestone, it is not necessary to set up the project in VSCode.
-
-This project should work immediately on an **in-person** CSE machine or on the provided Virtual Machine (for your home-use). This project will not work over VLAB or SSH due to the OpenGL requirement of ArcGIS.
 
 To use the provided Virtual Machine, you should install VMWare Workstation 16 Player for your Operating System:
 
@@ -64,11 +38,6 @@ However, you should not need to download the Operating System ISO - downloading 
 
 https://unsw-my.sharepoint.com/:f:/g/personal/z5075269_ad_unsw_edu_au/Ek7X2VjGp1VDvHKlG7cvZToBXQVI9Krh2flmKDxMG67ZsQ
 
-You can obtain student licences for VMWare software here (however, you should only need the free VMWare Workstation Player 16, which doesn't require a student licence):
-
-https://e5.onthehub.com/WebStore/ProductsByMajorVersionList.aspx?cmi_cs=1&cmi_mnuMain=16a020b5-ed3c-df11-b4ab-0030487d8897&ws=7c113c30-5d8b-de11-8cd1-0030487d8897&vsro=8
-
-https://e5.onthehub.com/WebStore/OfferingsOfMajorVersionList.aspx?pmv=234bb355-b8f9-ea11-812f-000d3af41938&cmi_mnuMain=16a020b5-ed3c-df11-b4ab-0030487d8897&cmi_mnuMain_child=aafc5891-884f-e511-940f-b8ca3a5db7a1&cmi_mnuMain_child_child=6130e417-ad1a-e511-940d-b8ca3a5db7a1&ws=7c113c30-5d8b-de11-8cd1-0030487d8897&vsro=8
 
 The Virtual Machine we are providing has been tested and includes all necessary software to immediately run the project in a Ubuntu 20.04 Virtual Machine, including:
 
@@ -86,7 +55,7 @@ Also note that the repository `lib` folder includes the JAR files for `GeoJson P
 
 `JSON-Java`: https://www.baeldung.com/java-org-json
 
-The project setup includes several symbolic links - to the ArcGIS, JavaFX, and JUnit libraries. Note that the same project starter-code will work on both an *in-person* CSE lab machine and the Virtual Machine, since the same project structure as the COMP2511 class account for storing the libraries was constructed on the Virtual Machine.
+The project setup includes several symbolic links - to the ArcGIS, JavaFX, and JUnit libraries. Note that the same project starter-code will work on both an *in-person* lab machine and the Virtual Machine, since the same project structure as the COMP2511 class account for storing the libraries was constructed on the Virtual Machine.
 
 The login password of the provided virtual machine is the same as the username: `comp2511-student`
 
