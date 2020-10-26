@@ -2,6 +2,8 @@ package project.unsw.gloriaromanus.battleresolver;
 
 import project.unsw.gloriaromanus.units.Unit;
 
+import static project.unsw.gloriaromanus.Utils.clamp;
+
 public interface Skirmish {
     public SkirmishResult solve (Unit u1, Unit u2);
     public int damageDealt(Unit attacker, Unit defender);
@@ -12,6 +14,6 @@ public interface Skirmish {
                 ((double)casualties1 / u1.getNumTroops()) /
                 ((double)casualties2 / u2.getNumTroops()) *
                         10.0;
-        return Math.min(Math.max(base + addition, 5), 100);
+        return clamp(5, base+addition, 100);
     }
 }

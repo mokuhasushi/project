@@ -4,6 +4,8 @@ import project.unsw.gloriaromanus.units.Unit;
 
 import java.util.Random;
 
+import static project.unsw.gloriaromanus.Utils.clamp;
+
 public class MeleeSkirmish implements Skirmish{
     Random rng;
 
@@ -28,7 +30,7 @@ public class MeleeSkirmish implements Skirmish{
                         )
                 ) *
                 (rng.nextGaussian() + 1);
-        int damage = Math.min((int)Math.round(result),defender.getNumTroops());
-        return Math.max(0, damage);
+        int damage = (int)Math.round(result);
+        return clamp(0, damage, defender.getNumTroops());
     }
 }
