@@ -15,6 +15,6 @@ public class HeavyInfantryTest {
     @Test
     public void blahTest2(){
         HeavyInfantry u = new HeavyInfantry();
-        assertEquals(u.getNumTroops(), 50);
+        assertEquals( 50, u.getNumTroops());
     }
 }

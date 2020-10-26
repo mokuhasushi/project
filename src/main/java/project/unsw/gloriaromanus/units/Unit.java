@@ -5,14 +5,14 @@ package project.unsw.gloriaromanus.units;
     Antonio
  */
 public abstract class Unit {
-    private int numTroops;  // the number of troops in this unit (should reduce based on depletion)
-    private boolean ranged;  // range of the unit
-    private int armour;  // armour defense
-    private int morale;  // resistance to fleeing
-    private int speed;  // ability to disengage from disadvantageous battle
-    private int attack;  // can be either missile or melee attack to simplify. Could improve implementation by differentiating!
-    private int defenseSkill;  // skill to defend in battle. Does not protect from arrows!
-    private int shieldDefense; // a shield
+    int numTroops;  // the number of troops in this unit (should reduce based on depletion)
+    boolean ranged;  // range of the unit
+    int armour;  // armour defense
+    int morale;  // resistance to fleeing
+    int speed;  // ability to disengage from disadvantageous battle
+    int attack;  // can be either missile or melee attack to simplify. Could improve implementation by differentiating!
+    int defenseSkill;  // skill to defend in battle. Does not protect from arrows!
+    int shieldDefense; // a shield
 
     public int getNumTroops() {
         return numTroops;
@@ -38,5 +38,7 @@ public abstract class Unit {
     public int getShieldDefense() {
         return shieldDefense;
     }
+
+    public void setNumTroops(int numTroops) {this.numTroops = numTroops;}
 
 }

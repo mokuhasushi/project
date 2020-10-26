@@ -9,18 +9,9 @@ package project.unsw.gloriaromanus.units;
  * current version represents a heavy infantry unit (almost no range, decent armour and morale)
  */
 public class HeavyInfantry extends Unit {
-    private int numTroops;  // the number of troops in this unit (should reduce based on depletion)
-    private boolean ranged;  // range of the unit
-    private int armour;  // armour defense
-    private int morale;  // resistance to fleeing
-    private int speed;  // ability to disengage from disadvantageous battle
-    private int attack;  // can be either missile or melee attack to simplify. Could improve implementation by differentiating!
-    private int defenseSkill;  // skill to defend in battle. Does not protect from arrows!
-    private int shieldDefense; // a shield
-
     public HeavyInfantry(){
         // TODO = obtain these values from the file for the unit
-        numTroops = 50;
+        this.numTroops = 50;
         ranged = false;
         armour = 5;
         morale = 10;
