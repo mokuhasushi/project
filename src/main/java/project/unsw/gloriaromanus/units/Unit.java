@@ -1,4 +1,4 @@
-package unsw.gloriaromanus;
+package project.unsw.gloriaromanus.units;
 
 /**
  * Represents a basic unit of soldiers
