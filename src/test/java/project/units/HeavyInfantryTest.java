@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import project.unsw.gloriaromanus.units.Unit;
+import project.unsw.gloriaromanus.units.HeavyInfantry;
 
-public class UnitTest {
+public class HeavyInfantryTest {
     @Test
     public void blahTest(){
         assertEquals("a", "a");
@@ -14,7 +14,7 @@ public class UnitTest {
 
     @Test
     public void blahTest2(){
-        Unit u = new Unit();
+        HeavyInfantry u = new HeavyInfantry();
         assertEquals(u.getNumTroops(), 50);
     }
 }

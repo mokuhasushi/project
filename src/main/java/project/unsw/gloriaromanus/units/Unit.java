@@ -1,16 +1,12 @@
 package project.unsw.gloriaromanus.units;
 
-/**
- * Represents a basic unit of soldiers
- * 
- * incomplete - should have heavy infantry, skirmishers, spearmen, lancers, heavy cavalry, elephants, chariots, archers, slingers, horse-archers, onagers, ballista, etc...
- * higher classes include ranged infantry, cavalry, infantry, artillery
- * 
- * current version represents a heavy infantry unit (almost no range, decent armour and morale)
+/*
+    I just need this class to test the various parameters in the BattleResolver
+    Antonio
  */
-public class Unit {
+public abstract class Unit {
     private int numTroops;  // the number of troops in this unit (should reduce based on depletion)
-    private int range;  // range of the unit
+    private boolean ranged;  // range of the unit
     private int armour;  // armour defense
     private int morale;  // resistance to fleeing
     private int speed;  // ability to disengage from disadvantageous battle
@@ -18,21 +14,29 @@ public class Unit {
     private int defenseSkill;  // skill to defend in battle. Does not protect from arrows!
     private int shieldDefense; // a shield
 
-    public Unit(){
-        // TODO = obtain these values from the file for the unit
-        numTroops = 50;
-        range = 1;
-        armour = 5;
-        morale = 10;
-        speed = 10;
-        attack = 6;
-        defenseSkill = 10;
-        shieldDefense = 3;
-    }
-
-    public int getNumTroops(){
+    public int getNumTroops() {
         return numTroops;
     }
+    public boolean getRanged() {
+        return ranged;
+    }
+    public int getArmour() {
+        return armour;
+    }
+    public int getMorale() {
+        return morale;
+    }
+    public int getSpeed() {
+        return speed;
+    }
+    public int getAttack() {
+        return attack;
+    }
+    public int getDefenseSkill() {
+        return defenseSkill;
+    }
+    public int getShieldDefense() {
+        return shieldDefense;
+    }
 
-    
 }
