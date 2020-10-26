@@ -1,22 +1,16 @@
 # Final Project Spec v2
 
-After considering the student feedback, we have now simplified the project specification. Please note that there are no new requirements in the revised specification. However, we have removed some features, in order to simplify the tasks. Importantly, whatever work you have done so far will be awarded marks accordingly. In case you have already implemented features that are not part of the Simplified Project Specification, please consult your tutor for trading them against the rest of the work required for the project.
+# What You Need To Do
 
-This specification outlines adjustments to the original final project spec, to reduce the workload.
+Based on your requirements analysis, and all feedback you have received, you will produce a domain model for the backend component of your project in the form of a conceptual UML class diagram, implement it in Java and write JUnit tests to test its functionality.
 
-**If you have completed functionality which has been removed from this specification, please consult your tutor for trading them against the rest of the work required for the project. After inspecting what you have done, your tutor could propose possible alternatives for you.**
+In deciding on your design and writing your implementation, you should follow the practices and design principles covered in the course. You are expected to apply at least 3 of the design patterns covered in the course. It is up to you where they are applied, but you will be expected to justify how and why you used them.
 
-## Summary of changes from original spec
+Your class diagram only needs to be conceptual (showing the general structure of the classes and their relationship), but it needs to be consistent with the code and clearly indicate where you're using design patterns (use labels if necessary).
 
-The infrastructure outlined in the original spec will not be required for the basic implementation. These were **ports, mines, markets, farms, troop production buildings, walls (including archery and ballista tower upgrades), smiths, roads**. 
+Your JUnit tests should be rigorous to ensure your backend functions as expected. In addition to basic unit tests, you need to have tests based on your acceptance criteria.
 
-Note here that towers are not required for the basic implementation - which reduces the complexity of the battle resolver. Additionally, roads not being required simplifies soldier movement.
-
-The **campaign AI** outlined in the original spec is not required for the basic implementation, and **offline multiplayer** will become part of the basic specification (note online multiplayer is still an extension and is not required for the basic implementation). For offline multiplayer with no campaign AI, you should allocate all provinces between the human-players when the game starts with some reasonable mechanism (such as randomly allocating the provinces). This should make implementing the basic project easier.
-
-**Mercenaries** are no longer required in the basic specification.
-
-**If you have completed functionality which has been removed from this specification, please consult your tutor for trading them against the rest of the work required for the project. After inspecting what you have done, your tutor could propose possible alternatives for you.**
+These JUnit tests should be placed into the "src/test" directory, using package "test". The dryrun will check your tests pass. It is important you follow this structure, since we will run automated coverage checking on your program.
 
 # Simplified Basic Project Specification
 
@@ -253,3 +247,68 @@ Each turn takes 1 year. Thus, in this spec, the terms "year" and "turn" are syno
 Bankruptcy is not possible in the game outlined in the basic specification because there are no recurring costs, and players can only spend money in the treasury (they cannot raise debt). Implementing an extension for upkeep would also require you to consider how bankruptcy would be handled.
 
 When a faction loses all of its provinces, it should be removed from the game. If a player loses all of their provinces, the game should present a "Game lost" screen, and after clicking "Next" the players turn should be ended and control transferred to the next human players faction (or moved to the main menu if no human players left).
+
+### Source of Map Data
+
+The map data provided in the starter code was obtained from: https://github.com/klokantech/roman-empire
+
+The project uses the following files in this repository:
+* *data/provinces.geojson* (province borders and province names)
+* *data/provinces/label.geojson* (province label points and province names; the locations to place images/text for each province in the starter code are generated from here)
+
+You can interact with an online version of the map at: https://klokantech.github.io/roman-empire/#4.01/41.957/19.646/0/8
+
+The GeoJSON files downloaded from the repository were converted to the newer format for GeoJSON by applying the "Right hand rule" using: http://mapster.me/right-hand-rule-geojson-fixer/
+
+This tool was then used to convert the GeoJSON files to GeoPackage files: https://mygeodata.cloud/converter/geojson-to-geopackage
+
+GeoJSON files have the advantage of being JSON data and therefore easy to read using a text editor, or process with Java code using the provided `geojson-jackson` library (or you could use a standard JSON library such as `JSON-Java` (also provided, this is the JSON library you used in assignment 1)). However, it is inconvenient to load GeoJSON data directly into ArcGIS FeatureLayers because the ArcGIS runtime SDK for Java lacks a class to directly load in GeoJSON files. You can also view a GeoJSON map visually by using the VSCode extension "VSCode Map Preview".
+
+Whilst GeoPackage files are hard to read using a text editor, it is easy to load GeoPackage files directly into ArcGIS using the `GeoPackage` class. This has been done in the starter code. The documentation for the `GeoPackage` class is at:
+
+https://developers.arcgis.com/java/latest/api-reference/reference/com/esri/arcgisruntime/data/GeoPackage.html
+
+You may apply different map data if you find a more complete digital map of the ancient layout of provinces, but we recommend to first focus on completing all required features.
+
+### Province Adjacency Matrix
+
+An adjacency matrix of adjacent provinces has been provided in the file:
+
+*province_adjacency_matrix_fully_connected.json*
+
+Running the script *detect_adjacent_provinces.py* in the same directory as the file *provinces_right_hand_fixed.geojson* produces a file *province_adjacency_matrix.json*. This file is a JSON file containing a nested dictionary structure, mapping all permutations of 2 province names to whether the 2 provinces are adjacent. Provinces have been set as not adjacent to themselves.
+
+*detect_adjacent_provinces.py* uses the python3 `shapely` library (`pip install shapely`) to detect adjacent *MultiPolygons* (representing provinces) and stores the resulting adjacency matrix in the format:
+
+{province1name: {province2name: whether_adjacent}}
+
+Where *province1name* and *province2name* are the names of provinces (strings) and *whether_adjacent* is a boolean representing whether the provinces are adjacent.
+
+We manually edited the file *province_adjacency_matrix.json* using a text editor, so that the provinces graph is fully connected. Particularly, we added that:
+
+* `Britannia` connects to `Lugdunensis`
+* `Cyprus` connects to `Cilicia`
+* `Sardinia et Corsica` connects to `VII`
+* `Sicilia` connects to `III` and `Africa Proconsularis`
+* `Baetica` connects to `Mauretania Tingitana`
+
+Running the file *detect_adjacent_provinces.py* performs a check at the end that the provinces adjacency matrix in *province_adjacency_matrix_fully_connected.json* represents a fully connected graph and all adjacency connections are bidirectional. If the file *province_adjacency_matrix_fully_connected.json* does not exist, it will raise an error.
+
+### Landlocked provinces list
+
+The file *landlocked_provinces.json* contains a manually-generated JSON list of strings of landlocked province names. Since you can infer the list of all province names from files such as *province_adjacency_matrix_fully_connected.json*, and have this list, you can therefore infer which provinces border the sea...
+
+### Running coverage checking
+
+To run coverage checking, on the Virtual Machine in the root directory of your repository:
+
+```bash
+$ gradle test -b test.gradle
+```
+
+The coverage checking report will be in: *build/reports/jacoco/test/html/index.html*
+
+The test report will be in: *build/reports/tests/test/index.html*
+
+
+
