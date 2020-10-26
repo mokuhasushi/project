@@ -12,6 +12,6 @@ public interface Skirmish {
                 ((double)casualties1 / u1.getNumTroops()) /
                 ((double)casualties2 / u2.getNumTroops()) *
                         10.0;
-        return base + addition;
+        return Math.min(Math.max(base + addition, 5), 100);
     }
 }
