@@ -13,6 +13,7 @@ public abstract class Unit {
     int attack;  // can be either missile or melee attack to simplify. Could improve implementation by differentiating!
     int defenseSkill;  // skill to defend in battle. Does not protect from arrows!
     int shieldDefense; // a shield
+    boolean isBroken;
 
     public int getNumTroops() {
         return numTroops;

@@ -28,6 +28,7 @@ public class Archer extends Unit {
         attack = 6;
         defenseSkill = 10;
         shieldDefense = 3;
+        isBroken = false;
     }
 
 }
