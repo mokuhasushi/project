@@ -35,4 +35,8 @@ public class Army {
     }
 
     public boolean isDefeated() {return army.size() == 0;}
+
+    public void joinArmy (ArrayList<Unit> other) {
+        army.addAll(other);
+    }
 }

@@ -6,18 +6,22 @@ import project.unsw.gloriaromanus.units.Unit;
 import java.util.ArrayList;
 import java.util.Random;
 
+// Using Singleton pattern TODO: not sure if it is actually an improvement
 public class BattleResolver {
-    Army attacker;
-    Army defender;
-    Random rng;
+    private final Random rng;
+    private static BattleResolver instance = null;
 
-    public BattleResolver(Army attacker, Army defender) {
-        this.attacker = attacker;
-        this.defender = defender;
+    private BattleResolver() {
         this.rng = new Random();
     }
 
-    public BattleResult battle() {
+    public static BattleResolver getInstance() {
+        if (instance == null)
+            instance = new BattleResolver();
+        return instance;
+    }
+
+    public BattleResult battle(Army attacker, Army defender) {
         int engagementsTotal = 0;
         ArrayList<Unit> attackerRouted = new ArrayList<>();
         ArrayList<Unit> defenderRouted = new ArrayList<>();
@@ -52,8 +56,21 @@ public class BattleResolver {
                 }
             }
             engagementsTotal += sr.getNumEngagements();
-
         }
+        if (engagementsTotal > 200 || (attacker.isDefeated() && defender.isDefeated())) {
+            attacker.joinArmy(attackerRouted);
+            defender.joinArmy(defenderRouted);
+            return BattleResult.DRAW;
+        }
+        if (defender.isDefeated()){
+            attacker.joinArmy(attackerRouted);
+            return BattleResult.ATTACKER_WON;
+        }
+        if (attacker.isDefeated()){
+            attacker.joinArmy(attackerRouted);
+            return BattleResult.ATTACKER_DEFEATED;
+        }
+
         return null;
     }
 }
