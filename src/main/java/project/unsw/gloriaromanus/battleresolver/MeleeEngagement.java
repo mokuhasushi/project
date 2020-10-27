@@ -31,6 +31,6 @@ public class MeleeEngagement implements Engagement{
 
     @Override
     public int[] casualties(Unit u1, Unit u2) {
-        return new int []{damageDealt(u1,u2), damageDealt(u2, u1)};
+        return new int []{damageDealt(u2, u1), damageDealt(u1,u2)};
     }
 }

@@ -18,7 +18,7 @@ public abstract class Unit {
     public int getNumTroops() {
         return numTroops;
     }
-    public boolean getRanged() {
+    public boolean isRanged() {
         return ranged;
     }
     public int getArmour() {
@@ -39,6 +39,8 @@ public abstract class Unit {
     public int getShieldDefense() {
         return shieldDefense;
     }
+    public boolean isBroken() {return isBroken;}
+    public boolean isDefeated() {return numTroops == 0;}
 
     public void addTroops(int numTroops) {this.numTroops += numTroops;}
     public void removeTroops(int numTroops) {this.numTroops -= Math.min(this.numTroops, numTroops);}

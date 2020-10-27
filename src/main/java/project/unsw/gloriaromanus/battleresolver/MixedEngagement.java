@@ -28,7 +28,7 @@ public class MixedEngagement implements Engagement{
     @Override
     public int[] casualties(Unit u1, Unit u2) {
         double threshold;
-        if (u1.getRanged()) {
+        if (u1.isRanged()) {
             threshold = (50 + 10.0 * (u2.getSpeed() - u1.getSpeed())) / 100;
         }
         else
