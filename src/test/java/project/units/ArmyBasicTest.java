@@ -24,5 +24,4 @@ public class ArmyBasicTest {
         Army a = new Army(unitList);
         assertEquals(a.getSize(), 10);
     }
-
 }

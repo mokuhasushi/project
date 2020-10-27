@@ -19,11 +19,22 @@ public class RangedEngagementTest {
         assertTrue(rs.damageDealt(attacker, defender) >= 0);
     }
 
-    @Test void meleeDealsZeroDamage() {
+    @Test
+    public void meleeDealsZeroDamage() {
         RangedEngagement rs = new RangedEngagement();
         Unit attacker = new HeavyInfantry();
         Unit defender = new Archer();
 
         assertEquals(rs.damageDealt(attacker, defender), 0);
+    }
+
+    @Test
+    public void meleeDealsZeroCasualties() {
+        RangedEngagement rs = new RangedEngagement();
+        Unit u1 = new Unit();
+        Unit u2 = new Unit();
+        u1.setRanged(true);
+
+        assertEquals(0,rs.casualties(u1, u2)[0]);
     }
 }

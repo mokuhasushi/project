@@ -1,17 +1,12 @@
 package project.battleresolver;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import project.unsw.gloriaromanus.battleresolver.*;
-import project.unsw.gloriaromanus.units.Archer;
-import project.unsw.gloriaromanus.units.HeavyInfantry;
 import project.unsw.gloriaromanus.units.Unit;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -86,7 +81,10 @@ public class SkirmishTest {
 
         Skirmish s = new Skirmish(u1, u2, rng, eng);
 
-        assertEquals(SkirmishResult.U1_FLEE, s.solve().getResult());
+        SkirmishReport sr = s.solve();
+
+        assertEquals(SkirmishResult.U1_FLEE, sr.getResult());
+        assertTrue(sr.getU1().isBroken());
 
     }
     @Test
@@ -101,7 +99,9 @@ public class SkirmishTest {
 
         Skirmish s = new Skirmish(u1, u2, rng, eng);
 
-        assertEquals(SkirmishResult.U1_DEFEAT, s.solve().getResult());
+        SkirmishReport sr = s.solve();
+        assertEquals(SkirmishResult.U1_DEFEAT, sr.getResult());
+        assertTrue(sr.getU1().isDefeated());
 
     }
     @Test
@@ -114,7 +114,9 @@ public class SkirmishTest {
 
         Skirmish s = new Skirmish(u1, u2, rng, eng);
 
-        assertEquals(SkirmishResult.U2_FLEE, s.solve().getResult());
+        SkirmishReport sr = s.solve();
+        assertEquals(SkirmishResult.U2_FLEE, sr.getResult());
+        assertTrue(sr.getU2().isBroken());
 
     }
     @Test
@@ -129,7 +131,9 @@ public class SkirmishTest {
 
         Skirmish s = new Skirmish(u1, u2, rng, eng);
 
-        assertEquals(SkirmishResult.U2_DEFEAT, s.solve().getResult());
+        SkirmishReport sr = s.solve();
+        assertEquals(SkirmishResult.U2_DEFEAT, sr.getResult());
+        assertTrue(sr.getU2().isDefeated());
     }
     @Test
     public void solveForBrokenUnits() {
@@ -138,7 +142,9 @@ public class SkirmishTest {
 
         Skirmish s = new Skirmish(u1, u2);
 
-        assertEquals(SkirmishResult.DRAW, s.solve().getResult());
+        SkirmishReport sr = s.solve();
+        assertEquals(SkirmishResult.DRAW_FLED, sr.getResult());
+        assertTrue(sr.getU1().isBroken());
     }
     @Test
     public void solveForCombatU1breaksAndFlees() {
@@ -154,9 +160,10 @@ public class SkirmishTest {
         eng.setCasualties(1, 0);
 
         Skirmish s = new Skirmish(u1, u2, rng, eng);
-        EngagementReport er = s.solve();
+        SkirmishReport er = s.solve();
         assertEquals(SkirmishResult.U1_FLEE, er.getResult());
         assertEquals(2, er.getNumEngagements());
+        assertTrue(er.getU1().isBroken());
     }
     @Test
     public void solveForCombatU1DoesntBreaksAndIsDefeated() {
@@ -166,8 +173,9 @@ public class SkirmishTest {
         eng.setCasualties(1, 0);
 
         Skirmish s = new Skirmish(u1, u2, rng, eng);
-        EngagementReport er = s.solve();
+        SkirmishReport er = s.solve();
         assertEquals(SkirmishResult.U1_DEFEAT, er.getResult());
+        assertTrue(er.getU1().isDefeated());
         assertTrue(er.getU2().isBroken());
     }
     @Test
@@ -179,8 +187,9 @@ public class SkirmishTest {
         eng.setCasualties(1, 1);
 
         Skirmish s = new Skirmish(u1, u2, rng, eng);
-        EngagementReport er = s.solve();
+        SkirmishReport er = s.solve();
         assertEquals(SkirmishResult.U2_DEFEAT, er.getResult());
+        assertTrue(er.getU2().isDefeated());
     }
     @Test
     public void solveForCombatU1AndU2Defeated() {
@@ -190,8 +199,10 @@ public class SkirmishTest {
         eng.setCasualties(1, 1);
 
         Skirmish s = new Skirmish(u1, u2, rng, eng);
-        EngagementReport er = s.solve();
-        assertEquals(SkirmishResult.DRAW, er.getResult());
+        SkirmishReport er = s.solve();
+        assertEquals(SkirmishResult.DRAW_DEFEATED, er.getResult());
+        assertTrue(er.getU1().isDefeated());
+        assertTrue(er.getU2().isDefeated());
     }
 
     static class NotSoRandom extends Random {

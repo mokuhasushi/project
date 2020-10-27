@@ -46,11 +46,11 @@ public class Skirmish {
     }
 
     //solves the engagement between two units
-    public EngagementReport solve () {
+    public SkirmishReport solve () {
         while (true) {
             if (u1.isBroken() && !u2.isBroken()){
                 if (rng.nextDouble() < fleeChances(u1, u2)) {
-                    return new EngagementReport(u1, u2, SkirmishResult.U1_FLEE, engageCounter);
+                    return new SkirmishReport(u1, u2, SkirmishResult.U1_FLEE, engageCounter);
                 }
                 else {
                     /*
@@ -64,14 +64,14 @@ public class Skirmish {
             }
             else if (!u1.isBroken() && u2.isBroken()){
                 if (rng.nextDouble() < fleeChances(u2, u1)) {
-                    return new EngagementReport(u1, u2, SkirmishResult.U2_FLEE, engageCounter);
+                    return new SkirmishReport(u1, u2, SkirmishResult.U2_FLEE, engageCounter);
                 }
                 else {
                     u2.removeTroops(engagement.casualties(u1,u2)[1]);
                 }
             }
             else if (u1.isBroken() && u2.isBroken()){
-                return new EngagementReport(u1,u2,SkirmishResult.DRAW, engageCounter);
+                return new SkirmishReport(u1,u2,SkirmishResult.DRAW_FLED, engageCounter);
             }
             else{
                 /*
@@ -90,13 +90,13 @@ public class Skirmish {
             }
             if (u1.isDefeated() && u2.isDefeated()) {
                 // From the spec is not clear, I assume both defeated is a draw
-                return new EngagementReport(u1,u2,SkirmishResult.DRAW, engageCounter);
+                return new SkirmishReport(u1,u2,SkirmishResult.DRAW_DEFEATED, engageCounter);
             }
             else if (u1.isDefeated()) {
-                return new EngagementReport(u1,u2,SkirmishResult.U1_DEFEAT, engageCounter);
+                return new SkirmishReport(u1,u2,SkirmishResult.U1_DEFEAT, engageCounter);
             }
             else if (u2.isDefeated()){
-                return new EngagementReport(u1,u2,SkirmishResult.U2_DEFEAT, engageCounter);
+                return new SkirmishReport(u1,u2,SkirmishResult.U2_DEFEAT, engageCounter);
             }
             else {
                 engageCounter += 1;

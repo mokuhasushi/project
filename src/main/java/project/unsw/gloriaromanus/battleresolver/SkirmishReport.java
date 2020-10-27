@@ -2,7 +2,7 @@ package project.unsw.gloriaromanus.battleresolver;
 
 import project.unsw.gloriaromanus.units.Unit;
 
-public class EngagementReport {
+public class SkirmishReport {
     private Unit u1;
     private Unit u2;
     private SkirmishResult result;
@@ -16,7 +16,7 @@ public class EngagementReport {
         return u2;
     }
 
-    public EngagementReport(Unit u1, Unit u2, SkirmishResult result, int numEngagements) {
+    public SkirmishReport(Unit u1, Unit u2, SkirmishResult result, int numEngagements) {
         this.u1 = u1;
         this.u2 = u2;
         this.result = result;

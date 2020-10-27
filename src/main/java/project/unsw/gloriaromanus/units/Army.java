@@ -28,7 +28,11 @@ public class Army {
         army.remove(index);
     }
 
+    public void updateUnit(int index, Unit unit) { army.set(index, unit);}
+
     public int getSize(){
         return army.size();
     }
+
+    public boolean isDefeated() {return army.size() == 0;}
 }
