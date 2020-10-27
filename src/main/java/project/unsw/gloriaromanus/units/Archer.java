@@ -1,4 +1,4 @@
-package unsw.gloriaromanus;
+package project.unsw.gloriaromanus.units;
 
 /**
  * Represents a basic unit of soldiers
@@ -8,7 +8,7 @@ package unsw.gloriaromanus;
  * 
  * current version represents a heavy infantry unit (almost no range, decent armour and morale)
  */
-public class Unit {
+public class Archer extends Unit {
     private int numTroops;  // the number of troops in this unit (should reduce based on depletion)
     private int range;  // range of the unit
     private int armour;  // armour defense
@@ -18,21 +18,17 @@ public class Unit {
     private int defenseSkill;  // skill to defend in battle. Does not protect from arrows!
     private int shieldDefense; // a shield
 
-    public Unit(){
+    public Archer(){
         // TODO = obtain these values from the file for the unit
         numTroops = 50;
-        range = 1;
+        range = 10;
         armour = 5;
         morale = 10;
         speed = 10;
         attack = 6;
         defenseSkill = 10;
         shieldDefense = 3;
+        isBroken = false;
     }
 
-    public int getNumTroops(){
-        return numTroops;
-    }
-
-    
 }
