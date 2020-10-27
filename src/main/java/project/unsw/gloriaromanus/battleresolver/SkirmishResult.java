@@ -1,10 +1,8 @@
 package project.unsw.gloriaromanus.battleresolver;
 
 public enum SkirmishResult {
-    P1_BREAK,
-    P1_FLEE,
-    P1_DEFEAT,
-    P2_BREAK,
-    P2_FLEE,
-    P2_DEFEAT,
+    U1_FLEE,
+    U1_DEFEAT,
+    U2_FLEE,
+    U2_DEFEAT,
 }

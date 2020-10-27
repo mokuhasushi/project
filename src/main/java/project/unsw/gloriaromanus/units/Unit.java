@@ -40,6 +40,8 @@ public abstract class Unit {
         return shieldDefense;
     }
 
-    public void setNumTroops(int numTroops) {this.numTroops = numTroops;}
+    public void addTroops(int numTroops) {this.numTroops += numTroops;}
+    public void removeTroops(int numTroops) {this.numTroops -= Math.min(this.numTroops, numTroops);}
+    public void setBroken(boolean bol) {this.isBroken = bol;}
 
 }

@@ -6,16 +6,11 @@ import java.util.Random;
 
 import static project.unsw.gloriaromanus.Utils.clamp;
 
-public class MeleeSkirmish implements Skirmish{
+public class MeleeEngagement implements Engagement{
     Random rng;
 
-    public MeleeSkirmish() {
+    public MeleeEngagement() {
         rng = new Random();
-    }
-
-    @Override
-    public SkirmishResult solve(Unit u1, Unit u2) {
-        return null;
     }
 
     //TODO: Note that all effective attributes in the formula should incorporate the effect of any bonuses/penalties
@@ -32,5 +27,10 @@ public class MeleeSkirmish implements Skirmish{
                 (rng.nextGaussian() + 1);
         int damage = (int)Math.round(result);
         return clamp(0, damage, defender.getNumTroops());
+    }
+
+    @Override
+    public int[] casualties(Unit u1, Unit u2) {
+        return new int []{damageDealt(u1,u2), damageDealt(u2, u1)};
     }
 }
