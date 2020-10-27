@@ -34,8 +34,19 @@ public class Skirmish {
         else engagement = new MeleeEngagement();
     }
 
+    /*
+     This constructor is for testing. I could introduce some testing framework
+     (thinking of GUICE), but maybe it is best to keep it simple
+     */
+    public Skirmish (Unit u1, Unit u2, Random rng, Engagement eng) {
+        this.u1 = u1;
+        this.u2 = u2;
+        this.rng = rng;
+        this.engagement = eng;
+    }
+
     //solves the engagement between two units
-    public EngagementReport solve (Unit u1, Unit u2) {
+    public EngagementReport solve () {
         while (true) {
             if (u1.isBroken() && !u2.isBroken()){
                 if (rng.nextDouble() < fleeChances(u1, u2)) {
@@ -95,17 +106,17 @@ public class Skirmish {
     }
 
     //calculates the chances of the unit breaking
-    static double breakChances(Unit unit, Unit enemy, int casualtiesUnit, int casualtiesEnemy) {
-        double base = 100 - unit.getMorale()*10;
+    public static double breakChances(Unit unit, Unit enemy, int casualtiesUnit, int casualtiesEnemy) {
+        double base = clamp(0, 100 - unit.getMorale()*10,100);
         double addition =
                 ((double)casualtiesUnit / unit.getNumTroops()) /
-                ((double)casualtiesEnemy / enemy.getNumTroops()) *
+                ((double)(Math.max(casualtiesEnemy, 1)) / enemy.getNumTroops()) *
                         10.0;
         return clamp(5, base+addition, 100) / 100;
     }
 
     //calculates the chances of the unit fleeing
-    static double fleeChances(Unit fleeing, Unit pursuing) {
+    public static double fleeChances(Unit fleeing, Unit pursuing) {
         return (clamp(10, 50 + 10.0 * (fleeing.getSpeed() - pursuing.getSpeed()), 100))/100;
     }
 }

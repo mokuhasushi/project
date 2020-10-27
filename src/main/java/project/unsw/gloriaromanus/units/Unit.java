@@ -4,7 +4,8 @@ package project.unsw.gloriaromanus.units;
     I just need this class to test the various parameters in the BattleResolver
     Antonio
  */
-public abstract class Unit {
+public class Unit {
+
     int numTroops;  // the number of troops in this unit (should reduce based on depletion)
     boolean ranged;  // range of the unit
     int armour;  // armour defense
@@ -14,6 +15,18 @@ public abstract class Unit {
     int defenseSkill;  // skill to defend in battle. Does not protect from arrows!
     int shieldDefense; // a shield
     boolean isBroken;
+
+    public Unit () {
+        this.numTroops = 1;
+        this.ranged = false;
+        this.armour = 1;
+        this.morale = 1;
+        this.speed = 1;
+        this.attack = 1;
+        this.defenseSkill = 1;
+        this.shieldDefense = 1;
+        this.isBroken = false;
+    }
 
     public int getNumTroops() {
         return numTroops;
@@ -45,5 +58,32 @@ public abstract class Unit {
     public void addTroops(int numTroops) {this.numTroops += numTroops;}
     public void removeTroops(int numTroops) {this.numTroops -= Math.min(this.numTroops, numTroops);}
     public void setBroken(boolean bol) {this.isBroken = bol;}
+    public void setSpeed(int speed) {this.speed = speed;}
+    public void setNumTroops(int numTroops) {
+        this.numTroops = numTroops;
+    }
 
+    public void setRanged(boolean ranged) {
+        this.ranged = ranged;
+    }
+
+    public void setArmour(int armour) {
+        this.armour = armour;
+    }
+
+    public void setMorale(int morale) {
+        this.morale = morale;
+    }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public void setDefenseSkill(int defenseSkill) {
+        this.defenseSkill = defenseSkill;
+    }
+
+    public void setShieldDefense(int shieldDefense) {
+        this.shieldDefense = shieldDefense;
+    }
 }
