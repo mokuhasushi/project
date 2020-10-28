@@ -50,7 +50,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'project.unsw.gloriaromanus.GloriaRomanusLauncher'
+    mainClassName = 'gloriaromanus.GloriaRomanusLauncher'
 }
 
 test {
@@ -67,3 +67,16 @@ jacocoTestReport {
     }
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/unsw']
+        }
+    }
+
+    test {
+        java {
+            srcDirs = ['src/test']
+        }
+    }
+}
