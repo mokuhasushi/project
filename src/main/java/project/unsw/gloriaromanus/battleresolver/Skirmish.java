@@ -1,6 +1,6 @@
 package project.unsw.gloriaromanus.battleresolver;
 
-import project.unsw.gloriaromanus.units.Unit;
+import project.unsw.gloriaromanus.units.Soldier;
 
 import java.util.Random;
 
@@ -12,15 +12,15 @@ Provides some static methods common to every instance.
 The idea is to apply a Strategy Pattern to differentiate between melee and range
  */
 public class Skirmish {
-    private Unit u1;
-    private Unit u2;
+    private Soldier u1;
+    private Soldier u2;
     private Engagement engagement;
     private int engageCounter = 1;
     private Random rng;
 
     // Constructor instantiates engagement with the right instance
     // Strategy pattern
-    public Skirmish (Unit u1, Unit u2) {
+    public Skirmish (Soldier u1, Soldier u2) {
         this.u1 = u1;
         this.u2 = u2;
         rng = new Random();
@@ -38,7 +38,7 @@ public class Skirmish {
      This constructor is for testing. I could introduce some testing framework
      (thinking of GUICE), but maybe it is best to keep it simple
      */
-    public Skirmish (Unit u1, Unit u2, Random rng, Engagement eng) {
+    public Skirmish (Soldier u1, Soldier u2, Random rng, Engagement eng) {
         this.u1 = u1;
         this.u2 = u2;
         this.rng = rng;
@@ -106,17 +106,17 @@ public class Skirmish {
     }
 
     //calculates the chances of the unit breaking
-    public static double breakChances(Unit unit, Unit enemy, int casualtiesUnit, int casualtiesEnemy) {
-        double base = clamp(0, 100 - unit.getMorale()*10,100);
+    public static double breakChances(Soldier soldier, Soldier enemy, int casualtiesUnit, int casualtiesEnemy) {
+        double base = clamp(0, 100 - soldier.getMorale()*10,100);
         double addition =
-                ((double)casualtiesUnit / unit.getNumTroops()) /
+                ((double)casualtiesUnit / soldier.getNumTroops()) /
                 ((double)(Math.max(casualtiesEnemy, 1)) / enemy.getNumTroops()) *
                         10.0;
         return clamp(5, base+addition, 100) / 100;
     }
 
     //calculates the chances of the unit fleeing
-    public static double fleeChances(Unit fleeing, Unit pursuing) {
+    public static double fleeChances(Soldier fleeing, Soldier pursuing) {
         return (clamp(10, 50 + 10.0 * (fleeing.getSpeed() - pursuing.getSpeed()), 100))/100;
     }
 }

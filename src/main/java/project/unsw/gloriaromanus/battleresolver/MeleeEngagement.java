@@ -1,6 +1,6 @@
 package project.unsw.gloriaromanus.battleresolver;
 
-import project.unsw.gloriaromanus.units.Unit;
+import project.unsw.gloriaromanus.units.Soldier;
 
 import java.util.Random;
 
@@ -16,7 +16,7 @@ public class MeleeEngagement implements Engagement{
     //TODO: Note that all effective attributes in the formula should incorporate the effect of any bonuses/penalties
     // (such as formations such as phalanx formation, charge bonuses where applicable for cavalry/chariots/elephants).
     @Override
-    public int damageDealt(Unit attacker, Unit defender) {
+    public int damageDealt(Soldier attacker, Soldier defender) {
         double result = (defender.getNumTroops() / 10.0) * (
                 (double)attacker.getAttack() / (
                         defender.getArmour() +
@@ -30,7 +30,7 @@ public class MeleeEngagement implements Engagement{
     }
 
     @Override
-    public int[] casualties(Unit u1, Unit u2) {
+    public int[] casualties(Soldier u1, Soldier u2) {
         return new int []{damageDealt(u2, u1), damageDealt(u1,u2)};
     }
 }

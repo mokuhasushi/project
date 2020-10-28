@@ -3,7 +3,7 @@ package project.battleresolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import project.unsw.gloriaromanus.battleresolver.*;
-import project.unsw.gloriaromanus.units.Unit;
+import project.unsw.gloriaromanus.units.Soldier;
 
 import java.util.LinkedList;
 import java.util.Random;
@@ -13,16 +13,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SkirmishTest {
 
-    static Unit u1;
-    static Unit u2;
+    static Soldier u1;
+    static Soldier u2;
     static NotSoRandom rng;
     static StubEngagement eng;
 //    static Skirmish s;
 
     @BeforeEach
     public void init() {
-        u1 = new Unit();
-        u2 = new Unit();
+        u1 = new Soldier();
+        u2 = new Soldier();
         rng = new NotSoRandom();
         eng = new StubEngagement();
 /*
@@ -31,7 +31,7 @@ public class SkirmishTest {
     }
 
     /*
-    A much slower unit (s2-s1 > 4) should always have at least 10% chances
+    A much slower soldier (s2-s1 > 4) should always have at least 10% chances
      */
     @Test
     public void fleeingChancesRangeLowerBoundTest() {
@@ -229,12 +229,12 @@ public class SkirmishTest {
             this.c2 = c2;
         }
         @Override
-        public int damageDealt(Unit attacker, Unit defender) {
+        public int damageDealt(Soldier attacker, Soldier defender) {
             return 0;
         }
 
         @Override
-        public int[] casualties(Unit u1, Unit u2) {
+        public int[] casualties(Soldier u1, Soldier u2) {
             return new int[]{c1, c2};
         }
     }

@@ -1,34 +1,33 @@
 package project.unsw.gloriaromanus.units;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /*
  Stub for armies, to be passed in the BattleResolver
  Antonio
 */
 public class Army {
-    private ArrayList<Unit> army = new ArrayList<>();
+    private ArrayList<Soldier> army = new ArrayList<>();
 
-    public Army (ArrayList<Unit> army) {
+    public Army (ArrayList<Soldier> army) {
         this.army = army;
     }
 
     public Army (){}
 
-    public Unit getUnit(int index){
+    public Soldier getUnit(int index){
         return army.get(index);
     }
 
-    public void addUnit(Unit unit){
-        army.add(unit);
+    public void addUnit(Soldier soldier){
+        army.add(soldier);
     }
 
     public void deleteUnit(int index){
         army.remove(index);
     }
 
-    public void updateUnit(int index, Unit unit) { army.set(index, unit);}
+    public void updateUnit(int index, Soldier soldier) { army.set(index, soldier);}
 
     public int getSize(){
         return army.size();
@@ -36,7 +35,7 @@ public class Army {
 
     public boolean isDefeated() {return army.size() == 0;}
 
-    public void joinArmy (ArrayList<Unit> other) {
+    public void joinArmy (ArrayList<Soldier> other) {
         army.addAll(other);
     }
 }

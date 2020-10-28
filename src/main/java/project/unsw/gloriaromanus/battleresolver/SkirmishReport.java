@@ -1,22 +1,22 @@
 package project.unsw.gloriaromanus.battleresolver;
 
-import project.unsw.gloriaromanus.units.Unit;
+import project.unsw.gloriaromanus.units.Soldier;
 
 public class SkirmishReport {
-    private Unit u1;
-    private Unit u2;
+    private Soldier u1;
+    private Soldier u2;
     private SkirmishResult result;
     private int numEngagements;
 
-    public Unit getU1() {
+    public Soldier getU1() {
         return u1;
     }
 
-    public Unit getU2() {
+    public Soldier getU2() {
         return u2;
     }
 
-    public SkirmishReport(Unit u1, Unit u2, SkirmishResult result, int numEngagements) {
+    public SkirmishReport(Soldier u1, Soldier u2, SkirmishResult result, int numEngagements) {
         this.u1 = u1;
         this.u2 = u2;
         this.result = result;
@@ -31,11 +31,11 @@ public class SkirmishReport {
         return numEngagements;
     }
 
-    public void setU1(Unit u1) {
+    public void setU1(Soldier u1) {
         this.u1 = u1;
     }
 
-    public void setU2(Unit u2) {
+    public void setU2(Soldier u2) {
         this.u2 = u2;
     }
 

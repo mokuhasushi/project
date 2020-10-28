@@ -8,7 +8,7 @@ package project.unsw.gloriaromanus.units;
  * 
  * current version represents a heavy infantry unit (almost no range, decent armour and morale)
  */
-public class HeavyInfantry extends Unit {
+public class HeavyInfantry extends Soldier {
     public HeavyInfantry(){
         // TODO = obtain these values from the file for the unit
         this.numTroops = 50;

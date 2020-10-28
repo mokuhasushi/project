@@ -1,6 +1,6 @@
 package project.unsw.gloriaromanus.battleresolver;
 
-import project.unsw.gloriaromanus.units.Unit;
+import project.unsw.gloriaromanus.units.Soldier;
 
 import java.util.Random;
 
@@ -17,7 +17,7 @@ public class MixedEngagement implements Engagement{
 
     // This will never be called
     @Override
-    public int damageDealt(Unit attacker, Unit defender) {
+    public int damageDealt(Soldier attacker, Soldier defender) {
         return 0;
     }
 
@@ -26,7 +26,7 @@ public class MixedEngagement implements Engagement{
     then if nextDouble (which returns a number 0 <= x <= 1) is < threshold melee, else ranged
      */
     @Override
-    public int[] casualties(Unit u1, Unit u2) {
+    public int[] casualties(Soldier u1, Soldier u2) {
         double threshold;
         if (u1.isRanged()) {
             threshold = (50 + 10.0 * (u2.getSpeed() - u1.getSpeed())) / 100;

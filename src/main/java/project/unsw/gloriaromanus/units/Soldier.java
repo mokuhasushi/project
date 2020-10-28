@@ -4,10 +4,10 @@ package project.unsw.gloriaromanus.units;
     I just need this class to test the various parameters in the BattleResolver
     Antonio
  */
-public class Unit {
+public class Soldier {
 
-    int numTroops;  // the number of troops in this unit (should reduce based on depletion)
-    boolean ranged;  // range of the unit
+    int numTroops;  // the number of troops in this soldier (should reduce based on depletion)
+    boolean ranged;  // range of the soldier
     int armour;  // armour defense
     int morale;  // resistance to fleeing
     int speed;  // ability to disengage from disadvantageous battle
@@ -15,8 +15,9 @@ public class Unit {
     int defenseSkill;  // skill to defend in battle. Does not protect from arrows!
     int shieldDefense; // a shield
     boolean isBroken;
+    int trainingTime;
 
-    public Unit () {
+    public Soldier() {
         this.numTroops = 1;
         this.ranged = false;
         this.armour = 1;
@@ -26,6 +27,7 @@ public class Unit {
         this.defenseSkill = 1;
         this.shieldDefense = 1;
         this.isBroken = false;
+        this.trainingTime = 1;
     }
 
     public int getNumTroops() {
@@ -54,6 +56,9 @@ public class Unit {
     }
     public boolean isBroken() {return isBroken;}
     public boolean isDefeated() {return numTroops == 0;}
+    public int getTrainingTime() {
+        return trainingTime;
+    }
 
     public void addTroops(int numTroops) {this.numTroops += numTroops;}
     public void removeTroops(int numTroops) {this.numTroops -= Math.min(this.numTroops, numTroops);}
@@ -62,28 +67,24 @@ public class Unit {
     public void setNumTroops(int numTroops) {
         this.numTroops = numTroops;
     }
-
     public void setRanged(boolean ranged) {
         this.ranged = ranged;
     }
-
     public void setArmour(int armour) {
         this.armour = armour;
     }
-
     public void setMorale(int morale) {
         this.morale = morale;
     }
-
     public void setAttack(int attack) {
         this.attack = attack;
     }
-
     public void setDefenseSkill(int defenseSkill) {
         this.defenseSkill = defenseSkill;
     }
-
     public void setShieldDefense(int shieldDefense) {
         this.shieldDefense = shieldDefense;
     }
+    public void setTrainingTime(int trainingTime) {this.trainingTime = trainingTime;}
+
 }

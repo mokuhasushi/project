@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import project.unsw.gloriaromanus.battleresolver.BattleResolver;
 import project.unsw.gloriaromanus.battleresolver.BattleResult;
 import project.unsw.gloriaromanus.units.Army;
-import project.unsw.gloriaromanus.units.Unit;
+import project.unsw.gloriaromanus.units.Soldier;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,7 +28,7 @@ public class BattleResolverTest {
 
     @Test
     public void ifDefenderHasEmptyArmyAttackerWon() {
-        attacker.addUnit(new Unit());
+        attacker.addUnit(new Soldier());
 
         BattleResult br =  battleResolver.battle(attacker, defender);
 
@@ -38,8 +38,8 @@ public class BattleResolverTest {
     @Test
     public void aBattleBetweenBigArmiesEndsInDraw() {
         for (int i = 0; i < 201; i++) {
-            attacker.addUnit(new Unit());
-            defender.addUnit(new Unit());
+            attacker.addUnit(new Soldier());
+            defender.addUnit(new Soldier());
         }
         BattleResult br = battleResolver.battle(attacker, defender);
 

@@ -1,6 +1,6 @@
 package project.unsw.gloriaromanus.battleresolver;
 
-import project.unsw.gloriaromanus.units.Unit;
+import project.unsw.gloriaromanus.units.Soldier;
 
 import java.util.Random;
 
@@ -13,7 +13,7 @@ public class RangedEngagement implements Engagement{
 
     //TODO: You should ensure the ranged attack damage above incorporates the effect of
     // any bonuses/penalties (e.g. the 10% loss of missile attack damage from fire arrows).
-    public int damageDealt (Unit attacker, Unit defender) {
+    public int damageDealt (Soldier attacker, Soldier defender) {
         if (!attacker.isRanged()){
             return 0;
         }
@@ -26,7 +26,7 @@ public class RangedEngagement implements Engagement{
     }
 
     @Override
-    public int[] casualties(Unit u1, Unit u2) {
+    public int[] casualties(Soldier u1, Soldier u2) {
         return new int []{damageDealt(u2, u1),damageDealt(u1,u2)};
     }
 

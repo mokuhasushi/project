@@ -8,7 +8,7 @@ package project.unsw.gloriaromanus.units;
  * 
  * current version represents a heavy infantry unit (almost no range, decent armour and morale)
  */
-public class Archer extends Unit {
+public class Archer extends Soldier {
     private int numTroops;  // the number of troops in this unit (should reduce based on depletion)
     private int range;  // range of the unit
     private int armour;  // armour defense

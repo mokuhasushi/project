@@ -1,7 +1,7 @@
 package project.unsw.gloriaromanus.battleresolver;
 
 import project.unsw.gloriaromanus.units.Army;
-import project.unsw.gloriaromanus.units.Unit;
+import project.unsw.gloriaromanus.units.Soldier;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,25 +23,25 @@ public class BattleResolver {
 
     public BattleResult battle(Army attacker, Army defender) {
         int engagementsTotal = 0;
-        ArrayList<Unit> attackerRouted = new ArrayList<>();
-        ArrayList<Unit> defenderRouted = new ArrayList<>();
+        ArrayList<Soldier> attackerRouted = new ArrayList<>();
+        ArrayList<Soldier> defenderRouted = new ArrayList<>();
         while (engagementsTotal <= 200 && !(attacker.isDefeated() || defender.isDefeated())) {
             int indexAttacker = rng.nextInt(attacker.getSize());
-            Unit unitAttacker = attacker.getUnit(indexAttacker);
+            Soldier soldierAttacker = attacker.getUnit(indexAttacker);
             int indexDefender = rng.nextInt(defender.getSize());
-            Unit unitDefender = defender.getUnit(indexDefender);
+            Soldier soldierDefender = defender.getUnit(indexDefender);
 
-            Skirmish s = new Skirmish(unitAttacker, unitDefender);
+            Skirmish s = new Skirmish(soldierAttacker, soldierDefender);
             SkirmishReport sr = s.solve();
             switch (sr.getResult()) {
                 case U1_DEFEAT -> attacker.deleteUnit(indexAttacker);
                 case U2_DEFEAT -> defender.deleteUnit(indexDefender);
                 case U1_FLEE -> {
-                    attackerRouted.add(unitAttacker);
+                    attackerRouted.add(soldierAttacker);
                     attacker.deleteUnit(indexAttacker);
                 }
                 case U2_FLEE -> {
-                    defenderRouted.add(unitDefender);
+                    defenderRouted.add(soldierDefender);
                     defender.deleteUnit(indexDefender);
                 }
                 case DRAW_DEFEATED -> {
@@ -49,8 +49,8 @@ public class BattleResolver {
                     defender.deleteUnit(indexDefender);
                 }
                 case DRAW_FLED -> {
-                    attackerRouted.add(unitAttacker);
-                    defenderRouted.add(unitDefender);
+                    attackerRouted.add(soldierAttacker);
+                    defenderRouted.add(soldierDefender);
                     attacker.deleteUnit(indexAttacker);
                     defender.deleteUnit(indexDefender);
                 }
