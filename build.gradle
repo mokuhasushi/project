@@ -66,17 +66,18 @@ jacocoTestReport {
         }))
     }
 }
-
 sourceSets {
     main {
         java {
-            srcDirs = ['src/unsw']
+            srcDirs = ['src']
+            excludes = ['test/*']
         }
     }
 
     test {
         java {
-            srcDirs = ['src/test']
+            srcDirs = ['src']
+            excludes = ['unsw/gloriaromanus/*']
         }
     }
 }

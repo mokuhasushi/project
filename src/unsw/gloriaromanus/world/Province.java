@@ -1,4 +1,4 @@
-package gloriaromanus.world;
+package unsw.gloriaromanus.world;
 
 public class Province {
     private int wealth;

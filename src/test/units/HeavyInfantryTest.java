@@ -1,10 +1,10 @@
-package units;
+package test.units;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import gloriaromanus.units.HeavyInfantry;
+import unsw.gloriaromanus.units.HeavyInfantry;
 
 public class HeavyInfantryTest {
     @Test

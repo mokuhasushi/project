@@ -1,6 +1,6 @@
-package gloriaromanus.battleresolver;
+package unsw.gloriaromanus.battleresolver;
 
-import gloriaromanus.units.Soldier;
+import unsw.gloriaromanus.units.Soldier;
 
 public interface Engagement {
     //TODO: Note that all effective attributes in the formula should incorporate the effect of any bonuses/penalties

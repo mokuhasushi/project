@@ -1,4 +1,4 @@
-package gloriaromanus;
+package unsw.gloriaromanus;
 
 public class GloriaRomanusLauncher {
 

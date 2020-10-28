@@ -1,6 +1,6 @@
-package gloriaromanus.battleresolver;
+package unsw.gloriaromanus.battleresolver;
 
-import gloriaromanus.units.Soldier;
+import unsw.gloriaromanus.units.Soldier;
 
 public class SkirmishReport {
     private Soldier u1;

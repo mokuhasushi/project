@@ -1,4 +1,4 @@
-package gloriaromanus;
+package unsw.gloriaromanus;
 
 import java.io.File;
 import java.io.FileInputStream;

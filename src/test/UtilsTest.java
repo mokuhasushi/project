@@ -1,7 +1,8 @@
+package test;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static gloriaromanus.Utils.clamp;
+import static unsw.gloriaromanus.Utils.clamp;
 
 public class UtilsTest {
     @Test

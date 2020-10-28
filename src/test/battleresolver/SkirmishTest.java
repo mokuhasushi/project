@@ -1,9 +1,9 @@
-package battleresolver;
+package test.battleresolver;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import gloriaromanus.battleresolver.*;
-import gloriaromanus.units.Soldier;
+import unsw.gloriaromanus.battleresolver.*;
+import unsw.gloriaromanus.units.Soldier;
 
 import java.util.LinkedList;
 import java.util.Random;

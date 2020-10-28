@@ -1,7 +1,7 @@
-package gloriaromanus.battleresolver;
+package unsw.gloriaromanus.battleresolver;
 
-import gloriaromanus.units.Army;
-import gloriaromanus.units.Soldier;
+import unsw.gloriaromanus.units.Army;
+import unsw.gloriaromanus.units.Soldier;
 
 import java.util.ArrayList;
 import java.util.Random;

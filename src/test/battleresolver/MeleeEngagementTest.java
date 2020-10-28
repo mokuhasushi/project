@@ -1,9 +1,9 @@
-package battleresolver;
+package test.battleresolver;
 
 import org.junit.jupiter.api.Test;
-import gloriaromanus.battleresolver.MeleeEngagement;
-import gloriaromanus.units.HeavyInfantry;
-import gloriaromanus.units.Soldier;
+import unsw.gloriaromanus.battleresolver.MeleeEngagement;
+import unsw.gloriaromanus.units.HeavyInfantry;
+import unsw.gloriaromanus.units.Soldier;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -1,10 +1,10 @@
-package gloriaromanus.battleresolver;
+package unsw.gloriaromanus.battleresolver;
 
-import gloriaromanus.units.Soldier;
+import unsw.gloriaromanus.units.Soldier;
 
 import java.util.Random;
 
-import static gloriaromanus.Utils.clamp;
+import static unsw.gloriaromanus.Utils.clamp;
 
 public class MeleeEngagement implements Engagement{
     Random rng;

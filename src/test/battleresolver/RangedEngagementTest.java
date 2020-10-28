@@ -1,10 +1,10 @@
-package battleresolver;
+package test.battleresolver;
 
 import org.junit.jupiter.api.Test;
-import gloriaromanus.battleresolver.RangedEngagement;
-import gloriaromanus.units.Archer;
-import gloriaromanus.units.HeavyInfantry;
-import gloriaromanus.units.Soldier;
+import unsw.gloriaromanus.battleresolver.RangedEngagement;
+import unsw.gloriaromanus.units.Archer;
+import unsw.gloriaromanus.units.HeavyInfantry;
+import unsw.gloriaromanus.units.Soldier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

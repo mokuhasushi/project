@@ -1,9 +1,9 @@
-package units;
+package test.units;
 
 import org.junit.jupiter.api.Test;
-import gloriaromanus.player.Barrack;
-import gloriaromanus.units.Soldier;
-import gloriaromanus.units.SoldierFactory;
+import unsw.gloriaromanus.player.Barrack;
+import unsw.gloriaromanus.units.Soldier;
+import unsw.gloriaromanus.units.SoldierFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 

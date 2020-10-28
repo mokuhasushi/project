@@ -1,6 +1,6 @@
-package gloriaromanus.player;
+package unsw.gloriaromanus.player;
 
-import gloriaromanus.world.Province;
+import unsw.gloriaromanus.world.Province;
 
 import java.util.ArrayList;
 

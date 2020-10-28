@@ -1,4 +1,4 @@
-package gloriaromanus.game;
+package unsw.gloriaromanus.game;
 
 public class Game {
 

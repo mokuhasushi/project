@@ -1,11 +1,11 @@
-package battleresolver;
+package test.battleresolver;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import gloriaromanus.battleresolver.BattleResolver;
-import gloriaromanus.battleresolver.BattleResult;
-import gloriaromanus.units.Army;
-import gloriaromanus.units.Soldier;
+import unsw.gloriaromanus.battleresolver.BattleResolver;
+import unsw.gloriaromanus.battleresolver.BattleResult;
+import unsw.gloriaromanus.units.Army;
+import unsw.gloriaromanus.units.Soldier;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

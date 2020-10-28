@@ -1,9 +1,9 @@
-package units;
+package test.units;
 
 import org.junit.jupiter.api.Test;
-import gloriaromanus.units.Army;
-import gloriaromanus.units.HeavyInfantry;
-import gloriaromanus.units.Soldier;
+import unsw.gloriaromanus.units.Army;
+import unsw.gloriaromanus.units.HeavyInfantry;
+import unsw.gloriaromanus.units.Soldier;
 
 import java.util.ArrayList;
 

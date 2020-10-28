@@ -1,4 +1,4 @@
-package gloriaromanus.units;
+package unsw.gloriaromanus.units;
 
 /*
     I just need this class to test the various parameters in the BattleResolver

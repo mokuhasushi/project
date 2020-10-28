@@ -1,6 +1,6 @@
-package gloriaromanus.game;
+package unsw.gloriaromanus.game;
 
-import gloriaromanus.battleresolver.BattleResolver;
+import unsw.gloriaromanus.battleresolver.BattleResolver;
 
 public interface Campaign {
     public BattleResolver battleResolver = null;
