@@ -12,11 +12,11 @@ Provides some static methods common to every instance.
 The idea is to apply a Strategy Pattern to differentiate between melee and range
  */
 public class Skirmish {
-    private Soldier u1;
-    private Soldier u2;
-    private Engagement engagement;
+    private final Soldier u1;
+    private final Soldier u2;
+    private final Engagement engagement;
     private int engageCounter = 1;
-    private Random rng;
+    private final Random rng;
 
     // Constructor instantiates engagement with the right instance
     // Strategy pattern

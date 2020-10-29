@@ -1,6 +1,6 @@
 package unsw.gloriaromanus.world;
 
-public enum TaxLevels {
+public enum TaxLevel {
     LOW_TAX,
     NORMAL_TAX,
     HIGH_TAX,

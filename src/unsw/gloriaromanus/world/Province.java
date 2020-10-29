@@ -9,15 +9,15 @@ public class Province {
     private int wealth;
     private int wealthGrowth;
     private int taxes;
-    private TaxLevels taxLevel;
+    private TaxLevel taxLevel;
     private int moraleModifier;
-    private String name;
+    private final String name;
     private Faction owner;
     private Army army;
     private boolean justConquered;
     private Barrack barrack;
 
-    public Province(int wealth, int wealthGrowth, int taxes, TaxLevels taxLevel, int moraleModifier, String name) {
+    public Province(int wealth, int wealthGrowth, int taxes, TaxLevel taxLevel, int moraleModifier, String name) {
         this.wealth = wealth;
         this.wealthGrowth = wealthGrowth;
         this.taxes = taxes;
@@ -30,25 +30,26 @@ public class Province {
         return (int) Math.round((wealth*taxes/100.0) + 0.5);
     }
 
-    public void setTaxLevel (TaxLevels taxLevel) {
+    public void setTaxLevel (TaxLevel taxLevel) {
         this.taxLevel = taxLevel;
         switch (taxLevel) {
-            case LOW_TAX:
+            case LOW_TAX -> {
                 taxes = 10;
                 wealthGrowth = 10;
-                break;
-            case NORMAL_TAX:
+            }
+            case NORMAL_TAX -> {
                 taxes = 15;
                 wealthGrowth = 0;
-                break;
-            case HIGH_TAX:
+            }
+            case HIGH_TAX -> {
                 taxes = 20;
                 wealthGrowth = -10;
-                break;
-            case VERY_HIGH_TAX:
+            }
+            case VERY_HIGH_TAX -> {
                 taxes = 25;
                 wealthGrowth = -30;
                 moraleModifier = -1;
+            }
         }
     }
 
@@ -84,5 +85,20 @@ public class Province {
 
     public void addTroops(Army attacker) {
         this.army.joinArmy(attacker);
+    }
+
+    public void moveTroops(Army army) {
+        army.moved(1);
+        this.army.joinArmy(army);
+    }
+
+    public void recruit(String soldier) {
+        this.barrack.createSoldier(soldier);
+    }
+
+    public void update() {
+        this.wealth += wealthGrowth;
+        justConquered = false;
+        barrack.turnPassed();
     }
 }

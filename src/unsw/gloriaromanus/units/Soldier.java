@@ -140,4 +140,7 @@ public class Soldier {
     public void resetMovement() {movement = max_movement;}
 
 
+    public void reduceMovement(int distance) {
+        this.movement -= distance;
+    }
 }

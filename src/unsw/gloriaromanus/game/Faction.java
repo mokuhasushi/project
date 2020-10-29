@@ -40,4 +40,8 @@ public class Faction {
     public void addProvince(Province province) {
         provinces.add(province);
     }
+
+    public void addWealth(int wealth) {
+        this.wealth += wealth;
+    }
 }

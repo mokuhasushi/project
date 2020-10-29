@@ -46,4 +46,21 @@ public class Army {
             army.remove(other.getUnit(i));
         }
     }
+
+    public void moved(int distance) {
+        for (Soldier s: army) {
+            s.reduceMovement(distance);
+        }
+    }
+
+    public int getMovement() {
+        int movement = -1;
+        for (Soldier s: army) {
+            if (s.movement < movement)
+                movement = s.movement;
+            else if (movement < 0)
+                movement = s.movement;
+        }
+        return movement;
+    }
 }
