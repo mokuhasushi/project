@@ -35,7 +35,15 @@ public class Army {
 
     public boolean isDefeated() {return army.size() == 0;}
 
-    public void joinArmy (ArrayList<Soldier> other) {
-        army.addAll(other);
+    public void joinArmy (Army other) {
+        for (int i = 0; i < other.getSize(); i++) {
+            army.add(other.getUnit(i));
+        }
+    }
+
+    public void removeTroops(Army other) {
+        for (int i = 0; i < other.getSize(); i++) {
+            army.remove(other.getUnit(i));
+        }
     }
 }

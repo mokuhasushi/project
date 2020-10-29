@@ -1,5 +1,6 @@
 package unsw.gloriaromanus.battleresolver;
 
+import org.checkerframework.checker.units.qual.A;
 import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.units.Soldier;
 
@@ -23,8 +24,8 @@ public class BattleResolver {
 
     public BattleResult battle(Army attacker, Army defender) {
         int engagementsTotal = 0;
-        ArrayList<Soldier> attackerRouted = new ArrayList<>();
-        ArrayList<Soldier> defenderRouted = new ArrayList<>();
+        Army attackerRouted = new Army();
+        Army defenderRouted = new Army();
         while (engagementsTotal <= 200 && !(attacker.isDefeated() || defender.isDefeated())) {
             int indexAttacker = rng.nextInt(attacker.getSize());
             Soldier soldierAttacker = attacker.getUnit(indexAttacker);
@@ -38,12 +39,12 @@ public class BattleResolver {
                 case U2_DEFEAT -> defender.deleteUnit(indexDefender);
                 case U1_FLEE -> {
                     soldierAttacker.setBroken(false);
-                    attackerRouted.add(soldierAttacker);
+                    attackerRouted.addUnit(soldierAttacker);
                     attacker.deleteUnit(indexAttacker);
                 }
                 case U2_FLEE -> {
                     soldierDefender.setBroken(false);
-                    defenderRouted.add(soldierDefender);
+                    defenderRouted.addUnit(soldierDefender);
                     defender.deleteUnit(indexDefender);
                 }
                 case DRAW_DEFEATED -> {
@@ -53,8 +54,8 @@ public class BattleResolver {
                 case DRAW_FLED -> {
                     soldierAttacker.setBroken(false);
                     soldierDefender.setBroken(false);
-                    attackerRouted.add(soldierAttacker);
-                    defenderRouted.add(soldierDefender);
+                    attackerRouted.addUnit(soldierAttacker);
+                    defenderRouted.addUnit(soldierDefender);
                     attacker.deleteUnit(indexAttacker);
                     defender.deleteUnit(indexDefender);
                 }

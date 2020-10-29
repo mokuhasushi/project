@@ -1,5 +1,10 @@
 package unsw.gloriaromanus.world;
 
+import unsw.gloriaromanus.game.Faction;
+import unsw.gloriaromanus.player.Barrack;
+import unsw.gloriaromanus.units.Army;
+import unsw.gloriaromanus.units.SoldierFactory;
+
 public class Province {
     private int wealth;
     private int wealthGrowth;
@@ -7,6 +12,10 @@ public class Province {
     private TaxLevels taxLevel;
     private int moraleModifier;
     private String name;
+    private Faction owner;
+    private Army army;
+    private boolean justConquered;
+    private Barrack barrack;
 
     public Province(int wealth, int wealthGrowth, int taxes, TaxLevels taxLevel, int moraleModifier, String name) {
         this.wealth = wealth;
@@ -43,4 +52,37 @@ public class Province {
         }
     }
 
+    public Army getArmy() {
+        return army;
+    }
+
+    public void conqueredBy(Faction faction, Army army) {
+        this.army = army;
+        this.owner = faction;
+        this.justConquered = true;
+        this.barrack = new Barrack(new SoldierFactory(faction.getName()));
+    }
+
+    public Faction getOwner() {
+        return this.owner;
+    }
+
+    @Override
+    public boolean equals (Object other) {
+        if (!(other instanceof Province))
+            return false;
+        return this.getName().equals(((Province)other).getName());
+    }
+
+    private String getName() {
+        return name;
+    }
+
+    public void removeTroops(Army attacker) {
+        this.army.removeTroops(attacker);
+    }
+
+    public void addTroops(Army attacker) {
+        this.army.joinArmy(attacker);
+    }
 }
