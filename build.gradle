@@ -43,6 +43,7 @@ dependencies {
 
     // Use JUnit Jupiter API for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.6.2'
 
     // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
@@ -50,7 +51,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'project.unsw.gloriaromanus.GloriaRomanusLauncher'
+    mainClassName = 'unsw.gloriaromanus.GloriaRomanusLauncher'
 }
 
 test {
@@ -66,4 +67,18 @@ jacocoTestReport {
         }))
     }
 }
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+            excludes = ['test/*']
+        }
+    }
 
+    test {
+        java {
+            srcDirs = ['src']
+            excludes = ['unsw/gloriaromanus/*']
+        }
+    }
+}
