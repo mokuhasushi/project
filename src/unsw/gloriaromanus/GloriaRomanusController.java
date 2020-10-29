@@ -148,7 +148,7 @@ public class GloriaRomanusController{
     // does nothing
     // so forced to only have 1 selection color (unless construct graphics overlays
     // to give color highlighting)
-    GeoPackage gpkg_provinces = new GeoPackage("src/main/java/project/unsw/gloriaromanus/provinces_right_hand_fixed.gpkg");
+    GeoPackage gpkg_provinces = new GeoPackage("src/unsw/gloriaromanus/provinces_right_hand_fixed.gpkg");
     gpkg_provinces.loadAsync();
     gpkg_provinces.addDoneLoadingListener(() -> {
       if (gpkg_provinces.getLoadStatus() == LoadStatus.LOADED) {
@@ -167,7 +167,7 @@ public class GloriaRomanusController{
   private void addAllPointGraphics() throws JsonParseException, JsonMappingException, IOException {
     mapView.getGraphicsOverlays().clear();
 
-    InputStream inputStream = new FileInputStream(new File("src/main/java/project/unsw/gloriaromanus/provinces_label.geojson"));
+    InputStream inputStream = new FileInputStream(new File("src/unsw/gloriaromanus/provinces_label.geojson"));
     FeatureCollection fc = new ObjectMapper().readValue(inputStream, FeatureCollection.class);
 
     GraphicsOverlay graphicsOverlay = new GraphicsOverlay();
@@ -299,7 +299,7 @@ public class GloriaRomanusController{
   }
 
   private Map<String, String> getProvinceToOwningFactionMap() throws IOException {
-    String content = Files.readString(Paths.get("src/main/java/project/unsw/gloriaromanus/initial_province_ownership.json"));
+    String content = Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
     JSONObject ownership = new JSONObject(content);
     Map<String, String> m = new HashMap<String, String>();
     for (String key : ownership.keySet()) {
@@ -317,7 +317,7 @@ public class GloriaRomanusController{
   private ArrayList<String> getHumanProvincesList() throws IOException {
     // https://developers.arcgis.com/labs/java/query-a-feature-layer/
 
-    String content = Files.readString(Paths.get("src/main/java/project/unsw/gloriaromanus/initial_province_ownership.json"));
+    String content = Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
     JSONObject ownership = new JSONObject(content);
     return ArrayUtil.convert(ownership.getJSONArray(humanFaction));
   }
@@ -336,7 +336,7 @@ public class GloriaRomanusController{
   }
 
   private boolean confirmIfProvincesConnected(String province1, String province2) throws IOException {
-    String content = Files.readString(Paths.get("src/main/java/project/unsw/gloriaromanus/province_adjacency_matrix_fully_connected.json"));
+    String content = Files.readString(Paths.get("src/unsw/gloriaromanus/province_adjacency_matrix_fully_connected.json"));
     JSONObject provinceAdjacencyMatrix = new JSONObject(content);
     return provinceAdjacencyMatrix.getJSONObject(province1).getBoolean(province2);
   }

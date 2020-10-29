@@ -8,4 +8,5 @@ public interface Campaign {
     public void setBattleResolver (BattleResolver battleResolver);
     public BattleResolver getBattleResolver();
 
+    public boolean getGoals();
 }

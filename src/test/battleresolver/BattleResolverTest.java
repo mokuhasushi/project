@@ -9,6 +9,8 @@ import unsw.gloriaromanus.units.Soldier;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /*
 TODO:
 Without dependency injection it is quite hard to test this class.
@@ -44,5 +46,24 @@ public class BattleResolverTest {
         BattleResult br = battleResolver.battle(attacker, defender);
 
         assertEquals(BattleResult.DRAW, br);
+    }
+    @Test
+    public void whenDefenderDefeatedItsArmyIsEmpty() {
+        for (int i = 0; i < 10; i++) {
+            // with this setup it is (almost?) impossible to get a draw.
+            // to test it properly should inject rng
+            Soldier sd = new Soldier();
+            sd.setAttack(0);
+            Soldier sa = new Soldier();
+            sa.setAttack(10);
+            sa.setMorale(10);
+            attacker.addUnit(sa);
+            defender.addUnit(sd);
+        }
+        BattleResult br = battleResolver.battle(attacker, defender);
+
+        assertEquals(BattleResult.ATTACKER_WON, br);
+        assertEquals(10, attacker.getSize());
+        assertTrue(defender.isDefeated());
     }
 }

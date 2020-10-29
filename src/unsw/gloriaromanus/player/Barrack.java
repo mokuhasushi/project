@@ -12,8 +12,8 @@ public class Barrack {
 
     private SoldierFactory soldierFactory;
 
-    public Barrack () {
-        this.soldierFactory = new SoldierFactory();
+    public Barrack (String faction) {
+        this.soldierFactory = new SoldierFactory(faction);
     }
     public Barrack (SoldierFactory sf) {
         this.soldierFactory = sf;

@@ -37,10 +37,12 @@ public class BattleResolver {
                 case U1_DEFEAT -> attacker.deleteUnit(indexAttacker);
                 case U2_DEFEAT -> defender.deleteUnit(indexDefender);
                 case U1_FLEE -> {
+                    soldierAttacker.setBroken(false);
                     attackerRouted.add(soldierAttacker);
                     attacker.deleteUnit(indexAttacker);
                 }
                 case U2_FLEE -> {
+                    soldierDefender.setBroken(false);
                     defenderRouted.add(soldierDefender);
                     defender.deleteUnit(indexDefender);
                 }
@@ -49,6 +51,8 @@ public class BattleResolver {
                     defender.deleteUnit(indexDefender);
                 }
                 case DRAW_FLED -> {
+                    soldierAttacker.setBroken(false);
+                    soldierDefender.setBroken(false);
                     attackerRouted.add(soldierAttacker);
                     defenderRouted.add(soldierDefender);
                     attacker.deleteUnit(indexAttacker);
@@ -68,6 +72,7 @@ public class BattleResolver {
         }
         if (attacker.isDefeated()){
             attacker.joinArmy(attackerRouted);
+            defender.joinArmy(defenderRouted);
             return BattleResult.ATTACKER_DEFEATED;
         }
 

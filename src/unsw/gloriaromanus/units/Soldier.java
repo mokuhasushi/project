@@ -16,6 +16,11 @@ public class Soldier {
     int shieldDefense; // a shield
     boolean isBroken;
     int trainingTime;
+    int movement;
+    int max_movement;
+    boolean canMove;
+    String name;
+
 
     public Soldier() {
         this.numTroops = 1;
@@ -28,7 +33,46 @@ public class Soldier {
         this.shieldDefense = 1;
         this.isBroken = false;
         this.trainingTime = 1;
+        this.max_movement = 1;
+        this.movement = max_movement;
+        this.canMove = true;
+        this.name = "";
     }
+
+    public Soldier(int numTroops, boolean ranged, int armour,
+                   int morale, int speed, int attack,
+                   int defenseSkill, int shieldDefense, int trainingTime,
+                   int max_movement, String name) {
+        this.numTroops = numTroops;
+        this.ranged = ranged;
+        this.armour = armour;
+        this.morale = morale;
+        this.speed = speed;
+        this.attack = attack;
+        this.defenseSkill = defenseSkill;
+        this.shieldDefense = shieldDefense;
+        this.isBroken = false;
+        this.trainingTime = trainingTime;
+        this.max_movement = max_movement;
+        this.canMove = true;
+        this.movement = max_movement;
+        this.name = name;
+    }
+
+    public Soldier clone () {
+        return new Soldier(this.numTroops, this.ranged, this.armour, this.morale,
+                this.speed, this.attack, this.defenseSkill, this.shieldDefense, this.trainingTime,
+                this.max_movement, this.name);
+    }
+
+    public int getMovement() {
+        return movement;
+    }
+
+    public boolean isCanMove() {
+        return canMove;
+    }
+
 
     public int getNumTroops() {
         return numTroops;
@@ -59,6 +103,7 @@ public class Soldier {
     public int getTrainingTime() {
         return trainingTime;
     }
+    public String getName() {return this.name;}
 
     public void addTroops(int numTroops) {this.numTroops += numTroops;}
     public void removeTroops(int numTroops) {this.numTroops -= Math.min(this.numTroops, numTroops);}
@@ -86,5 +131,13 @@ public class Soldier {
         this.shieldDefense = shieldDefense;
     }
     public void setTrainingTime(int trainingTime) {this.trainingTime = trainingTime;}
+    public void setCanMove(boolean canMove) {
+        this.canMove = canMove;
+    }
+    public void setMovement(int movement) {
+        this.movement = movement;
+    }
+    public void resetMovement() {movement = max_movement;}
+
 
 }
