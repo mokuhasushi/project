@@ -2,7 +2,6 @@ package test.units;
 
 import org.junit.jupiter.api.Test;
 import unsw.gloriaromanus.units.Army;
-import unsw.gloriaromanus.units.HeavyInfantry;
 import unsw.gloriaromanus.units.Soldier;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class ArmyBasicTest {
     public void newArmyFromArrayListHasCorrectSizeTest() {
         ArrayList<Soldier> soldierList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            soldierList.add(new HeavyInfantry());
+            soldierList.add(new Soldier());
         }
         Army a = new Army(soldierList);
         assertEquals(a.getSize(), 10);

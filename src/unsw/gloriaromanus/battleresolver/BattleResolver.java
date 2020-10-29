@@ -1,13 +1,12 @@
 package unsw.gloriaromanus.battleresolver;
 
-import org.checkerframework.checker.units.qual.A;
 import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.units.Soldier;
 
-import java.util.ArrayList;
 import java.util.Random;
 
-// Using Singleton pattern TODO: not sure if it is actually an improvement
+// Using Singleton pattern
+// TODO: Implement observer. This also gives meaning to the singleton
 public class BattleResolver {
     private final Random rng;
     private static BattleResolver instance = null;

@@ -2,7 +2,6 @@ package test.battleresolver;
 
 import org.junit.jupiter.api.Test;
 import unsw.gloriaromanus.battleresolver.MeleeEngagement;
-import unsw.gloriaromanus.units.HeavyInfantry;
 import unsw.gloriaromanus.units.Soldier;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,8 +10,8 @@ public class MeleeEngagementTest {
     @Test
     public void damageDealtIsPositive() {
         MeleeEngagement me = new MeleeEngagement();
-        Soldier attacker = new HeavyInfantry();
-        Soldier defender = new HeavyInfantry();
+        Soldier attacker = new Soldier();
+        Soldier defender = new Soldier();
 
         assertTrue(me.damageDealt(attacker, defender) >= 0);
     }

@@ -23,13 +23,13 @@ public class Game {
         attacking.removeTroops(attacker);
         BattleResult battleResult = battleResolver.battle(attacker, invaded.getArmy());
         switch (battleResult) {
-            case ATTACKER_WON:
+            case ATTACKER_WON -> {
                 invaded.conqueredBy(attacking.getOwner(), attacker);
                 invaded.getOwner().removeProvince(invaded);
                 attacking.getOwner().addProvince(invaded);
-                break;
-            case ATTACKER_DEFEATED:
-                attacking.addTroops(attacker);
+            }
+            case ATTACKER_DEFEATED -> attacking.addTroops(attacker);
+            case DRAW -> attacking.addTroops(attacker);
         }
     }
 }
