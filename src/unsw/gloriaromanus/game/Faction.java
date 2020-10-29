@@ -10,7 +10,9 @@ public class Faction {
     private final String name;
 
     public Faction(String name) {
+        this.provinces = new ArrayList<>();
         this.name = name;
+        this.wealth = 0;
     }
 
     public ArrayList<Province> getProvinces() {

@@ -14,10 +14,10 @@ public class Game {
     private final BattleResolver battleResolver;
 
 
-    public Game(Campaign campaign, Faction player, BattleResolver battleResolver) {
+    public Game(Campaign campaign, Faction player) {
         this.campaign = campaign;
         this.player = player;
-        this.battleResolver = battleResolver;
+        this.battleResolver = campaign.getBattleResolver();
     }
 
     public void invade (Province attacking, Province invaded, Army attacker) {
@@ -25,8 +25,8 @@ public class Game {
         BattleResult battleResult = battleResolver.battle(attacker, invaded.getArmy());
         switch (battleResult) {
             case ATTACKER_WON -> {
-                invaded.conqueredBy(attacking.getOwner(), attacker);
                 invaded.getOwner().removeProvince(invaded);
+                invaded.conqueredBy(attacking.getOwner(), attacker);
                 attacking.getOwner().addProvince(invaded);
             }
             case ATTACKER_DEFEATED -> attacking.addTroops(attacker);

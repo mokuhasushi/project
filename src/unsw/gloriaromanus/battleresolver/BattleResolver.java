@@ -11,7 +11,7 @@ public class BattleResolver {
     private final Random rng;
     private static BattleResolver instance = null;
 
-    private BattleResolver() {
+    protected BattleResolver() {
         this.rng = new Random();
     }
 

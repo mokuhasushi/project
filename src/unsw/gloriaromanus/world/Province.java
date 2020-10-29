@@ -17,13 +17,26 @@ public class Province {
     private boolean justConquered;
     private Barrack barrack;
 
-    public Province(int wealth, int wealthGrowth, int taxes, TaxLevel taxLevel, int moraleModifier, String name) {
+    public Province(int wealth, int wealthGrowth, int taxes, TaxLevel taxLevel, int moraleModifier, String name, Army army, Faction owner) {
         this.wealth = wealth;
         this.wealthGrowth = wealthGrowth;
         this.taxes = taxes;
         this.taxLevel = taxLevel;
         this.moraleModifier = moraleModifier;
         this.name = name;
+        this.army = army;
+    }
+    public Province(String name, Faction owner) {
+        this.wealth = 0;
+        this.wealthGrowth = 0;
+        this.taxes = 0;
+        this.taxLevel = TaxLevel.NORMAL_TAX;
+        this.moraleModifier = 0;
+        this.name = name;
+        this.owner = owner;
+        this.army = new Army();
+        this.justConquered = false;
+        this.barrack = new Barrack(new SoldierFactory(owner.getName()));
     }
 
     public int getTaxRevenue () {
@@ -51,6 +64,10 @@ public class Province {
                 moraleModifier = -1;
             }
         }
+    }
+
+    public TaxLevel getTaxLevel() {
+        return this.taxLevel;
     }
 
     public Army getArmy() {
