@@ -7,11 +7,13 @@ public class SoldierFactory {
     private Map<SoldierType, Soldier> nameToSoldier;
 
     public SoldierFactory(){
+        nameToSoldier = new HashMap<>();
         for (SoldierType st : SoldierType.values()){
             nameToSoldier.put(st, soldierFromJSON(st.type));
         }
     }
     public SoldierFactory(String faction){
+        nameToSoldier = new HashMap<>();
         for (SoldierType st : SoldierType.values()){
             nameToSoldier.put(st, soldierFromJSON(st.type, faction));
         }
