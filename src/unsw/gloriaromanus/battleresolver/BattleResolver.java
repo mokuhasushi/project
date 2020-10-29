@@ -3,6 +3,7 @@ package unsw.gloriaromanus.battleresolver;
 import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.units.Soldier;
 
+import java.beans.PropertyChangeListener;
 import java.util.Random;
 
 // Using Singleton pattern
@@ -10,9 +11,14 @@ import java.util.Random;
 public class BattleResolver {
     private final Random rng;
     private static BattleResolver instance = null;
+    private PropertyChangeListener textReport;
 
     protected BattleResolver() {
         this.rng = new Random();
+    }
+
+    public void setTextReport(PropertyChangeListener textReport) {
+        this.textReport = textReport;
     }
 
     public static BattleResolver getInstance() {
@@ -31,7 +37,7 @@ public class BattleResolver {
             int indexDefender = rng.nextInt(defender.getSize());
             Soldier soldierDefender = defender.getUnit(indexDefender);
 
-            Skirmish s = new Skirmish(soldierAttacker, soldierDefender);
+            Skirmish s = new Skirmish(soldierAttacker, soldierDefender, textReport);
             SkirmishReport sr = s.solve();
             switch (sr.getResult()) {
                 case U1_DEFEAT -> attacker.deleteUnit(indexAttacker);

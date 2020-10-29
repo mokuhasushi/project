@@ -1,7 +1,4 @@
-package unsw.gloriaromanus.player;
-
-import unsw.gloriaromanus.units.SoldierFactory;
-import unsw.gloriaromanus.units.Soldier;
+package unsw.gloriaromanus.units;
 
 public class Barrack {
     private int turnToSlot1 = 0;

@@ -3,10 +3,10 @@ package unsw.gloriaromanus.battleresolver;
 import unsw.gloriaromanus.units.Soldier;
 
 public class SkirmishReport {
-    private Soldier u1;
-    private Soldier u2;
-    private SkirmishResult result;
-    private int numEngagements;
+    private final Soldier u1;
+    private final Soldier u2;
+    private final SkirmishResult result;
+    private final int numEngagements;
 
     public Soldier getU1() {
         return u1;
@@ -30,21 +30,4 @@ public class SkirmishReport {
     public int getNumEngagements() {
         return numEngagements;
     }
-
-    public void setU1(Soldier u1) {
-        this.u1 = u1;
-    }
-
-    public void setU2(Soldier u2) {
-        this.u2 = u2;
-    }
-
-    public void setResult(SkirmishResult result) {
-        this.result = result;
-    }
-
-    public void setNumEngagements(int numEngagements) {
-        this.numEngagements = numEngagements;
-    }
-
 }

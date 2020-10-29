@@ -3,6 +3,7 @@ package test.battleresolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import unsw.gloriaromanus.battleresolver.*;
+import unsw.gloriaromanus.game.BattleReporter;
 import unsw.gloriaromanus.units.Soldier;
 
 import java.util.LinkedList;

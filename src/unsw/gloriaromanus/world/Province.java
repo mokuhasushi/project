@@ -1,8 +1,9 @@
 package unsw.gloriaromanus.world;
 
 import unsw.gloriaromanus.game.Faction;
-import unsw.gloriaromanus.player.Barrack;
+import unsw.gloriaromanus.units.Barrack;
 import unsw.gloriaromanus.units.Army;
+import unsw.gloriaromanus.units.Soldier;
 import unsw.gloriaromanus.units.SoldierFactory;
 
 public class Province {
@@ -36,7 +37,7 @@ public class Province {
         this.owner = owner;
         this.army = new Army();
         this.justConquered = false;
-        this.barrack = new Barrack(new SoldierFactory(owner.getName()));
+        this.barrack = new Barrack(owner.getName());
     }
 
     public int getTaxRevenue () {
@@ -117,5 +118,13 @@ public class Province {
         this.wealth += wealthGrowth;
         justConquered = false;
         barrack.turnPassed();
+        // TODO: Here implementing an observer would be good sense.
+        // Since it's just two slots I leave it for later
+        Soldier s = barrack.getSoldierSlot1();
+        if (s != null)
+            army.addUnit(s);
+        s = barrack.getSoldierSlot2();
+        if (s != null)
+            army.addUnit(s);
     }
 }

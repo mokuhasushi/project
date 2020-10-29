@@ -1,7 +1,7 @@
 package test.units;
 
 import org.junit.jupiter.api.Test;
-import unsw.gloriaromanus.player.Barrack;
+import unsw.gloriaromanus.units.Barrack;
 import unsw.gloriaromanus.units.Soldier;
 import unsw.gloriaromanus.units.SoldierFactory;
 

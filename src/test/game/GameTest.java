@@ -27,7 +27,6 @@ public class GameTest {
         to = new Province("egypt", player);
         player.addProvince(from);
         player.addProvince(to);
-        Campaign c = new Campaign();
         game = new Game(new Campaign(), player);
         movingArmy = new Army();
     }
