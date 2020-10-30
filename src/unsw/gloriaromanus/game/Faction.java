@@ -64,4 +64,9 @@ public class Faction {
     public int getTreasure() {
         return treasure;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

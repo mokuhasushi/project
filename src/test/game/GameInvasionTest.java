@@ -1,5 +1,6 @@
 package test.game;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import unsw.gloriaromanus.battleresolver.BattleResolver;
@@ -34,10 +35,15 @@ public class GameInvasionTest {
         GameState c = new GameState();
         brs = new BattleResolverStub();
         c.setBattleResolver(brs);
+        c.setFactions(new Faction[]{defender});
         game = Game.getInstance(c, attacker);
-        game.setFactions(new Faction[]{defender});
         attackerArmy = new Army();
         defenderArmy = new Army();
+    }
+
+    @AfterEach
+    public void cleanUp() {
+        game.clear();
     }
 
     /*

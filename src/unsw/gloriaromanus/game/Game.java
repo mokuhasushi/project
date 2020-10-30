@@ -13,17 +13,13 @@ public class Game {
     private static Game instance = null;
 
     public GameState campaign;
-    private Map<String, Faction> factions;
     private Faction player;
-    public int turn;
     private BattleResolver battleResolver;
 
     private Game(GameState campaign, Faction player) {
         this.campaign = campaign;
         this.player = player;
         this.battleResolver = campaign.getBattleResolver();
-        this.turn = 0;
-        this.factions = new HashMap<>();
     }
     public static Game getInstance(GameState campaign, Faction player) {
         if (instance == null)
@@ -36,7 +32,6 @@ public class Game {
 
     public void clear(){
         instance = null;
-
     }
 
     public void invade (Province attacking, Province invaded, Army attacker) {
@@ -75,23 +70,21 @@ public class Game {
     }
 
     public void setFactions (Faction[] factions) {
-        for (Faction f: factions) {
-            this.factions.put(f.getName(), f);
-        }
+        campaign.setFactions(factions);
     }
 
     public Faction getFaction (String faction) {
         if (faction.equals(player.getName()))
             return player;
-        return factions.get(faction);
+        return campaign.getFaction(faction);
     }
 
     public void removeFaction (String faction) {
-        factions.remove(faction);
+        campaign.removeFaction(faction);
     }
 
     public void pass() {
-        turn += 1;
+        campaign.addTurn();
         int totalWealth = 0;
         for (Province p : player.getProvinces()) {
             p.update();
