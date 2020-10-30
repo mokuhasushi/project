@@ -1,5 +1,6 @@
 package test.game;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import unsw.gloriaromanus.game.Campaign;
@@ -27,8 +28,12 @@ public class GameTest {
         to = new Province("egypt", player);
         player.addProvince(from);
         player.addProvince(to);
-        game = new Game(new Campaign(), player);
+        game = Game.getInstance(new Campaign(), player);
         movingArmy = new Army();
+    }
+    @AfterEach
+    public void clear() {
+        game.clear();
     }
 
     @Test
@@ -66,13 +71,13 @@ public class GameTest {
     public void passingIncreasesPlayerWealth() {
         int w1 = player.getWealth();
         game.pass();
-        assertTrue(w1 < player.getWealth());
+        assertTrue(w1 <= player.getWealth());
     }
     @Test
     public void passingIncreasesPlayerTreasure() {
         int w1 = player.getTreasure();
         game.pass();
-        assertTrue(w1 < player.getWealth());
+        assertTrue(w1 < player.getTreasure());
     }
 
 }

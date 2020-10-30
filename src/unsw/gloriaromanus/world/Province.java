@@ -11,12 +11,26 @@ public class Province {
     private int wealthGrowth;
     private int taxes;
     private TaxLevel taxLevel;
-    private int moraleModifier;
-    private final String name;
+    private int moraleModifier = 0;
+    private String name;
     private Faction owner;
     private Army army;
-    private boolean justConquered;
+    private boolean justConquered = false;
     private Barrack barrack;
+
+    public Province(int wealth, int wealthGrowth, int taxes, int taxLevel, int moraleModifier, String name, Faction owner, Army army, boolean justConquered, Barrack barrack) {
+        this.wealth = wealth;
+        this.wealthGrowth = wealthGrowth;
+        this.taxes = taxes;
+        this.taxLevel = TaxLevel.values()[taxLevel];
+        this.moraleModifier = moraleModifier;
+        this.name = name;
+        this.owner = owner;
+        this.army = army;
+        this.justConquered = justConquered;
+        this.barrack = barrack;
+    }
+    public Province(){}
 
     public Province(int wealth, int wealthGrowth, int taxes, TaxLevel taxLevel, int moraleModifier, String name, Army army, Faction owner) {
         this.wealth = wealth;
@@ -93,16 +107,16 @@ public class Province {
         return this.getName().equals(((Province)other).getName());
     }
 
-    private String getName() {
+    public String getName() {
         return name;
     }
 
-    public void removeTroops(Army attacker) {
-        this.army.removeTroops(attacker);
+    public void removeTroops(Army army) {
+        this.army.removeTroops(army);
     }
 
-    public void addTroops(Army attacker) {
-        this.army.joinArmy(attacker);
+    public void addTroops(Army army) {
+        this.army.joinArmy(army);
     }
 
     public void moveTroops(Army army) {

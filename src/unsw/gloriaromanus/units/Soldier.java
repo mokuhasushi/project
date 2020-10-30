@@ -143,4 +143,5 @@ public class Soldier {
     public void reduceMovement(int distance) {
         this.movement -= distance;
     }
+
 }

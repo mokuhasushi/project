@@ -7,17 +7,29 @@ import unsw.gloriaromanus.world.Province;
 import unsw.gloriaromanus.world.TaxLevel;
 
 public class Game {
-    public final Campaign campaign;
+    private static Game instance = null;
+
+    public Campaign campaign;
     public Faction [] factions;
-    private final Faction player;
+    private Faction player;
     public int turn;
-    private final BattleResolver battleResolver;
+    private BattleResolver battleResolver;
 
 
-    public Game(Campaign campaign, Faction player) {
+
+    private Game(Campaign campaign, Faction player) {
         this.campaign = campaign;
         this.player = player;
         this.battleResolver = campaign.getBattleResolver();
+        this.turn = 0;
+    }
+    public static Game getInstance(Campaign campaign, Faction player) {
+        if (instance == null)
+            instance = new Game(campaign, player);
+        return instance;
+    }
+    public Game getInstance () {
+        return instance;
     }
 
     public void invade (Province attacking, Province invaded, Army attacker) {
@@ -53,6 +65,11 @@ public class Game {
 
     public void recruit(Province province, String soldier) {
         province.recruit(soldier);
+    }
+
+    public void clear(){
+        instance = null;
+
     }
 
     public void pass() {

@@ -7,13 +7,23 @@ import java.util.ArrayList;
  Antonio
 */
 public class Army {
-    private ArrayList<Soldier> army = new ArrayList<>();
+    ArrayList<Soldier> army = new ArrayList<>();
 
     public Army (ArrayList<Soldier> army) {
         this.army = army;
     }
 
     public Army (){}
+
+    //This getter and setter should never be used.
+    // They are here for json conversion
+    public ArrayList<Soldier> getArmy() {
+        return army;
+    }
+
+    public void setArmy(ArrayList<Soldier> army) {
+        this.army = army;
+    }
 
     public Soldier getUnit(int index){
         return army.get(index);

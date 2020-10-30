@@ -9,6 +9,13 @@ import java.beans.PropertyChangeListener;
  */
 
 public class BattleReporter implements PropertyChangeListener {
+    /*
+    TODO:
+        At the moment it always prints as if you are the attacker.
+        It can easily be set to display faction name instead (at the begginning
+        of a battle set property
+     */
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println(evt.getNewValue());

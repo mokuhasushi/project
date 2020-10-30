@@ -34,7 +34,7 @@ public class GameInvasionTest {
         Campaign c = new Campaign();
         brs = new BattleResolverStub();
         c.setBattleResolver(brs);
-        game = new Game(c, attacker);
+        game = Game.getInstance(c, attacker);
         attackerArmy = new Army();
         defenderArmy = new Army();
     }
@@ -79,7 +79,7 @@ public class GameInvasionTest {
     }
 
     private static class BattleResolverStub extends BattleResolver {
-        BattleResult br;
+        static BattleResult br;
         @Override
         public BattleResult battle(Army attacker, Army defender) {
             return br;

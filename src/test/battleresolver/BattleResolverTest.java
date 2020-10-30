@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import unsw.gloriaromanus.battleresolver.BattleResolver;
 import unsw.gloriaromanus.battleresolver.BattleResult;
+import unsw.gloriaromanus.game.BattleReporter;
 import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.units.Soldier;
 

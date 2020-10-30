@@ -16,7 +16,7 @@ public class BattleResolver {
     private PropertyChangeSupport support;
 
     protected BattleResolver() {
-        this.rng = new Random();
+        this.rng = new Random();this.support = new PropertyChangeSupport(this);
     }
 
     public void setTextReport(PropertyChangeListener textReport) {

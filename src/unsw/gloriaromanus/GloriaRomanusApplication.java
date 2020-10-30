@@ -15,7 +15,7 @@ public class GloriaRomanusApplication extends Application {
   @Override
   public void start(Stage stage) throws IOException {
     // set up the scene
-    System.out.println(System.getProperty("user.dir"));
+//    System.out.println(System.getProperty("user.dir"));
     FXMLLoader loader = new FXMLLoader(getClass().getResource("unsw/gloriaromanus/main.fxml"));
     Parent root = loader.load();
     controller = loader.getController();
