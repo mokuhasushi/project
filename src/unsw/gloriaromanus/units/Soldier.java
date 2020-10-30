@@ -144,4 +144,7 @@ public class Soldier {
         this.movement -= distance;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 }
