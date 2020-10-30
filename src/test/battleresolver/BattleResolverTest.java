@@ -55,12 +55,16 @@ public class BattleResolverTest {
             // to test it properly should inject rng
             Soldier sd = new Soldier();
             sd.setAttack(0);
+            sd.setName("soldier");
             Soldier sa = new Soldier();
             sa.setAttack(10);
             sa.setMorale(10);
+            sa.setName("soldier");
             attacker.addUnit(sa);
             defender.addUnit(sd);
         }
+        // To have result in terminal (and later on in javafx) uncomment
+        battleResolver.setTextReport(new BattleReporter());
         BattleResult br = battleResolver.battle(attacker, defender);
 
         assertEquals(BattleResult.ATTACKER_WON, br);
