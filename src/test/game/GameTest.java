@@ -3,7 +3,7 @@ package test.game;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import unsw.gloriaromanus.game.Campaign;
+import unsw.gloriaromanus.game.GameState;
 import unsw.gloriaromanus.game.Faction;
 import unsw.gloriaromanus.game.Game;
 import unsw.gloriaromanus.units.Army;
@@ -28,7 +28,7 @@ public class GameTest {
         to = new Province("egypt", player);
         player.addProvince(from);
         player.addProvince(to);
-        game = Game.getInstance(new Campaign(), player);
+        game = Game.getInstance(new GameState(), player);
         movingArmy = new Army();
     }
     @AfterEach

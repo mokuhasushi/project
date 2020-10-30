@@ -58,7 +58,6 @@ public class SaveLoad {
     public static boolean saveProvince (Province province, String filename) {
         ObjectMapper objectMapper = new ObjectMapper();
         File f = new File(filename);
-        objectMapper.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, true);
         try {
             f.createNewFile();
             objectMapper.writeValue(f,province);
@@ -78,4 +77,49 @@ public class SaveLoad {
             return null;
         }
     }
+    public static boolean saveFaction (Faction faction, String filename) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        File f = new File(filename);
+        try {
+            f.createNewFile();
+            objectMapper.writeValue(f,faction);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    public static Faction loadFaction(String filename) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        try {
+            return objectMapper.readValue(new File(filename), Faction.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static boolean saveGame (Game game, String filename) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        File f = new File(filename);
+        try {
+            f.createNewFile();
+            objectMapper.writeValue(f,game);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    public static Game loadGame(String filename) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        try {
+            return objectMapper.readValue(new File(filename), Game.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

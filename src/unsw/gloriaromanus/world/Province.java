@@ -109,8 +109,9 @@ public class Province {
         this.barrack = new Barrack(new SoldierFactory(faction));
     }
 
-    public Faction getOwner() {
-        return Game.getInstance().getFaction(owner);
+    public String getOwner() {
+        return owner;
+//        return Game.getInstance().getFaction(owner);
     }
 
     @Override

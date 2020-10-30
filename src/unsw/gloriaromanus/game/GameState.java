@@ -2,14 +2,14 @@ package unsw.gloriaromanus.game;
 
 import unsw.gloriaromanus.battleresolver.BattleResolver;
 
-public class Campaign {
+public class GameState {
     private boolean conquestGoal;
     private boolean treasureGoal;
     private boolean wealthGoal;
     private BattleResolver battleResolver = null;
     private int totalNumberProvinces = 50;
 
-    public Campaign () {
+    public GameState() {
         battleResolver = BattleResolver.getInstance();
     }
     public void setBattleResolver (BattleResolver battleResolver) {

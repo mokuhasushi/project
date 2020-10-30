@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import unsw.gloriaromanus.battleresolver.BattleResolver;
 import unsw.gloriaromanus.battleresolver.BattleResult;
-import unsw.gloriaromanus.game.Campaign;
+import unsw.gloriaromanus.game.GameState;
 import unsw.gloriaromanus.game.Faction;
 import unsw.gloriaromanus.game.Game;
 import unsw.gloriaromanus.units.Army;
@@ -31,7 +31,7 @@ public class GameInvasionTest {
         invaded = new Province("egypt", defender);
         attacker.addProvince(attacking);
         defender.addProvince(invaded);
-        Campaign c = new Campaign();
+        GameState c = new GameState();
         brs = new BattleResolverStub();
         c.setBattleResolver(brs);
         game = Game.getInstance(c, attacker);
@@ -56,7 +56,7 @@ public class GameInvasionTest {
         attackerArmy.addUnit(new Soldier());
         brs.setBattleResult(BattleResult.ATTACKER_WON);
         game.invade(attacking, invaded, attackerArmy);
-        assertEquals(attacker, invaded.getOwner());
+        assertEquals(attacker.getName(), invaded.getOwner());
         assertEquals(2, attacker.getProvinces().size());
         assertEquals(0, defender.getProvinces().size());
     }
@@ -67,7 +67,7 @@ public class GameInvasionTest {
         game.invade(attacking, invaded, attackerArmy);
         assertEquals(1, attacker.getProvinces().size());
         assertEquals(1, attackerArmy.getSize());
-        assertEquals(defender.getName(), invaded.getOwner().getName());
+        assertEquals(defender.getName(), invaded.getOwner());
     }
     @Test
     public void whenDrawProvinceStaysOfDefender () {
@@ -76,7 +76,7 @@ public class GameInvasionTest {
         game.invade(attacking, invaded, attackerArmy);
         assertEquals(1, attacker.getProvinces().size());
         assertEquals(1, attackerArmy.getSize());
-        assertEquals(defender.getName(), invaded.getOwner().getName());
+        assertEquals(defender.getName(), invaded.getOwner());
     }
 
     private static class BattleResolverStub extends BattleResolver {

@@ -6,29 +6,26 @@ import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.world.Province;
 import unsw.gloriaromanus.world.TaxLevel;
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Game {
     private static Game instance = null;
 
-    public Campaign campaign;
+    public GameState campaign;
     private Map<String, Faction> factions;
     private Faction player;
     public int turn;
     private BattleResolver battleResolver;
 
-
-
-    private Game(Campaign campaign, Faction player) {
+    private Game(GameState campaign, Faction player) {
         this.campaign = campaign;
         this.player = player;
         this.battleResolver = campaign.getBattleResolver();
         this.turn = 0;
         this.factions = new HashMap<>();
     }
-    public static Game getInstance(Campaign campaign, Faction player) {
+    public static Game getInstance(GameState campaign, Faction player) {
         if (instance == null)
             instance = new Game(campaign, player);
         return instance;
@@ -45,15 +42,15 @@ public class Game {
     public void invade (Province attacking, Province invaded, Army attacker) {
         attacking.removeTroops(attacker);
         BattleResult battleResult = battleResolver.battle(attacker, invaded.getArmy());
-        Faction defender = invaded.getOwner();
+        Faction defender = getFaction(invaded.getOwner());
         switch (battleResult) {
             case ATTACKER_WON -> {
                 defender.removeProvince(invaded);
                 if(defender.getProvinces().size() == 0)
                     if (defender.equals(player))
                         gameLost();
-                invaded.conqueredBy(attacking.getOwner().getName(), attacker);
-                attacking.getOwner().addProvince(invaded);
+                invaded.conqueredBy(attacking.getOwner(), attacker);
+                getFaction(attacking.getOwner()).addProvince(invaded);
 
             }
             case ATTACKER_DEFEATED, DRAW -> attacking.addTroops(attacker);

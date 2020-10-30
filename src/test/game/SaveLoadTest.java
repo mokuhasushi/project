@@ -1,17 +1,13 @@
 package test.game;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import unsw.gloriaromanus.game.GameState;
 import unsw.gloriaromanus.game.Faction;
+import unsw.gloriaromanus.game.Game;
 import unsw.gloriaromanus.game.SaveLoad;
 import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.units.Soldier;
 import unsw.gloriaromanus.world.Province;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,13 +36,13 @@ public class SaveLoadTest {
     }
     //Not working: TODO: refactor province to only store owner'string. Refactor game to be singleton
     //                  and have a map <String, Faction>
-/*    @Test
+    @Test
     public void simpleSaveLoadTestProvince() {
         Army army = new Army();
         army.addUnit(new Soldier());
         army.addUnit(new Soldier());
-        Faction player = new Faction("rome");
-        Province province_in = new Province("rome", player);
+//        Faction player = new Faction("rome");
+        Province province_in = new Province("rome", "player");
         province_in.addTroops(army);
 
         String filename = "src/test/resources/p1.json";
@@ -58,5 +54,46 @@ public class SaveLoadTest {
         assertEquals(province_in.getTaxLevel(), province_out.getTaxLevel());
         assertEquals(province_in.getArmy().getSize(), province_out.getArmy().getSize());
 
-    }*/
+    }
+    @Test
+    public void simpleSaveLoadTestFaction() {
+        Army army = new Army();
+        army.addUnit(new Soldier());
+        army.addUnit(new Soldier());
+        Province province = new Province("rome", "player");
+        province.addTroops(army);
+        Faction faction_in = new Faction("player");
+        faction_in.addProvince(province);
+
+        String filename = "src/test/resources/f1.json";
+        SaveLoad.saveFaction(faction_in, filename);
+
+        Faction faction_out = SaveLoad.loadFaction(filename);
+        assertEquals(faction_in.getName(), faction_out.getName());
+        assertEquals(faction_in.getProvinces().get(0).getName(), faction_out.getProvinces().get(0).getName());
+        assertEquals(faction_in.getProvinces().get(0).getArmy().getSize(), faction_out.getProvinces().get(0).getArmy().getSize());
+    }
+    @Test
+    public void simpleSaveLoadTestGame() {
+        Army army = new Army();
+        army.addUnit(new Soldier());
+        army.addUnit(new Soldier());
+        Province province = new Province("rome", "player");
+        province.addTroops(army);
+        Faction faction = new Faction("player");
+        faction.addProvince(province);
+
+        GameState campaign = new GameState();
+
+        Game game = Game.getInstance(campaign, faction);
+        game.setFactions(new Faction[] {new Faction("gaul"), new Faction("egypt")});
+
+        String filename = "src/test/resources/g1.json";
+        SaveLoad.saveFaction(faction, filename);
+
+        Faction faction_out = SaveLoad.loadFaction(filename);
+        assertEquals(faction.getName(), faction_out.getName());
+        assertEquals(faction.getProvinces().get(0).getName(), faction_out.getProvinces().get(0).getName());
+        assertEquals(faction.getProvinces().get(0).getArmy().getSize(), faction_out.getProvinces().get(0).getArmy().getSize());
+    }
 }

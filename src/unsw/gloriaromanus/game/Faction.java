@@ -8,12 +8,21 @@ public class Faction {
     private ArrayList<Province> provinces;
     private int wealth;
     private int treasure;
-    private final String name;
+    private String name;
+
+    public Faction(ArrayList<Province> provinces, int wealth, int treasure, String name) {
+        this.provinces = provinces;
+        this.wealth = wealth;
+        this.treasure = treasure;
+        this.name = name;
+    }
+    public Faction() {}
 
     public Faction(String name) {
         this.provinces = new ArrayList<>();
         this.name = name;
         this.wealth = 0;
+        this.treasure = 0;
     }
 
     public ArrayList<Province> getProvinces() {
