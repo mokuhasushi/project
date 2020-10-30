@@ -35,7 +35,7 @@ public class GameInvasionTest {
         GameState c = new GameState();
         brs = new BattleResolverStub();
         c.setBattleResolver(brs);
-        c.setFactions(new Faction[]{defender});
+        c.setFactionsFromArray(new Faction[]{defender});
         game = Game.getInstance(c, attacker);
         attackerArmy = new Army();
         defenderArmy = new Army();

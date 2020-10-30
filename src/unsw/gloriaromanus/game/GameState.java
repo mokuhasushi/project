@@ -15,6 +15,14 @@ public class GameState {
     private int totalNumberProvinces = 50;
     private int turn;
 
+    public Map<String, Faction> getFactions() {
+        return factions;
+    }
+
+    public void setFactions(Map<String, Faction> factions) {
+        this.factions = factions;
+    }
+
     public GameState() {
         factions = new HashMap<>();
         battleResolver = BattleResolver.getInstance();
@@ -45,9 +53,8 @@ public class GameState {
     }
 
     public Faction getFaction(String faction) {
-        for (int i = 0; i < factions.size(); i++) {
-            System.out.println(factions.values().toArray()[i]);
-        }
+        if (faction.equals(player.getName()))
+            return player;
         return factions.get(faction);
     }
 
@@ -63,7 +70,7 @@ public class GameState {
         turn += 1;
     }
 
-    public void setFactions(Faction[] factions) {
+    public void setFactionsFromArray(Faction[] factions) {
         for (Faction f: factions) {
             this.factions.put(f.getName(), f);
         }

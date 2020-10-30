@@ -99,8 +99,9 @@ public class SaveLoad {
             return null;
         }
     }
-    public static boolean saveGame (Game game, String filename) {
+    public static boolean saveGame (GameState game, String filename) {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         File f = new File(filename);
         try {
             f.createNewFile();
@@ -111,11 +112,11 @@ public class SaveLoad {
         }
         return true;
     }
-    public static Game loadGame(String filename) {
+    public static GameState loadGame(String filename) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
-            return objectMapper.readValue(new File(filename), Game.class);
+            return objectMapper.readValue(new File(filename), GameState.class);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

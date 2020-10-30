@@ -3,7 +3,6 @@ package test.game;
 import org.junit.jupiter.api.Test;
 import unsw.gloriaromanus.game.GameState;
 import unsw.gloriaromanus.game.Faction;
-import unsw.gloriaromanus.game.Game;
 import unsw.gloriaromanus.game.SaveLoad;
 import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.units.Soldier;
@@ -82,18 +81,20 @@ public class SaveLoadTest {
         province.addTroops(army);
         Faction faction = new Faction("player");
         faction.addProvince(province);
+        Faction gaul = new Faction("gaul");
+        gaul.addProvince(new Province("lyon","gaul"));
 
-        GameState campaign = new GameState();
+        GameState gameState_in = new GameState();
 
-        Game game = Game.getInstance(campaign, faction);
-        game.setFactions(new Faction[] {new Faction("gaul"), new Faction("egypt")});
+        gameState_in.setFactionsFromArray(new Faction[] {gaul, new Faction("egypt")});
 
         String filename = "src/test/resources/g1.json";
-        SaveLoad.saveFaction(faction, filename);
+        SaveLoad.saveGame(gameState_in, filename);
 
-        Faction faction_out = SaveLoad.loadFaction(filename);
-        assertEquals(faction.getName(), faction_out.getName());
-        assertEquals(faction.getProvinces().get(0).getName(), faction_out.getProvinces().get(0).getName());
-        assertEquals(faction.getProvinces().get(0).getArmy().getSize(), faction_out.getProvinces().get(0).getArmy().getSize());
+        GameState gameState_out = SaveLoad.loadGame(filename);
+        assertEquals(gameState_in.getTurn(), gameState_out.getTurn());
+        assertEquals(gameState_in.getFaction("player").getName(), gameState_out.getFaction("player").getName());
+        assertEquals(gameState_in.getFaction("gaul").getName(), gameState_out.getFaction("gaul").getName());
+        assertEquals(gameState_in.getFaction("gaul").getProvinces().get(0), gameState_out.getFaction("gaul").getProvinces().get(0));
     }
 }

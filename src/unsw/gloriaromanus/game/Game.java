@@ -6,9 +6,6 @@ import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.world.Province;
 import unsw.gloriaromanus.world.TaxLevel;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Game {
     private static Game instance = null;
 
@@ -70,7 +67,7 @@ public class Game {
     }
 
     public void setFactions (Faction[] factions) {
-        campaign.setFactions(factions);
+        campaign.setFactionsFromArray(factions);
     }
 
     public Faction getFaction (String faction) {
