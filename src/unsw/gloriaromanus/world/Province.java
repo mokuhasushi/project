@@ -1,6 +1,7 @@
 package unsw.gloriaromanus.world;
 
 import unsw.gloriaromanus.game.Faction;
+import unsw.gloriaromanus.game.Game;
 import unsw.gloriaromanus.units.Barrack;
 import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.units.Soldier;
@@ -13,12 +14,12 @@ public class Province {
     private TaxLevel taxLevel;
     private int moraleModifier = 0;
     private String name;
-    private Faction owner;
+    private String owner;
     private Army army;
     private boolean justConquered = false;
     private Barrack barrack;
 
-    public Province(int wealth, int wealthGrowth, int taxes, int taxLevel, int moraleModifier, String name, Faction owner, Army army, boolean justConquered, Barrack barrack) {
+    public Province(int wealth, int wealthGrowth, int taxes, int taxLevel, int moraleModifier, String name, String owner, Army army, boolean justConquered, Barrack barrack) {
         this.wealth = wealth;
         this.wealthGrowth = wealthGrowth;
         this.taxes = taxes;
@@ -41,7 +42,7 @@ public class Province {
         this.name = name;
         this.army = army;
     }
-    public Province(String name, Faction owner) {
+    public Province(String name, String owner) {
         this.wealth = 100;
         this.wealthGrowth = 0;
         this.taxes = 15;
@@ -49,6 +50,18 @@ public class Province {
         this.moraleModifier = 0;
         this.name = name;
         this.owner = owner;
+        this.army = new Army();
+        this.justConquered = false;
+        this.barrack = new Barrack(owner);
+    }
+    public Province(String name, Faction owner) {
+        this.wealth = 100;
+        this.wealthGrowth = 0;
+        this.taxes = 15;
+        this.taxLevel = TaxLevel.NORMAL_TAX;
+        this.moraleModifier = 0;
+        this.name = name;
+        this.owner = owner.getName();
         this.army = new Army();
         this.justConquered = false;
         this.barrack = new Barrack(owner.getName());
@@ -89,15 +102,15 @@ public class Province {
         return army;
     }
 
-    public void conqueredBy(Faction faction, Army army) {
+    public void conqueredBy(String faction, Army army) {
         this.army = army;
         this.owner = faction;
         this.justConquered = true;
-        this.barrack = new Barrack(new SoldierFactory(faction.getName()));
+        this.barrack = new Barrack(new SoldierFactory(faction));
     }
 
     public Faction getOwner() {
-        return this.owner;
+        return Game.getInstance().getFaction(owner);
     }
 
     @Override

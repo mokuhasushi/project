@@ -6,11 +6,15 @@ import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.world.Province;
 import unsw.gloriaromanus.world.TaxLevel;
 
+import java.lang.reflect.Array;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Game {
     private static Game instance = null;
 
     public Campaign campaign;
-    public Faction [] factions;
+    private Map<String, Faction> factions;
     private Faction player;
     public int turn;
     private BattleResolver battleResolver;
@@ -22,14 +26,20 @@ public class Game {
         this.player = player;
         this.battleResolver = campaign.getBattleResolver();
         this.turn = 0;
+        this.factions = new HashMap<>();
     }
     public static Game getInstance(Campaign campaign, Faction player) {
         if (instance == null)
             instance = new Game(campaign, player);
         return instance;
     }
-    public Game getInstance () {
+    public static Game getInstance () {
         return instance;
+    }
+
+    public void clear(){
+        instance = null;
+
     }
 
     public void invade (Province attacking, Province invaded, Army attacker) {
@@ -42,7 +52,7 @@ public class Game {
                 if(defender.getProvinces().size() == 0)
                     if (defender.equals(player))
                         gameLost();
-                invaded.conqueredBy(attacking.getOwner(), attacker);
+                invaded.conqueredBy(attacking.getOwner().getName(), attacker);
                 attacking.getOwner().addProvince(invaded);
 
             }
@@ -67,9 +77,20 @@ public class Game {
         province.recruit(soldier);
     }
 
-    public void clear(){
-        instance = null;
+    public void setFactions (Faction[] factions) {
+        for (Faction f: factions) {
+            this.factions.put(f.getName(), f);
+        }
+    }
 
+    public Faction getFaction (String faction) {
+        if (faction.equals(player.getName()))
+            return player;
+        return factions.get(faction);
+    }
+
+    public void removeFaction (String faction) {
+        factions.remove(faction);
     }
 
     public void pass() {
