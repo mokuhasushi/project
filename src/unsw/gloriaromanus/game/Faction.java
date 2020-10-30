@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class Faction {
     private ArrayList<Province> provinces;
     private int wealth;
+    private int treasure;
     private final String name;
 
     public Faction(String name) {
@@ -45,5 +46,13 @@ public class Faction {
 
     public void addWealth(int wealth) {
         this.wealth += wealth;
+    }
+
+    public void addTreasure(int gold) {
+        this.treasure += gold;
+    }
+
+    public int getTreasure() {
+        return treasure;
     }
 }

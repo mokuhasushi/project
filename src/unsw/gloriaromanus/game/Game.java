@@ -23,16 +23,25 @@ public class Game {
     public void invade (Province attacking, Province invaded, Army attacker) {
         attacking.removeTroops(attacker);
         BattleResult battleResult = battleResolver.battle(attacker, invaded.getArmy());
+        Faction defender = invaded.getOwner();
         switch (battleResult) {
             case ATTACKER_WON -> {
-                invaded.getOwner().removeProvince(invaded);
+                defender.removeProvince(invaded);
+                if(defender.getProvinces().size() == 0)
+                    if (defender.equals(player))
+                        gameLost();
                 invaded.conqueredBy(attacking.getOwner(), attacker);
                 attacking.getOwner().addProvince(invaded);
+
             }
-            case ATTACKER_DEFEATED -> attacking.addTroops(attacker);
-            case DRAW -> attacking.addTroops(attacker);
+            case ATTACKER_DEFEATED, DRAW -> attacking.addTroops(attacker);
         }
     }
+
+    private void gameLost() {
+        System.out.println("GAME LOST");
+    }
+
     public void move (Province from, Province to, Army army) {
         from.removeTroops(army);
         to.moveTroops(army);
@@ -48,9 +57,12 @@ public class Game {
 
     public void pass() {
         turn += 1;
+        int totalWealth = 0;
         for (Province p : player.getProvinces()) {
             p.update();
-            player.addWealth(p.getTaxRevenue());
+            player.addTreasure(p.getTaxRevenue());
+            totalWealth += p.getWealth();
         }
+        player.setWealth(totalWealth);
     }
 }

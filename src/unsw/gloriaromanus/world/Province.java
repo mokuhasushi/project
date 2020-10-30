@@ -28,9 +28,9 @@ public class Province {
         this.army = army;
     }
     public Province(String name, Faction owner) {
-        this.wealth = 0;
+        this.wealth = 100;
         this.wealthGrowth = 0;
-        this.taxes = 0;
+        this.taxes = 15;
         this.taxLevel = TaxLevel.NORMAL_TAX;
         this.moraleModifier = 0;
         this.name = name;
@@ -115,7 +115,7 @@ public class Province {
     }
 
     public void update() {
-        this.wealth += wealthGrowth;
+        this.wealth = Math.max(0, wealth+wealthGrowth);
         justConquered = false;
         barrack.turnPassed();
         // TODO: Here implementing an observer would be good sense.
@@ -126,5 +126,9 @@ public class Province {
         s = barrack.getSoldierSlot2();
         if (s != null)
             army.addUnit(s);
+    }
+
+    public int getWealth() {
+        return wealth;
     }
 }

@@ -4,6 +4,7 @@ import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.units.Soldier;
 
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Random;
 
 // Using Singleton pattern
@@ -12,13 +13,21 @@ public class BattleResolver {
     private final Random rng;
     private static BattleResolver instance = null;
     private PropertyChangeListener textReport;
+    private PropertyChangeSupport support;
 
     protected BattleResolver() {
         this.rng = new Random();
     }
 
     public void setTextReport(PropertyChangeListener textReport) {
+        support.removePropertyChangeListener(this.textReport);
         this.textReport = textReport;
+        support.addPropertyChangeListener(textReport);
+    }
+    public void clearTextReport(){
+        if (this.textReport != null) {
+            this.textReport = null;
+        }
     }
 
     public static BattleResolver getInstance() {
@@ -28,6 +37,9 @@ public class BattleResolver {
     }
 
     public BattleResult battle(Army attacker, Army defender) {
+        if (textReport != null) {
+            support.firePropertyChange("", null, "Battle begun!");
+        }
         int engagementsTotal = 0;
         Army attackerRouted = new Army();
         Army defenderRouted = new Army();
@@ -37,7 +49,11 @@ public class BattleResolver {
             int indexDefender = rng.nextInt(defender.getSize());
             Soldier soldierDefender = defender.getUnit(indexDefender);
 
-            Skirmish s = new Skirmish(soldierAttacker, soldierDefender, textReport);
+            Skirmish s;
+            if (textReport != null)
+                s = new Skirmish(soldierAttacker, soldierDefender, textReport);
+            else
+                s = new Skirmish(soldierAttacker, soldierDefender);
             SkirmishReport sr = s.solve();
             switch (sr.getResult()) {
                 case U1_DEFEAT -> attacker.deleteUnit(indexAttacker);
@@ -70,15 +86,22 @@ public class BattleResolver {
         if (engagementsTotal > 200 || (attacker.isDefeated() && defender.isDefeated())) {
             attacker.joinArmy(attackerRouted);
             defender.joinArmy(defenderRouted);
+            if (textReport != null)
+                support.firePropertyChange("", null,
+                        "The battle ended in a draw!");
             return BattleResult.DRAW;
         }
         if (defender.isDefeated()){
             attacker.joinArmy(attackerRouted);
+            if (textReport != null)
+                support.firePropertyChange("", null, "You won!");
             return BattleResult.ATTACKER_WON;
         }
         if (attacker.isDefeated()){
             attacker.joinArmy(attackerRouted);
             defender.joinArmy(defenderRouted);
+            if (textReport != null)
+                support.firePropertyChange("", null, "You lost!");
             return BattleResult.ATTACKER_DEFEATED;
         }
 

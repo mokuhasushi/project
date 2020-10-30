@@ -3,7 +3,11 @@ package unsw.gloriaromanus.game;
 import unsw.gloriaromanus.battleresolver.BattleResolver;
 
 public class Campaign {
-    public BattleResolver battleResolver = null;
+    private boolean conquestGoal;
+    private boolean treasureGoal;
+    private boolean wealthGoal;
+    private BattleResolver battleResolver = null;
+    private int totalNumberProvinces = 50;
 
     public Campaign () {
         battleResolver = BattleResolver.getInstance();
@@ -15,7 +19,19 @@ public class Campaign {
         return battleResolver;
     }
 
-    public boolean getGoals() {
-        return false;
+    //TODO, not so trivial
+    public boolean isVictory(Faction player) {
+        boolean win = true;
+        if (conquestGoal)
+            win &= playerHasAllTerritories(player);
+        return win;
+    }
+
+    private boolean playerHasAllTerritories(Faction player) {
+        return player.getProvinces().size() == totalNumberProvinces;
+    }
+
+    public int getTotalNumberProvinces() {
+        return totalNumberProvinces;
     }
 }

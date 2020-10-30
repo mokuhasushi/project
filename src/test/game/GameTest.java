@@ -68,5 +68,11 @@ public class GameTest {
         game.pass();
         assertTrue(w1 < player.getWealth());
     }
+    @Test
+    public void passingIncreasesPlayerTreasure() {
+        int w1 = player.getTreasure();
+        game.pass();
+        assertTrue(w1 < player.getWealth());
+    }
 
 }
