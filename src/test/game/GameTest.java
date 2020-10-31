@@ -28,7 +28,7 @@ public class GameTest {
         to = new Province("egypt", player);
         player.addProvince(from);
         player.addProvince(to);
-        game = Game.getInstance(new GameState(), player);
+        game = Game.getInstance(new GameState(player.getName(), new Faction[]{player}));
         movingArmy = new Army();
     }
     @AfterEach

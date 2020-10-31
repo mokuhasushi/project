@@ -32,11 +32,10 @@ public class GameInvasionTest {
         invaded = new Province("egypt", defender);
         attacker.addProvince(attacking);
         defender.addProvince(invaded);
-        GameState c = new GameState();
+        GameState c = new GameState(attacker.getName(),new Faction[]{attacker,defender});
         brs = new BattleResolverStub();
         c.setBattleResolver(brs);
-        c.setFactionsFromArray(new Faction[]{defender});
-        game = Game.getInstance(c, attacker);
+        game = Game.getInstance(c);
         attackerArmy = new Army();
         defenderArmy = new Army();
     }

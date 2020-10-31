@@ -3,16 +3,21 @@ package unsw.gloriaromanus.game;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import unsw.gloriaromanus.battleresolver.BattleResolver;
+import unsw.gloriaromanus.units.Army;
+import unsw.gloriaromanus.units.SoldierFactory;
+import unsw.gloriaromanus.units.SoldierType;
 import unsw.gloriaromanus.world.Province;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class GameState {
     private Map<String, Faction> factions;
+    private static Map<String, Province> provinces;
     private Faction player;
     private boolean conquestGoal;
     private boolean treasureGoal;
@@ -31,19 +36,66 @@ public class GameState {
 
     public GameState() {
         factions = new HashMap<>();
+        provinces = new HashMap<>();
         battleResolver = BattleResolver.getInstance();
         turn = 0;
         player = new Faction("player");
     }
+
+    //This one should be called!
     public GameState(String player) {
         factions = new HashMap<>();
+        provinces = new HashMap<>();
         battleResolver = BattleResolver.getInstance();
         turn = 0;
-        init();
+        initProvince();
+        initFactions();
+        initArmies();
+        battleResolver.setTextReport(new BattleReporter());
         this.player = factions.get(player);
     }
 
-    private void init() {
+
+    public GameState(String player, Faction [] factions) {
+        this.factions = new HashMap<>();
+        provinces = new HashMap<>();
+        battleResolver = BattleResolver.getInstance();
+        turn = 0;
+        setFactionsFromArray(factions);
+        this.player = this.factions.get(player);
+    }
+
+    private void initArmies() {
+        for (Province p: provinces.values()) {
+            Army army = new Army();
+            SoldierFactory sf = new SoldierFactory(p.getOwner());
+            army.addUnit(sf.createSoldier(SoldierType.MELEE_INFANTRY));
+            army.addUnit(sf.createSoldier(SoldierType.RANGED_INFANTRY));
+            p.addTroops(army);
+        }
+    }
+
+    private static void initProvince() {
+        String content = null;
+        try {
+            content = Files.readString(Paths.get("src/unsw/gloriaromanus/province_adjacency_matrix_fully_connected.json"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject provinceAdjacencyMatrix = new JSONObject(content);
+        Iterator keys = provinceAdjacencyMatrix.keys();
+        for (String k: provinceAdjacencyMatrix.keySet()) {
+            Province p = new Province(k, "");
+            for (String n: provinceAdjacencyMatrix.getJSONObject(k).keySet()) {
+                if (provinceAdjacencyMatrix.getJSONObject(k).getBoolean(n))
+                    p.addNeighbour(n);
+            }
+            provinces.put(k, p);
+        }
+    }
+
+    private void initFactions() {
         Map<String, Faction> factions = getFactionsFromConfigFile();
         if (factions == null) {
             System.err.println("Something went wrong in newGame initialization!");
@@ -71,7 +123,8 @@ public class GameState {
             Faction f = new Faction(key);
             for (int i = 0; i < ja.length(); i++) {
                 String value = ja.getString(i);
-                f.addProvince(new Province(value, key));
+                f.addProvince(GameState.provinces.get(value));
+                GameState.provinces.get(value).setOwner(key);
             }
             m.put(key, f);
         }
@@ -127,5 +180,9 @@ public class GameState {
 
     public Faction getPlayer() {
         return player;
+    }
+
+    public Province getProvince(String province) {
+        return provinces.get(province);
     }
 }

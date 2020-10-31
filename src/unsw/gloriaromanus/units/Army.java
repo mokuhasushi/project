@@ -73,4 +73,12 @@ public class Army {
         }
         return movement;
     }
+
+    @Override
+    public String toString () {
+        StringBuilder sb = new StringBuilder("");
+        for (Soldier s: army)
+            sb.append(s.toString()+", ");
+        return sb.toString();
+    }
 }

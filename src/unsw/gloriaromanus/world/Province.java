@@ -1,11 +1,11 @@
 package unsw.gloriaromanus.world;
 
+import org.checkerframework.checker.units.qual.A;
 import unsw.gloriaromanus.game.Faction;
 import unsw.gloriaromanus.game.Game;
-import unsw.gloriaromanus.units.Barrack;
-import unsw.gloriaromanus.units.Army;
-import unsw.gloriaromanus.units.Soldier;
-import unsw.gloriaromanus.units.SoldierFactory;
+import unsw.gloriaromanus.units.*;
+
+import java.util.ArrayList;
 
 public class Province {
     private int wealth;
@@ -18,6 +18,7 @@ public class Province {
     private Army army;
     private boolean justConquered = false;
     private Barrack barrack;
+    private ArrayList<String> neighbours;
 
     public Province(int wealth, int wealthGrowth, int taxes, int taxLevel, int moraleModifier, String name, String owner, Army army, boolean justConquered, Barrack barrack) {
         this.wealth = wealth;
@@ -30,6 +31,7 @@ public class Province {
         this.army = army;
         this.justConquered = justConquered;
         this.barrack = barrack;
+        this.neighbours = new ArrayList<>();
     }
     public Province(){}
 
@@ -41,6 +43,7 @@ public class Province {
         this.moraleModifier = moraleModifier;
         this.name = name;
         this.army = army;
+        this.neighbours = new ArrayList<>();
     }
     public Province(String name, String owner) {
         this.wealth = 100;
@@ -53,6 +56,18 @@ public class Province {
         this.army = new Army();
         this.justConquered = false;
         this.barrack = new Barrack(owner);
+        this.neighbours = new ArrayList<>();
+    }
+    public Province(String name) {
+        this.wealth = 100;
+        this.wealthGrowth = 0;
+        this.taxes = 15;
+        this.taxLevel = TaxLevel.NORMAL_TAX;
+        this.moraleModifier = 0;
+        this.name = name;
+        this.army = new Army();
+        this.justConquered = false;
+        this.neighbours = new ArrayList<>();
     }
     public Province(String name, Faction owner) {
         this.wealth = 100;
@@ -65,6 +80,7 @@ public class Province {
         this.army = new Army();
         this.justConquered = false;
         this.barrack = new Barrack(owner.getName());
+        this.neighbours = new ArrayList<>();
     }
 
     public int getTaxRevenue () {
@@ -99,7 +115,14 @@ public class Province {
     }
 
     public Army getArmy() {
-        return army;
+//        return new Army((ArrayList<Soldier>) army.getArmy().clone());
+
+        Army other = new Army();
+        for (int i = 0; i < army.getSize(); i++)
+            other.addUnit(army.getUnit(i));
+        return other;
+
+
     }
 
     public void conqueredBy(String faction, Army army) {
@@ -111,7 +134,6 @@ public class Province {
 
     public String getOwner() {
         return owner;
-//        return Game.getInstance().getFaction(owner);
     }
 
     @Override
@@ -145,6 +167,9 @@ public class Province {
     public void recruit(String soldier) {
         this.barrack.createSoldier(soldier);
     }
+    public void recruit(SoldierType soldier) {
+        this.barrack.createSoldier(soldier);
+    }
 
     public void update() {
         this.wealth = Math.max(0, wealth+wealthGrowth);
@@ -162,5 +187,25 @@ public class Province {
 
     public int getWealth() {
         return wealth;
+    }
+
+    public void addNeighbour(String n) {
+        this.neighbours.add(n);
+    }
+    public ArrayList<String> getNeighbours () {
+        return this.neighbours;
+    }
+
+    public void setOwner(String key) {
+        this.owner = key;
+        this.barrack = new Barrack(key);
+    }
+    public int numberOfTrainingSlotsAvailable() {
+        int free = 2;
+        if (barrack.getTurnToSlot1()>0)
+            free -=1;
+        if (barrack.getTurnToSlot2()>0)
+            free -=1;
+        return free;
     }
 }

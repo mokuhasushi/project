@@ -29,6 +29,19 @@ public class Barrack {
         }
         return false;
     }
+    public boolean createSoldier(SoldierType soldier) {
+        if (soldierSlot1 == null || turnToSlot1 <= 0) {
+            soldierSlot1 = soldierFactory.createSoldier(soldier);
+            turnToSlot1 = soldierSlot1.getTrainingTime();
+            return true;
+        }
+        else if (soldierSlot2 == null || turnToSlot2 <= 0) {
+            soldierSlot2 = soldierFactory.createSoldier(soldier);
+            turnToSlot2 = soldierSlot2.getTrainingTime();
+            return true;
+        }
+        return false;
+    }
 
     public int getTurnToSlot1() {
         return turnToSlot1;

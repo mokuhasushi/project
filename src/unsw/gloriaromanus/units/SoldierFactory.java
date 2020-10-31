@@ -22,6 +22,11 @@ public class SoldierFactory {
     public Soldier createSoldier(String soldier){
         return null;
     }
+    public Soldier createSoldier(SoldierType soldierType){
+        Soldier s = new Soldier();
+        s.setName(soldierType.type);
+        return s;
+    }
 
     private Soldier soldierFromJSON (String soldierType) {
         return null;

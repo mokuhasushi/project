@@ -11,6 +11,7 @@ import unsw.gloriaromanus.world.TaxLevel;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,19 +22,21 @@ public class Game {
     private Faction player;
     private BattleResolver battleResolver;
 
-    private Game(GameState campaign, Faction player) {
+    private Game(GameState campaign) {
         this.campaign = campaign;
-        this.player = player;
+        this.player = campaign.getPlayer();
         this.battleResolver = campaign.getBattleResolver();
     }
+/*
     public static Game getInstance(GameState campaign, Faction player) {
         if (instance == null)
             instance = new Game(campaign, player);
         return instance;
     }
+*/
     public static Game getInstance(GameState campaign) {
         if (instance == null)
-            instance = new Game(campaign, campaign.getPlayer());
+            instance = new Game(campaign);
         return instance;
     }
     public static Game getInstance () {
@@ -114,7 +117,7 @@ public class Game {
         GameState gs = SaveLoad.loadGame(filename);
         if (gs == null)
             return false;
-        Game.getInstance(gs, gs.getPlayer());
+        Game.getInstance(gs);
         return true;
     }
 
@@ -125,4 +128,31 @@ public class Game {
         Game.getInstance(gs);
     }
 
+    public int getTurn() {
+        return campaign.getTurn();
+    }
+
+    public int getPlayerGold() {
+        return campaign.getPlayer().getTreasure();
+    }
+
+    public int getPlayerWealth() {
+        return campaign.getPlayer().getWealth();
+    }
+    public Faction getPlayer () {
+        return player;
+    }
+    public ArrayList <Province> getPlayerProvinces () {
+        return player.getProvinces();
+    }
+    public Province getProvince(String province) {
+        return campaign.getProvince(province);
+    }
+
+    public void moveOrInvade(Province p1, Province p2) {
+        if (p1.getOwner().equals(p2.getOwner()))
+            this.move(p1, p2, p1.getArmy());
+        else
+            this.invade(p1, p2, p1.getArmy());
+    }
 }
