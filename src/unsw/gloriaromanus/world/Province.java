@@ -158,6 +158,9 @@ public class Province {
     public void addTroops(Army army) {
         this.army.joinArmy(army);
     }
+    public void addTroop(Soldier s) {
+        this.army.addUnit(s);
+    }
 
     public void moveTroops(Army army) {
         army.moved(1);

@@ -19,11 +19,8 @@ public class GameState {
     private Map<String, Faction> factions;
     private static Map<String, Province> provinces;
     private Faction player;
-    private boolean conquestGoal;
-    private boolean treasureGoal;
-    private boolean wealthGoal;
+    private int goal;
     private BattleResolver battleResolver = null;
-    private int totalNumberProvinces = 50;
     private int turn;
 
     public Map<String, Faction> getFactions() {
@@ -138,20 +135,8 @@ public class GameState {
         return battleResolver;
     }
 
-    //TODO, not so trivial
-    public boolean isVictory(Faction player) {
-        boolean win = true;
-        if (conquestGoal)
-            win &= playerHasAllTerritories(player);
-        return win;
-    }
-
-    private boolean playerHasAllTerritories(Faction player) {
-        return player.getProvinces().size() == totalNumberProvinces;
-    }
-
     public int getTotalNumberProvinces() {
-        return totalNumberProvinces;
+        return provinces.size();
     }
 
     public Faction getFaction(String faction) {
@@ -184,5 +169,37 @@ public class GameState {
 
     public Province getProvince(String province) {
         return provinces.get(province);
+    }
+
+    public boolean conquestGoal() {
+        return player.getProvinces().size() == provinces.size();
+    }
+    public boolean treasureGoal() {
+        return player.getTreasure() > 100000;
+    }
+    public boolean wealthGoal() {
+        return player.getWealth() > 400000;
+    }
+    private boolean winGoals() {
+        switch (goal) {
+            case 0:
+                return conquestGoal() && treasureGoal() && wealthGoal();
+            case 1:
+                return conquestGoal() && (treasureGoal() || wealthGoal());
+            case 2:
+                return conquestGoal() || (treasureGoal() && wealthGoal());
+            case 3:
+                return (conquestGoal() || treasureGoal()) && wealthGoal();
+            case 4:
+                return (conquestGoal() && treasureGoal()) || wealthGoal();
+            case 5:
+                return (conquestGoal() && wealthGoal()) || treasureGoal();
+            case 6:
+                return (conquestGoal() || wealthGoal()) && treasureGoal();
+            case 7:
+                return conquestGoal() || treasureGoal() || wealthGoal();
+            default:
+                return false;
+        }
     }
 }

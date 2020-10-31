@@ -33,12 +33,12 @@ public class GameTest {
     }
     @AfterEach
     public void clear() {
-        game.clear();
+        Game.clear();
     }
 
     @Test
     public void movingAnArmySimpleCase () {
-        from.getArmy().addUnit(new Soldier());
+        from.addTroop(new Soldier());
         movingArmy.addUnit(from.getArmy().getUnit(0));
         game.move(from, to, movingArmy);
 
@@ -48,8 +48,8 @@ public class GameTest {
     @Test
     public void movingOnlyPartOfAnArmyToAnotherArmy () {
         for (int i = 0; i < 10; i++) {
-            from.getArmy().addUnit(new Soldier());
-            to.getArmy().addUnit(new Soldier());
+            from.addTroop(new Soldier());
+            to.addTroop(new Soldier());
             if (i%2 == 0)
                 movingArmy.addUnit(from.getArmy().getUnit(i));
         }

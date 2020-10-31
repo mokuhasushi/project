@@ -29,6 +29,7 @@ repositories {
 javafx {
     version = "13"
     modules = [ 'javafx.controls', 'javafx.fxml' ]
+    mainClassName = ['unsw/gloriaromanus/GloriaRomanusApplication']
 }
 
 
@@ -47,6 +48,7 @@ dependencies {
 
     // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+    runtime group: 'com.esri.arcgisruntime', name: 'arcgis-java', version: '100.9.0'
 }
 
 application {
@@ -63,7 +65,8 @@ test {
 jacocoTestReport {
     afterEvaluate{
         classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: '**/unsw/gloriaromanus/GloriaRomanus*')
+            fileTree(dir: it, exclude: ['**/unsw/gloriaromanus/GloriaRomanus*',
+                                        '**/unsw/gloriaromanus/MainTextual*'])
         }))
     }
 }
@@ -73,6 +76,7 @@ sourceSets {
             srcDirs = ['src']
             excludes = ['test/*']
         }
+
     }
 
     test {
@@ -80,5 +84,12 @@ sourceSets {
             srcDirs = ['src']
             excludes = ['unsw/gloriaromanus/*']
         }
+    }
+}
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'unsw/gloriaromanus/GloriaRomanusLauncher'
+        )
     }
 }
