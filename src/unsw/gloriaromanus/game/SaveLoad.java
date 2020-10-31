@@ -10,18 +10,13 @@ import unsw.gloriaromanus.world.Province;
 
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
 
 public class SaveLoad {
-    public static boolean saveSoldier(Soldier s, String filename) {
+    public static void saveSoldier(Soldier s, String filename) throws IOException {
         File f = new File(filename);
-        try {
             f.createNewFile();
             new ObjectMapper().writeValue(f,s);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
     public static Soldier loadSoldier(String filename) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -34,16 +29,10 @@ public class SaveLoad {
         }
     }
 
-    public static boolean saveArmy (Army army, String filename) {
+    public static void saveArmy (Army army, String filename) throws IOException {
         File f = new File(filename);
-        try {
             f.createNewFile();
             new ObjectMapper().writeValue(f,army);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
     public static Army loadArmy(String filename) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -55,17 +44,11 @@ public class SaveLoad {
             return null;
         }
     }
-    public static boolean saveProvince (Province province, String filename) {
+    public static void saveProvince (Province province, String filename) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         File f = new File(filename);
-        try {
             f.createNewFile();
             objectMapper.writeValue(f,province);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
     public static Province loadProvince(String filename) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -77,17 +60,11 @@ public class SaveLoad {
             return null;
         }
     }
-    public static boolean saveFaction (Faction faction, String filename) {
+    public static void saveFaction (Faction faction, String filename) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         File f = new File(filename);
-        try {
             f.createNewFile();
             objectMapper.writeValue(f,faction);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
     public static Faction loadFaction(String filename) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -99,18 +76,12 @@ public class SaveLoad {
             return null;
         }
     }
-    public static boolean saveGame (GameState game, String filename) {
+    public static void saveGame (GameState game, String filename) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         File f = new File(filename);
-        try {
             f.createNewFile();
             objectMapper.writeValue(f,game);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
     public static GameState loadGame(String filename) {
         ObjectMapper objectMapper = new ObjectMapper();

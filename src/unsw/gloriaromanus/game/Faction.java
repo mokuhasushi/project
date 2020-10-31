@@ -10,12 +10,6 @@ public class Faction {
     private int treasure;
     private String name;
 
-    public Faction(ArrayList<Province> provinces, int wealth, int treasure, String name) {
-        this.provinces = provinces;
-        this.wealth = wealth;
-        this.treasure = treasure;
-        this.name = name;
-    }
     public Faction() {}
 
     public Faction(String name) {

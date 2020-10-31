@@ -14,6 +14,9 @@ public class MixedEngagement implements Engagement{
     public MixedEngagement() {
         rng = new Random();
     }
+    public MixedEngagement(Random rng) {
+        this.rng = rng;
+    }
 
     // This will never be called
     @Override

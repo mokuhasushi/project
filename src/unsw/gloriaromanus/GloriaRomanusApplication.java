@@ -17,12 +17,11 @@ public class GloriaRomanusApplication extends Application {
   @Override
   public void start(Stage stage) throws IOException {
     // set up the scene
-//    System.out.println(System.getProperty("user.dir"));
-//    File f = new File("src/unsw/gloriaromanus/test.f");
-//    f.createNewFile();
-//    FXMLLoader loader = new FXMLLoader(getClass().getResource("src/unsw/gloriaromanus/main.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("src/unsw/gloriaromanus/main.fxml"));
+/*
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("main.fxml"));
+*/
     Parent root = loader.load();
     controller = loader.getController();
     Scene scene = new Scene(root);

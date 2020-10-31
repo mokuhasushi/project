@@ -2,6 +2,8 @@ package unsw.gloriaromanus.game;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 /*
  Observer for BattleResolver
@@ -15,9 +17,17 @@ public class BattleReporter implements PropertyChangeListener {
         It can easily be set to display faction name instead (at the begginning
         of a battle set property
      */
+    private PrintStream out;
+
+    public BattleReporter(PrintStream out) {
+        this.out = out;
+    }
+    public BattleReporter() {
+        this.out = System.out;
+    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println(evt.getNewValue());
+        out.println(evt.getNewValue());
     }
 }

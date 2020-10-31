@@ -8,17 +8,27 @@ import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.units.Soldier;
 import unsw.gloriaromanus.world.Province;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SaveLoadTest {
     @Test
     public void simpleSaveLoadTestSoldier() {
         Soldier s_in = new Soldier();
         String filename = "src/test/resources/s1.json";
-        SaveLoad.saveSoldier(s_in, filename);
+        try {
+            SaveLoad.saveSoldier(s_in, filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+            assert false;
+        }
         Soldier s_out = SaveLoad.loadSoldier(filename);
         assertEquals(s_in.getName(), s_out.getName());
+    }
+    @Test
+    public void loadingInvalidSoldierFileReturnsNull () {
+        assertNull(SaveLoad.loadSoldier("nope"));
     }
     @Test
     public void simpleSaveLoadTestArmy() {
@@ -27,14 +37,21 @@ public class SaveLoadTest {
         army_in.addUnit(new Soldier());
 
         String filename = "src/test/resources/a1.json";
-        SaveLoad.saveArmy(army_in, filename);
+        try {
+            SaveLoad.saveArmy(army_in, filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+            assert false;
+        }
 
         Army army_out = SaveLoad.loadArmy(filename);
         assertEquals(army_in.getSize(), army_out.getSize());
         assertEquals(army_in.getUnit(0).getName(), army_out.getUnit(0).getName());
     }
-    //Not working: TODO: refactor province to only store owner'string. Refactor game to be singleton
-    //                  and have a map <String, Faction>
+    @Test
+    public void loadingInvalidArmyFileReturnsNull () {
+        assertNull(SaveLoad.loadArmy("nope"));
+    }
     @Test
     public void simpleSaveLoadTestProvince() {
         Army army = new Army();
@@ -45,7 +62,12 @@ public class SaveLoadTest {
         province_in.addTroops(army);
 
         String filename = "src/test/resources/p1.json";
-        SaveLoad.saveProvince(province_in, filename);
+        try {
+            SaveLoad.saveProvince(province_in, filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+            assert false;
+        }
 
         Province province_out = SaveLoad.loadProvince(filename);
         assertEquals(province_in.getOwner(), province_out.getOwner());
@@ -53,6 +75,10 @@ public class SaveLoadTest {
         assertEquals(province_in.getTaxLevel(), province_out.getTaxLevel());
         assertEquals(province_in.getArmy().getSize(), province_out.getArmy().getSize());
 
+    }
+    @Test
+    public void loadingInvalidProvinceFileReturnsNull () {
+        assertNull(SaveLoad.loadProvince("nope"));
     }
     @Test
     public void simpleSaveLoadTestFaction() {
@@ -65,12 +91,21 @@ public class SaveLoadTest {
         faction_in.addProvince(province);
 
         String filename = "src/test/resources/f1.json";
-        SaveLoad.saveFaction(faction_in, filename);
+        try {
+            SaveLoad.saveFaction(faction_in, filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+            assert false;
+        }
 
         Faction faction_out = SaveLoad.loadFaction(filename);
         assertEquals(faction_in.getName(), faction_out.getName());
         assertEquals(faction_in.getProvinces().get(0).getName(), faction_out.getProvinces().get(0).getName());
         assertEquals(faction_in.getProvinces().get(0).getArmy().getSize(), faction_out.getProvinces().get(0).getArmy().getSize());
+    }
+    @Test
+    public void loadingInvalidFactionFileReturnsNull () {
+        assertNull(SaveLoad.loadFaction("nope"));
     }
     @Test
     public void simpleSaveLoadTestGame() {
@@ -89,12 +124,21 @@ public class SaveLoadTest {
         gameState_in.setFactionsFromArray(new Faction[] {gaul, new Faction("egypt")});
 
         String filename = "src/test/resources/g1.json";
-        SaveLoad.saveGame(gameState_in, filename);
+        try {
+            SaveLoad.saveGame(gameState_in, filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+            assert false;
+        }
 
         GameState gameState_out = SaveLoad.loadGame(filename);
         assertEquals(gameState_in.getTurn(), gameState_out.getTurn());
         assertEquals(gameState_in.getFaction("player").getName(), gameState_out.getFaction("player").getName());
         assertEquals(gameState_in.getFaction("gaul").getName(), gameState_out.getFaction("gaul").getName());
         assertEquals(gameState_in.getFaction("gaul").getProvinces().get(0), gameState_out.getFaction("gaul").getProvinces().get(0));
+    }
+    @Test
+    public void loadingInvalidGameFileReturnsNull () {
+        assertNull(SaveLoad.loadGame("nope"));
     }
 }

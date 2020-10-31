@@ -6,6 +6,8 @@ import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.world.Province;
 import unsw.gloriaromanus.world.TaxLevel;
 
+import java.io.IOException;
+
 public class Game {
     private static Game instance = null;
 
@@ -89,5 +91,18 @@ public class Game {
             totalWealth += p.getWealth();
         }
         player.setWealth(totalWealth);
+    }
+
+    public void saveGame (String filename) {
+        try {
+            SaveLoad.saveGame(campaign, filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void loadGame (String filename) {
+        Faction player = this.player;
+        this.clear();
+        Game.getInstance(SaveLoad.loadGame(filename), player);
     }
 }

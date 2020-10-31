@@ -64,7 +64,7 @@ public class BattleResolverTest {
             defender.addUnit(sd);
         }
         // To have result in terminal (and later on in javafx) uncomment
-        battleResolver.setTextReport(new BattleReporter());
+//        battleResolver.setTextReport(new BattleReporter());
         BattleResult br = battleResolver.battle(attacker, defender);
 
         assertEquals(BattleResult.ATTACKER_WON, br);
