@@ -120,6 +120,10 @@ public class Province {
             return false;
         return this.getName().equals(((Province)other).getName());
     }
+    @Override
+    public String toString () {
+        return this.name;
+    }
 
     public String getName() {
         return name;

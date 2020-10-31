@@ -1,5 +1,7 @@
 package unsw.gloriaromanus.game;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import unsw.gloriaromanus.battleresolver.BattleResolver;
 import unsw.gloriaromanus.battleresolver.BattleResult;
 import unsw.gloriaromanus.units.Army;
@@ -7,6 +9,10 @@ import unsw.gloriaromanus.world.Province;
 import unsw.gloriaromanus.world.TaxLevel;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Game {
     private static Game instance = null;
@@ -25,11 +31,16 @@ public class Game {
             instance = new Game(campaign, player);
         return instance;
     }
+    public static Game getInstance(GameState campaign) {
+        if (instance == null)
+            instance = new Game(campaign, campaign.getPlayer());
+        return instance;
+    }
     public static Game getInstance () {
         return instance;
     }
 
-    public void clear(){
+    public static void clear(){
         instance = null;
     }
 
@@ -73,8 +84,6 @@ public class Game {
     }
 
     public Faction getFaction (String faction) {
-        if (faction.equals(player.getName()))
-            return player;
         return campaign.getFaction(faction);
     }
 
@@ -100,9 +109,20 @@ public class Game {
             e.printStackTrace();
         }
     }
-    public void loadGame (String filename) {
-        Faction player = this.player;
-        this.clear();
-        Game.getInstance(SaveLoad.loadGame(filename), player);
+    public static boolean loadGame (String filename) {
+        Game.clear();
+        GameState gs = SaveLoad.loadGame(filename);
+        if (gs == null)
+            return false;
+        Game.getInstance(gs, gs.getPlayer());
+        return true;
     }
+
+    public static void newGame(String player) {
+        Game.clear();
+        GameState gs = new GameState(player);
+
+        Game.getInstance(gs);
+    }
+
 }

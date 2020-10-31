@@ -1,7 +1,13 @@
 package unsw.gloriaromanus.game;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import unsw.gloriaromanus.battleresolver.BattleResolver;
+import unsw.gloriaromanus.world.Province;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +35,49 @@ public class GameState {
         turn = 0;
         player = new Faction("player");
     }
+    public GameState(String player) {
+        factions = new HashMap<>();
+        battleResolver = BattleResolver.getInstance();
+        turn = 0;
+        init();
+        this.player = factions.get(player);
+    }
+
+    private void init() {
+        Map<String, Faction> factions = getFactionsFromConfigFile();
+        if (factions == null) {
+            System.err.println("Something went wrong in newGame initialization!");
+            return;
+        }
+        this.setFactions(factions);
+
+    }
+    //From GloriaRomanusController, adapted
+    private static Map<String, Faction> getFactionsFromConfigFile() {
+        String content = null;
+        try {
+            content = Files.readString(Paths.get(
+                    "src/unsw/gloriaromanus/initial_province_ownership.json"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        JSONObject ownership = new JSONObject(content);
+        Map<String, Faction> m = new HashMap<String, Faction>();
+        for (String key : ownership.keySet()) {
+            // key will be the faction name
+            JSONArray ja = ownership.getJSONArray(key);
+            // value is province name
+            Faction f = new Faction(key);
+            for (int i = 0; i < ja.length(); i++) {
+                String value = ja.getString(i);
+                f.addProvince(new Province(value, key));
+            }
+            m.put(key, f);
+        }
+        return m;
+    }
+
     public void setBattleResolver (BattleResolver battleResolver) {
         this.battleResolver = battleResolver;
     }
@@ -74,5 +123,9 @@ public class GameState {
         for (Faction f: factions) {
             this.factions.put(f.getName(), f);
         }
+    }
+
+    public Faction getPlayer() {
+        return player;
     }
 }
