@@ -1,0 +1,16 @@
+{
+  "numTroops":10,
+  "ranged":false,
+  "armour":30,
+  "morale":5,
+  "speed":2,
+  "attack":15,
+  "defenseSkill":4,
+  "shieldDefense":5,
+  "trainingTime":2,
+  "movement":4,
+  "canMove":true,
+  "name":"melee-artillery",
+  "broken":false,
+  "defeated":false
+}

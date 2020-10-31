@@ -1,10 +1,16 @@
 package unsw.gloriaromanus.units;
 
+import unsw.gloriaromanus.game.SaveLoad;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class SoldierFactory {
     private Map<SoldierType, Soldier> nameToSoldier;
+
+    public Map<SoldierType, Soldier> getNameToSoldier() {
+        return nameToSoldier;
+    }
 
     public SoldierFactory(){
         nameToSoldier = new HashMap<>();
@@ -23,15 +29,17 @@ public class SoldierFactory {
         return null;
     }
     public Soldier createSoldier(SoldierType soldierType){
-        Soldier s = new Soldier();
-        s.setName(soldierType.type);
-        return s;
+        return nameToSoldier.get(soldierType).clone();
     }
 
     private Soldier soldierFromJSON (String soldierType) {
-        return null;
+//        return SaveLoad.loadSoldier(soldierType+".json");
+        return SaveLoad.loadSoldier("src/unsw/gloriaromanus/unitsjsons/"+soldierType+".json");
     }
     private Soldier soldierFromJSON (String soldierType, String faction) {
-        return null;
+        Soldier s = SaveLoad.loadSoldier("src/unsw/gloriaromanus/unitsjsons/"+soldierType+"-"+faction+".json");
+        if (s == null)
+            s = soldierFromJSON(soldierType);
+        return s;
     }
 }

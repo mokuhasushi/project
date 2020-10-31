@@ -107,18 +107,18 @@ public class Skirmish {
                  https://github.com/indexie/project#breaking-a-unit
                  */
                 int[] casualties = engagement.casualties(u1, u2);
+                support.firePropertyChange("", null, "Your "+u1.getName()+" suffered "+casualties[0]+
+                        " casualties, the enemy "+u2.getName()+" "+casualties[1]);
                 if (breakChances(u1, u2, casualties[0], casualties[1]) > rng.nextDouble()) {
                     u1.setBroken(true);
-                    support.firePropertyChange("", null, "Your " + u1.getName() + "is routing!");
+                    support.firePropertyChange("", null, "Your " + u1.getName() + " is routing!");
                 }
                 if (breakChances(u2, u1, casualties[1], casualties[0]) > rng.nextDouble()){
                     u2.setBroken(true);
-                    support.firePropertyChange("", null, "Enemy " + u2.getName() + "is routing!");
+                    support.firePropertyChange("", null, "Enemy " + u2.getName() + " is routing!");
                 }
                 u1.removeTroops(casualties[0]);
                 u2.removeTroops(casualties[1]);
-                support.firePropertyChange("", null, "Your "+u1.getName()+" suffered "+casualties[0]+
-                        " casualties, the enemy "+u2.getName()+" "+casualties[1]);
             }
             if (u1.isDefeated() && u2.isDefeated()) {
                 // From the spec is not clear, I assume both defeated is a draw
@@ -142,7 +142,7 @@ public class Skirmish {
 
     //calculates the chances of the unit breaking
     public static double breakChances(Soldier soldier, Soldier enemy, int casualtiesUnit, int casualtiesEnemy) {
-        double base = clamp(0, 100 - soldier.getMorale()*10,100);
+        int base = clamp(0, 100 - soldier.getMorale()*10,100);
         double addition =
                 ((double)casualtiesUnit / soldier.getNumTroops()) /
                         ((double)(Math.max(casualtiesEnemy, 1)) / enemy.getNumTroops()) *

@@ -24,7 +24,7 @@ public class SaveLoad {
         try {
             return objectMapper.readValue(new File(filename), Soldier.class);
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return null;
         }
     }
