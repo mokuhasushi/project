@@ -14,11 +14,13 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 public class GameState {
     private Map<String, Faction> factions;
     private static Map<String, Province> provinces;
     private Faction player;
+
     private int goal;
     private BattleResolver battleResolver = null;
     private int turn;
@@ -37,6 +39,7 @@ public class GameState {
         battleResolver = BattleResolver.getInstance();
         turn = 0;
         player = new Faction("player");
+        this.goal = new Random().nextInt(7);
     }
 
     //This one should be called!
@@ -50,6 +53,7 @@ public class GameState {
         initArmies();
         battleResolver.setTextReport(new BattleReporter());
         this.player = factions.get(player);
+        this.goal = new Random().nextInt(7);
     }
 
 
@@ -60,6 +64,7 @@ public class GameState {
         turn = 0;
         setFactionsFromArray(factions);
         this.player = this.factions.get(player);
+        this.goal = new Random().nextInt(7);
     }
 
     private void initArmies() {
@@ -170,7 +175,13 @@ public class GameState {
     public Province getProvince(String province) {
         return provinces.get(province);
     }
+    public int getGoal() {
+        return goal;
+    }
 
+    public void setGoal(int goal) {
+        this.goal = goal;
+    }
     public boolean conquestGoal() {
         return player.getProvinces().size() == provinces.size();
     }
