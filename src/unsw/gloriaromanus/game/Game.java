@@ -1,7 +1,5 @@
 package unsw.gloriaromanus.game;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import unsw.gloriaromanus.battleresolver.BattleResolver;
 import unsw.gloriaromanus.battleresolver.BattleResult;
 import unsw.gloriaromanus.units.Army;
@@ -9,11 +7,7 @@ import unsw.gloriaromanus.world.Province;
 import unsw.gloriaromanus.world.TaxLevel;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Game {
     private static Game instance = null;
@@ -59,10 +53,14 @@ public class Game {
                         gameLost();
                 invaded.conqueredBy(attacking.getOwner(), attacker);
                 getFaction(attacking.getOwner()).addProvince(invaded);
-
+                changeOwnership(invaded, attacking.getOwner());
             }
             case ATTACKER_DEFEATED, DRAW -> attacking.addTroops(attacker);
         }
+    }
+
+    private void changeOwnership(Province invaded, String owner) {
+        campaign.changeOwnership(invaded, owner);
     }
 
     private void gameLost() {
@@ -94,7 +92,10 @@ public class Game {
         campaign.removeFaction(faction);
     }
 
-    public void pass() {
+    public boolean pass() {
+        if (campaign.hasWon()){
+            saveGame("autosave.save");
+            return true;}
         campaign.addTurn();
         int totalWealth = 0;
         for (Province p : player.getProvinces()) {
@@ -103,14 +104,17 @@ public class Game {
             totalWealth += p.getWealth();
         }
         player.setWealth(totalWealth);
+        return false;
     }
 
-    public void saveGame (String filename) {
+    public boolean saveGame (String filename) {
         try {
             SaveLoad.saveGame(campaign, filename);
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
     public static boolean loadGame (String filename) {
         Game.clear();
@@ -154,5 +158,11 @@ public class Game {
             this.move(p1, p2, p1.getArmy());
         else
             this.invade(p1, p2, p1.getArmy());
+    }
+
+    public String info() {
+        return "Player faction: " + player.getName() + "\n" +
+                "Factions in game: " + campaign.getFactions().keySet().toString() + "\n" +
+                "Campaign goal: " + campaign.goalReadable();
     }
 }

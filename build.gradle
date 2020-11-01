@@ -86,10 +86,3 @@ sourceSets {
         }
     }
 }
-jar {
-    manifest {
-        attributes(
-                'Main-Class': 'unsw/gloriaromanus/GloriaRomanusLauncher'
-        )
-    }
-}

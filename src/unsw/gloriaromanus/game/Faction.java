@@ -63,4 +63,22 @@ public class Faction {
     public String toString() {
         return this.name;
     }
+
+    public Province getProvince(String province) {
+        Province p = null;
+        for (int i = 0; i < provinces.size(); i++) {
+            if (provinces.get(i).getName().equals(province)){
+                p = provinces.get(i);
+                break;
+            }
+        }
+        return p;
+    }
+    public int updateWealth () {
+        int wealth = 0;
+        for (Province p: provinces)
+            wealth += p.getWealth();
+        this.wealth = wealth;
+        return wealth;
+    }
 }

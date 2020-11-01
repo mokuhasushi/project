@@ -3,6 +3,7 @@ package unsw.gloriaromanus;
 import org.checkerframework.checker.units.qual.A;
 import unsw.gloriaromanus.game.Faction;
 import unsw.gloriaromanus.game.Game;
+import unsw.gloriaromanus.game.SaveLoad;
 import unsw.gloriaromanus.units.SoldierType;
 import unsw.gloriaromanus.world.Province;
 import unsw.gloriaromanus.world.TaxLevel;
@@ -12,9 +13,9 @@ import java.util.Scanner;
 
 public class MainTextual {
     enum State { MAIN_MENU, GAME_RUNNING}
-    enum MenuOptions {CONTINUE, NEW_GAME, SAVE_GAME, LOAD_GAME, EXIT}
-    enum GameRunningOptions {SHOW_REGIONS, SELECT_REGION, PASS, MENU, EXIT}
-    enum ProvinceSelectedOptions {SET_TAXES, RECRUIT, MOVE_TROOPS, CANCEL}
+    enum MenuOptions {CONTINUE, NEW_GAME, SAVE_GAME, LOAD_GAME, EXIT, INVALID}
+    enum GameRunningOptions {SHOW_INFO, SELECT_REGION, PASS, MENU, EXIT, INVALID}
+    enum ProvinceSelectedOptions {SET_TAXES, RECRUIT, MOVE_TROOPS, CANCEL, INVALID}
 
     private static State state;
     private static Game game;
@@ -42,19 +43,27 @@ public class MainTextual {
                     state = State.GAME_RUNNING;
                     break;
                 case SAVE_GAME:
-                    System.out.println("TODO");//TODO
+                    System.out.println("Enter filename:");
+                    String save = in.nextLine();
+                    System.out.println(save);
+                    if (game.saveGame(save))
+                        System.out.println("Game saved!");
+                    else
+                        System.out.println("Something went wrong...");
+                    break;
                 case LOAD_GAME:
                     System.out.println("Enter filename:");
-                    if (game.loadGame(in.nextLine()))
+                    if (!Game.loadGame(in.nextLine()))
                         System.out.println("Invalid filename!");
                     else {
+                        game = Game.getInstance();
                         state = State.GAME_RUNNING;
                     }
                     break;
                 case EXIT:
                     return;
                 default:
-                    ;
+                    break;
             }
         }
         System.out.println("Game started!");
@@ -62,16 +71,15 @@ public class MainTextual {
             printGameRunningOptions();
             GameRunningOptions opt = getGameRunningInput(in);
             switch (opt) {
-                case SHOW_REGIONS:
-                    for (Province p: game.getFaction("Rome").getProvinces())
-                        System.out.println(p.getName() + ": " + p.getArmy());
+                case SHOW_INFO:
+                    System.out.println(game.info());
                     break;
                 case SELECT_REGION:
                     ArrayList<Province> prs = game.getFaction("Rome").getProvinces();
                     for (int i = 0; i < prs.size(); i++) {
                         System.out.println("["+ (i+1) + "] " +prs.get(i).getName() + ": " + prs.get(i).getArmy());
                     }
-                    int province_num = in.nextInt() - 1;
+                    int province_num = readInt(in) - 1;
                     Province province = prs.get(province_num);
                     if (province == null){
                         System.out.println("Invalid province");
@@ -85,7 +93,7 @@ public class MainTextual {
                             System.out.println("Current tax level: "+province.getTaxLevel().toString());
                             printAListOfOptions(4, new String[]{"Low Taxes",
                                     "Normal Taxes", "High Taxes", "Very High Taxes"});
-                            int choice = in.nextInt();
+                            int choice = readInt(in);
                             if (choice == 1)
                                 province.setTaxLevel(TaxLevel.LOW_TAX);
                             if (choice == 2)
@@ -102,7 +110,7 @@ public class MainTextual {
                                 System.out.println("Which unit to train?");
                                 printAListOfOptions(6, new String[] {"melee infantry", "melee chivalry",
                                     "melee artillery", "ranged infantry", "ranged chivalry", "ranged artillery"});
-                                int choice1 = in.nextInt();
+                                int choice1 = readInt(in);
                                     switch (choice1) {
                                         case 1:
                                             province.recruit(SoldierType.MELEE_INFANTRY);
@@ -129,25 +137,30 @@ public class MainTextual {
                             break;
                         case MOVE_TROOPS:
                             ArrayList <Province> neighbours = new ArrayList<>();
-                            for (String s: province.getNeighbours())
-                                neighbours.add(game.getProvince(s));
+                            for (String s: province.getNeighbours()){
+                                System.out.println(neighbours.size());
+                                neighbours.add(game.getProvince(s));}
                             System.out.println("Adjacent provinces: ");
+                            System.out.println(neighbours);
                             for (int i = 0; i < neighbours.size(); i++) {
                                 System.out.println("[" + (i+1) + "] " +
                                         neighbours.get(i).getName() + neighbours.get(i).getOwner());
                             }
-                            int choice3 = in.nextInt() - 1;
+                            int choice3 = readInt(in) - 1;
                             if (choice3 <= neighbours.size())
                                 game.moveOrInvade(province, neighbours.get(choice3));
 
                             break;
                         case CANCEL:
                             break;
+                        default:
+                            break;
                     }
 
                     break;
                 case PASS:
-                    game.pass();
+                    if (game.pass())
+                        System.out.println("Congratulations! YOU WON!");
                     break;
                 case MENU:
                     state = State.MAIN_MENU;
@@ -159,7 +172,7 @@ public class MainTextual {
     }
 
     private static ProvinceSelectedOptions getProvinceSelectedInput(Scanner in) {
-        switch (in.nextInt()) {
+        switch (readInt(in)) {
             case 1:
                 return ProvinceSelectedOptions.SET_TAXES;
             case 2:
@@ -169,7 +182,7 @@ public class MainTextual {
             case 4:
                 return ProvinceSelectedOptions.CANCEL;
             default:
-                return null;
+                return ProvinceSelectedOptions.INVALID;
         }
     }
     private static void printProvinceSelectedOptions() {
@@ -181,9 +194,9 @@ public class MainTextual {
     }
 
     private static GameRunningOptions getGameRunningInput(Scanner in) {
-        switch (in.nextInt()) {
+        switch (readInt(in)) {
             case 1:
-                return GameRunningOptions.SHOW_REGIONS;
+                return GameRunningOptions.SHOW_INFO;
             case 2:
                 return GameRunningOptions.SELECT_REGION;
             case 3:
@@ -193,11 +206,11 @@ public class MainTextual {
             case 5:
                 return GameRunningOptions.EXIT;
             default:
-                return null;
+                return GameRunningOptions.INVALID;
         }
     }
     private static MenuOptions getMainMenuInput(Scanner in) {
-        switch (in.nextInt()) {
+        switch (readInt(in)) {
             case 1:
                 return MenuOptions.CONTINUE;
             case 2:
@@ -209,7 +222,7 @@ public class MainTextual {
             case 5:
                 return MenuOptions.EXIT;
             default:
-                return null;
+                return MenuOptions.INVALID;
         }
     }
 
@@ -224,7 +237,7 @@ public class MainTextual {
     private static void printGameRunningOptions() {
         System.out.println("Turn " + game.getTurn()+", gold: "+game.getPlayerGold()+", wealth: "+game.getPlayerWealth());
         System.out.println("What do you want to do?");
-        System.out.println("[1] Show your regions");
+        System.out.println("[1] Show game infos");
         System.out.println("[2] Select a region");
         System.out.println("[3] Pass");
         System.out.println("[4] Menu");
@@ -234,5 +247,8 @@ public class MainTextual {
         for (int i = 0; i < num; i++) {
             System.out.println("[" + (i+1) + "] "+opts[i]);
         }
+    }
+    private static int readInt (Scanner in) {
+        return Integer.parseInt(in.nextLine());
     }
 }

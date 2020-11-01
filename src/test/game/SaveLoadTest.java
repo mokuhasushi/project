@@ -9,6 +9,7 @@ import unsw.gloriaromanus.units.Soldier;
 import unsw.gloriaromanus.world.Province;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,7 +29,7 @@ public class SaveLoadTest {
     }
     @Test
     public void loadingInvalidSoldierFileReturnsNull () {
-        assertNull(SaveLoad.loadSoldier("nope"));
+        assertNull(SaveLoad.loadSoldier("notAFile"));
     }
     @Test
     public void simpleSaveLoadTestArmy() {
@@ -50,7 +51,7 @@ public class SaveLoadTest {
     }
     @Test
     public void loadingInvalidArmyFileReturnsNull () {
-        assertNull(SaveLoad.loadArmy("nope"));
+        assertNull(SaveLoad.loadArmy("notAFile"));
     }
     @Test
     public void simpleSaveLoadTestProvince() {
@@ -78,7 +79,7 @@ public class SaveLoadTest {
     }
     @Test
     public void loadingInvalidProvinceFileReturnsNull () {
-        assertNull(SaveLoad.loadProvince("nope"));
+        assertNull(SaveLoad.loadProvince("notAFile"));
     }
     @Test
     public void simpleSaveLoadTestFaction() {
@@ -105,7 +106,7 @@ public class SaveLoadTest {
     }
     @Test
     public void loadingInvalidFactionFileReturnsNull () {
-        assertNull(SaveLoad.loadFaction("nope"));
+        assertNull(SaveLoad.loadFaction("notAFile"));
     }
     @Test
     public void simpleSaveLoadTestGame() {
@@ -122,6 +123,7 @@ public class SaveLoadTest {
         GameState gameState_in = new GameState();
 
         gameState_in.setFactionsFromArray(new Faction[] {gaul, new Faction("egypt")});
+ //       gameState_in.provincesToOwnerFromFactions();
 
         String filename = "src/test/resources/g1.json";
         try {
@@ -136,9 +138,10 @@ public class SaveLoadTest {
         assertEquals(gameState_in.getFaction("player").getName(), gameState_out.getFaction("player").getName());
         assertEquals(gameState_in.getFaction("gaul").getName(), gameState_out.getFaction("gaul").getName());
         assertEquals(gameState_in.getFaction("gaul").getProvinces().get(0), gameState_out.getFaction("gaul").getProvinces().get(0));
+        assertEquals(gameState_in.getProvince("lyon").getNeighbours().size(), gameState_out.getProvince("lyon").getNeighbours().size());
     }
     @Test
     public void loadingInvalidGameFileReturnsNull () {
-        assertNull(SaveLoad.loadGame("nope"));
+        assertNull(SaveLoad.loadGame("notAFile"));
     }
 }

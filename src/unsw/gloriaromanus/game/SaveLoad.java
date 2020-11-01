@@ -1,6 +1,7 @@
 package unsw.gloriaromanus.game;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -80,14 +81,15 @@ public class SaveLoad {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         File f = new File(filename);
-            f.createNewFile();
-            objectMapper.writeValue(f,game);
+        f.createNewFile();
+        objectMapper.writer(new DefaultPrettyPrinter()).writeValue(f,game);
     }
     public static GameState loadGame(String filename) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
-            return objectMapper.readValue(new File(filename), GameState.class);
+            GameState gs = objectMapper.readValue(new File(filename), GameState.class);
+            return gs;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -192,6 +192,7 @@ public class Province {
         return wealth;
     }
 
+    public void setNeighbours(ArrayList<String> neighbours) {this.neighbours = neighbours;}
     public void addNeighbour(String n) {
         this.neighbours.add(n);
     }
