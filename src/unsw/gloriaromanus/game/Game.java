@@ -55,7 +55,10 @@ public class Game {
                 getFaction(attacking.getOwner()).addProvince(invaded);
                 changeOwnership(invaded, attacking.getOwner());
                 break;
-            case ATTACKER_DEFEATED, DRAW:
+            case ATTACKER_DEFEATED:
+                attacking.addTroops(attacker);
+                break;
+            case DRAW:
                 attacking.addTroops(attacker);
                 break;
         }
