@@ -140,4 +140,16 @@ public class Soldier {
     public void resetMovement() {movement = max_movement;}
 
 
+    public void reduceMovement(int distance) {
+        this.movement -= distance;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

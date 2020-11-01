@@ -13,8 +13,6 @@ public class MeleeEngagement implements Engagement{
         rng = new Random();
     }
 
-    //TODO: Note that all effective attributes in the formula should incorporate the effect of any bonuses/penalties
-    // (such as formations such as phalanx formation, charge bonuses where applicable for cavalry/chariots/elephants).
     @Override
     public int damageDealt(Soldier attacker, Soldier defender) {
         double result = (defender.getNumTroops() / 10.0) * (

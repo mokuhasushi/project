@@ -1,0 +1,16 @@
+{
+  "numTroops":40,
+  "ranged":true,
+  "armour":10,
+  "morale":5,
+  "speed":5,
+  "attack":5,
+  "defenseSkill":2,
+  "shieldDefense":1,
+  "trainingTime":1,
+  "movement":10,
+  "canMove":true,
+  "name":"ranged-artillery",
+  "broken":false,
+  "defeated":false
+}

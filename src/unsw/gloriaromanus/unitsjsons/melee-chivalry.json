@@ -1,0 +1,16 @@
+{
+  "numTroops":30,
+  "ranged":false,
+  "armour":15,
+  "morale":8,
+  "speed":10,
+  "attack":8,
+  "defenseSkill":4,
+  "shieldDefense":2,
+  "trainingTime":2,
+  "movement":15,
+  "canMove":true,
+  "name":"melee-chivalry",
+  "broken":false,
+  "defeated":false
+}

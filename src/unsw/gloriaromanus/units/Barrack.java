@@ -1,7 +1,4 @@
-package unsw.gloriaromanus.player;
-
-import unsw.gloriaromanus.units.SoldierFactory;
-import unsw.gloriaromanus.units.Soldier;
+package unsw.gloriaromanus.units;
 
 public class Barrack {
     private int turnToSlot1 = 0;
@@ -20,6 +17,19 @@ public class Barrack {
     }
 
     public boolean createSoldier(String soldier) {
+        if (soldierSlot1 == null || turnToSlot1 <= 0) {
+            soldierSlot1 = soldierFactory.createSoldier(soldier);
+            turnToSlot1 = soldierSlot1.getTrainingTime();
+            return true;
+        }
+        else if (soldierSlot2 == null || turnToSlot2 <= 0) {
+            soldierSlot2 = soldierFactory.createSoldier(soldier);
+            turnToSlot2 = soldierSlot2.getTrainingTime();
+            return true;
+        }
+        return false;
+    }
+    public boolean createSoldier(SoldierType soldier) {
         if (soldierSlot1 == null || turnToSlot1 <= 0) {
             soldierSlot1 = soldierFactory.createSoldier(soldier);
             turnToSlot1 = soldierSlot1.getTrainingTime();

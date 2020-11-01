@@ -7,13 +7,23 @@ import java.util.ArrayList;
  Antonio
 */
 public class Army {
-    private ArrayList<Soldier> army = new ArrayList<>();
+    ArrayList<Soldier> army = new ArrayList<>();
 
     public Army (ArrayList<Soldier> army) {
         this.army = army;
     }
 
     public Army (){}
+
+    //This getter and setter should never be used.
+    // They are here for json conversion
+    public ArrayList<Soldier> getArmy() {
+        return army;
+    }
+
+    public void setArmy(ArrayList<Soldier> army) {
+        this.army = army;
+    }
 
     public Soldier getUnit(int index){
         return army.get(index);
@@ -35,7 +45,40 @@ public class Army {
 
     public boolean isDefeated() {return army.size() == 0;}
 
-    public void joinArmy (ArrayList<Soldier> other) {
-        army.addAll(other);
+    public void joinArmy (Army other) {
+        for (int i = 0; i < other.getSize(); i++) {
+            army.add(other.getUnit(i));
+        }
+    }
+
+    public void removeTroops(Army other) {
+        for (int i = 0; i < other.getSize(); i++) {
+            army.remove(other.getUnit(i));
+        }
+    }
+
+    public void moved(int distance) {
+        for (Soldier s: army) {
+            s.reduceMovement(distance);
+        }
+    }
+
+    public int getMovement() {
+        int movement = -1;
+        for (Soldier s: army) {
+            if (s.movement < movement)
+                movement = s.movement;
+            else if (movement < 0)
+                movement = s.movement;
+        }
+        return movement;
+    }
+
+    @Override
+    public String toString () {
+        StringBuilder sb = new StringBuilder("");
+        for (Soldier s: army)
+            sb.append(s.toString()+", ");
+        return sb.toString();
     }
 }

@@ -2,8 +2,6 @@ package test.battleresolver;
 
 import org.junit.jupiter.api.Test;
 import unsw.gloriaromanus.battleresolver.RangedEngagement;
-import unsw.gloriaromanus.units.Archer;
-import unsw.gloriaromanus.units.HeavyInfantry;
 import unsw.gloriaromanus.units.Soldier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,8 +11,9 @@ public class RangedEngagementTest {
     @Test
     public void damageDealtIsPositive() {
         RangedEngagement rs = new RangedEngagement();
-        Soldier attacker = new Archer();
-        Soldier defender = new HeavyInfantry();
+        Soldier attacker = new Soldier();
+        attacker.setRanged(true);
+        Soldier defender = new Soldier();
 
         assertTrue(rs.damageDealt(attacker, defender) >= 0);
     }
@@ -22,8 +21,9 @@ public class RangedEngagementTest {
     @Test
     public void meleeDealsZeroDamage() {
         RangedEngagement rs = new RangedEngagement();
-        Soldier attacker = new HeavyInfantry();
-        Soldier defender = new Archer();
+        Soldier attacker = new Soldier();
+        Soldier defender = new Soldier();
+        defender.setRanged(true);
 
         assertEquals(rs.damageDealt(attacker, defender), 0);
     }
