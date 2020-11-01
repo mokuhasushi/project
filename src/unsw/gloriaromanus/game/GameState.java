@@ -74,7 +74,7 @@ public class GameState {
     public GameState() {
         factions = new HashMap<>();
         provincesToOwner = new HashMap<>();
-        battleResolver = BattleResolver.getInstance();
+        battleResolver = new BattleResolver();
         battleResolver.setTextReport(new BattleReporter());
         turn = 0;
         player = new Faction("player");
@@ -85,7 +85,7 @@ public class GameState {
     public GameState(String player) {
         factions = new HashMap<>();
         provincesToOwner = new HashMap<>();
-        battleResolver = BattleResolver.getInstance();
+        battleResolver = new BattleResolver();
         battleResolver.setTextReport(new BattleReporter());
         turn = 0;
         initFactions();
@@ -99,7 +99,7 @@ public class GameState {
     public GameState(String player, Faction [] factions) {
         this.factions = new HashMap<>();
         provincesToOwner = new HashMap<>();
-        battleResolver = BattleResolver.getInstance();
+        battleResolver = new BattleResolver();
         turn = 0;
         setFactionsFromArray(factions);
         this.player = this.factions.get(player);

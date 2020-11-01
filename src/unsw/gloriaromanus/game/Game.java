@@ -81,10 +81,6 @@ public class Game {
         province.setTaxLevel(taxLevel);
     }
 
-    public void recruit(Province province, String soldier) {
-        province.recruit(soldier);
-    }
-
     public void setFactions (Faction[] factions) {
         campaign.setFactionsFromArray(factions);
     }

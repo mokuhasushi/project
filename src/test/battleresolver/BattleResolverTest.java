@@ -19,7 +19,7 @@ For the moment I will move onto other stuff, then come back and
 think of something
  */
 public class BattleResolverTest {
-    BattleResolver battleResolver = BattleResolver.getInstance();
+    BattleResolver battleResolver = new BattleResolver();
     Army attacker;
     Army defender;
 

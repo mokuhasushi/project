@@ -168,9 +168,6 @@ public class Province {
         this.army.joinArmy(army);
     }
 
-    public void recruit(String soldier) {
-        this.barrack.createSoldier(soldier);
-    }
     public void recruit(SoldierType soldier) {
         this.barrack.createSoldier(soldier);
     }

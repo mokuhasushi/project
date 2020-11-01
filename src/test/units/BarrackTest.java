@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import unsw.gloriaromanus.units.Barrack;
 import unsw.gloriaromanus.units.Soldier;
 import unsw.gloriaromanus.units.SoldierFactory;
+import unsw.gloriaromanus.units.SoldierType;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +17,7 @@ public class BarrackTest {
         ssf.setNextSoldier(s);
 
         Barrack b = new Barrack(ssf);
-        assertTrue(b.createSoldier(""));
+        assertTrue(b.createSoldier(SoldierType.MELEE_INFANTRY));
         assertEquals(1, b.getTurnToSlot1());
         assertEquals(0, b.getTurnToSlot2());
         assertNull(b.getSoldierSlot1());
@@ -27,9 +28,9 @@ public class BarrackTest {
         ssf.setNextSoldier(s);
 
         Barrack b = new Barrack(ssf);
-        assertTrue(b.createSoldier(""));
+        assertTrue(b.createSoldier(SoldierType.MELEE_INFANTRY));
         ssf.setNextSoldier(new Soldier());
-        assertTrue(b.createSoldier(""));
+        assertTrue(b.createSoldier(SoldierType.MELEE_INFANTRY));
         assertEquals(1, b.getTurnToSlot1());
         assertEquals(1, b.getTurnToSlot2());
         assertNull(b.getSoldierSlot1());
@@ -41,11 +42,11 @@ public class BarrackTest {
         ssf.setNextSoldier(s);
 
         Barrack b = new Barrack(ssf);
-        assertTrue(b.createSoldier(""));
+        assertTrue(b.createSoldier(SoldierType.MELEE_INFANTRY));
         ssf.setNextSoldier(new Soldier());
-        assertTrue(b.createSoldier(""));
+        assertTrue(b.createSoldier(SoldierType.MELEE_INFANTRY));
         ssf.setNextSoldier(new Soldier());
-        assertFalse(b.createSoldier(""));
+        assertFalse(b.createSoldier(SoldierType.MELEE_INFANTRY));
     }
     @Test
     public void createSoldierReturnsSoldierAfterRightNOfTurn() {
@@ -53,7 +54,7 @@ public class BarrackTest {
         ssf.setNextSoldier(s);
 
         Barrack b = new Barrack(ssf);
-        assertTrue(b.createSoldier(""));
+        assertTrue(b.createSoldier(SoldierType.MELEE_INFANTRY));
         assertEquals(1, b.getTurnToSlot1());
         assertEquals(0, b.getTurnToSlot2());
         assertNull(b.getSoldierSlot1());
@@ -68,7 +69,7 @@ public class BarrackTest {
         ssf.setNextSoldier(s);
 
         Barrack b = new Barrack(ssf);
-        assertTrue(b.createSoldier(""));
+        assertTrue(b.createSoldier(SoldierType.MELEE_INFANTRY));
         assertEquals(1, b.getTurnToSlot1());
         assertEquals(0, b.getTurnToSlot2());
         assertNull(b.getSoldierSlot1());
@@ -86,9 +87,9 @@ public class BarrackTest {
         Barrack b = new Barrack(ssf);
 
         ssf.setNextSoldier(s1);
-        assertTrue(b.createSoldier(""));
+        assertTrue(b.createSoldier(SoldierType.MELEE_INFANTRY));
         ssf.setNextSoldier(s2);
-        assertTrue(b.createSoldier(""));
+        assertTrue(b.createSoldier(SoldierType.MELEE_INFANTRY));
 
         assertEquals(1, b.getTurnToSlot1());
         assertEquals(2, b.getTurnToSlot2());
@@ -110,8 +111,9 @@ public class BarrackTest {
         void setNextSoldier(Soldier s){
             this.nextSoldier = s;
         }
+
         @Override
-        public Soldier createSoldier(String soldier){
+        public Soldier createSoldier(SoldierType soldier){
             return nextSoldier;
         }
     }

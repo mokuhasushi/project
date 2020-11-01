@@ -27,7 +27,7 @@ public class BattleReporterTest {
 
         OutputStream out = new ByteArrayOutputStream();
 
-        BattleResolver battleResolver = BattleResolver.getInstance();
+        BattleResolver battleResolver = new BattleResolver();
         battleResolver.setTextReport(new BattleReporter(new PrintStream(out)));
 
         battleResolver.battle(a1, a2);

@@ -7,15 +7,13 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Random;
 
-// Using Singleton pattern
-// TODO: Implement observer. This also gives meaning to the singleton
 public class BattleResolver {
     private final Random rng;
     private static BattleResolver instance = null;
     private PropertyChangeListener textReport;
     private PropertyChangeSupport support;
 
-    protected BattleResolver() {
+    public BattleResolver() {
         this.rng = new Random();this.support = new PropertyChangeSupport(this);
     }
 
@@ -28,12 +26,6 @@ public class BattleResolver {
         if (this.textReport != null) {
             this.textReport = null;
         }
-    }
-
-    public static BattleResolver getInstance() {
-        if (instance == null)
-            instance = new BattleResolver();
-        return instance;
     }
 
     public BattleResult battle(Army attacker, Army defender) {
