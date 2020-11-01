@@ -46,7 +46,7 @@ public class Game {
         BattleResult battleResult = battleResolver.battle(attacker, invaded.getArmy());
         Faction defender = getFaction(invaded.getOwner());
         switch (battleResult) {
-            case ATTACKER_WON -> {
+            case ATTACKER_WON:
                 defender.removeProvince(invaded);
                 if(defender.getProvinces().size() == 0)
                     if (defender.equals(player))
@@ -54,8 +54,10 @@ public class Game {
                 invaded.conqueredBy(attacking.getOwner(), attacker);
                 getFaction(attacking.getOwner()).addProvince(invaded);
                 changeOwnership(invaded, attacking.getOwner());
-            }
-            case ATTACKER_DEFEATED, DRAW -> attacking.addTroops(attacker);
+                break;
+            case ATTACKER_DEFEATED, DRAW:
+                attacking.addTroops(attacker);
+                break;
         }
     }
 

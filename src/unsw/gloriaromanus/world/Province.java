@@ -90,23 +90,24 @@ public class Province {
     public void setTaxLevel (TaxLevel taxLevel) {
         this.taxLevel = taxLevel;
         switch (taxLevel) {
-            case LOW_TAX -> {
+            case LOW_TAX:
                 taxes = 10;
                 wealthGrowth = 10;
-            }
-            case NORMAL_TAX -> {
+                break;
+
+            case NORMAL_TAX :
                 taxes = 15;
                 wealthGrowth = 0;
-            }
-            case HIGH_TAX -> {
+                break;
+            case HIGH_TAX:
                 taxes = 20;
                 wealthGrowth = -10;
-            }
-            case VERY_HIGH_TAX -> {
+                break;
+            case VERY_HIGH_TAX:
                 taxes = 25;
                 wealthGrowth = -30;
                 moraleModifier = -1;
-            }
+                break;
         }
     }
 

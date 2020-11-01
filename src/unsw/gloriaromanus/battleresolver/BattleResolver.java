@@ -56,30 +56,35 @@ public class BattleResolver {
                 s = new Skirmish(soldierAttacker, soldierDefender);
             SkirmishReport sr = s.solve();
             switch (sr.getResult()) {
-                case U1_DEFEAT -> attacker.deleteUnit(indexAttacker);
-                case U2_DEFEAT -> defender.deleteUnit(indexDefender);
-                case U1_FLEE -> {
+                case U1_DEFEAT:
+                    attacker.deleteUnit(indexAttacker);
+                    break;
+                case U2_DEFEAT :
+                    defender.deleteUnit(indexDefender);
+                    break;
+                case U1_FLEE :
                     soldierAttacker.setBroken(false);
                     attackerRouted.addUnit(soldierAttacker);
                     attacker.deleteUnit(indexAttacker);
-                }
-                case U2_FLEE -> {
+                    break;
+                case U2_FLEE :
                     soldierDefender.setBroken(false);
                     defenderRouted.addUnit(soldierDefender);
                     defender.deleteUnit(indexDefender);
-                }
-                case DRAW_DEFEATED -> {
+                    break;
+                case DRAW_DEFEATED :
                     attacker.deleteUnit(indexAttacker);
                     defender.deleteUnit(indexDefender);
-                }
-                case DRAW_FLED -> {
+                    break;
+                case DRAW_FLED :
                     soldierAttacker.setBroken(false);
                     soldierDefender.setBroken(false);
                     attackerRouted.addUnit(soldierAttacker);
                     defenderRouted.addUnit(soldierDefender);
                     attacker.deleteUnit(indexAttacker);
                     defender.deleteUnit(indexDefender);
-                }
+                    break;
+
             }
             engagementsTotal += sr.getNumEngagements();
         }
