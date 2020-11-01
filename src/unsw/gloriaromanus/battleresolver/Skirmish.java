@@ -100,7 +100,7 @@ public class Skirmish {
                 support.firePropertyChange("", null, "Both units flee the battle!");
                 return new SkirmishReport(u1, u2, SkirmishResult.DRAW_FLED, engageCounter);
             } else {
-                int[] casualties = engagement.casualties(u1, u2);
+                int[] casualties = engagement.casualties(u1, u2);//TODO check specs
                 support.firePropertyChange("", null, "Your "+u1.getName()+" suffered "+casualties[0]+
                         " casualties, the enemy "+u2.getName()+" "+casualties[1]);
                 if (breakChances(u1, u2, casualties[0], casualties[1]) > rng.nextDouble()) {
