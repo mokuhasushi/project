@@ -214,8 +214,6 @@ public class GameState {
     }
 
     public Province getProvince(String province) {
-        System.out.println(factions);
-        System.out.println(provincesToOwner);
         return factions.get(provincesToOwner.get(province)).getProvince(province);
     }
     public int getGoal() {

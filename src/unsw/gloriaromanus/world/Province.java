@@ -179,8 +179,6 @@ public class Province {
         this.wealth = Math.max(0, wealth+wealthGrowth);
         justConquered = false;
         barrack.turnPassed();
-        // TODO: Here implementing an observer would be good sense.
-        // Since it's just two slots I leave it for later
         Soldier s = barrack.getSoldierSlot1();
         if (s != null)
             army.addUnit(s);

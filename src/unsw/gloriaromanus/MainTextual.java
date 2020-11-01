@@ -37,7 +37,7 @@ public class MainTextual {
                     System.out.println("Select AI:");
                     System.out.println("(Future release)");
                     System.out.println("Select Faction:");
-                    System.out.println("TODO:");//TODO
+                    System.out.println("(Future release)");
                     Game.newGame("Rome");
                     game = Game.getInstance();
                     state = State.GAME_RUNNING;
@@ -141,7 +141,6 @@ public class MainTextual {
                                 System.out.println(neighbours.size());
                                 neighbours.add(game.getProvince(s));}
                             System.out.println("Adjacent provinces: ");
-                            System.out.println(neighbours);
                             for (int i = 0; i < neighbours.size(); i++) {
                                 System.out.println("[" + (i+1) + "] " +
                                         neighbours.get(i).getName() + neighbours.get(i).getOwner());

@@ -25,9 +25,6 @@ public class SoldierFactory {
         }
     }
 
-    public Soldier createSoldier(String soldier){
-        return null;
-    }
     public Soldier createSoldier(SoldierType soldierType){
         return nameToSoldier.get(soldierType).clone();
     }

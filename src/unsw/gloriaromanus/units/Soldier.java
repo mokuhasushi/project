@@ -20,7 +20,7 @@ public class Soldier {
     int max_movement;
     boolean canMove;
     String name;
-
+    int cost;
 
     public Soldier() {
         this.numTroops = 1;
@@ -37,12 +37,13 @@ public class Soldier {
         this.movement = max_movement;
         this.canMove = true;
         this.name = "";
+        this.cost = 0;
     }
 
     public Soldier(int numTroops, boolean ranged, int armour,
                    int morale, int speed, int attack,
                    int defenseSkill, int shieldDefense, int trainingTime,
-                   int max_movement, String name) {
+                   int max_movement, String name, int cost) {
         this.numTroops = numTroops;
         this.ranged = ranged;
         this.armour = armour;
@@ -62,7 +63,7 @@ public class Soldier {
     public Soldier clone () {
         return new Soldier(this.numTroops, this.ranged, this.armour, this.morale,
                 this.speed, this.attack, this.defenseSkill, this.shieldDefense, this.trainingTime,
-                this.max_movement, this.name);
+                this.max_movement, this.name, this.cost);
     }
 
     public int getMovement() {
@@ -104,6 +105,14 @@ public class Soldier {
         return trainingTime;
     }
     public String getName() {return this.name;}
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
 
     public void addTroops(int numTroops) {this.numTroops += numTroops;}
     public void removeTroops(int numTroops) {this.numTroops -= Math.min(this.numTroops, numTroops);}

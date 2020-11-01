@@ -100,12 +100,6 @@ public class Skirmish {
                 support.firePropertyChange("", null, "Both units flee the battle!");
                 return new SkirmishReport(u1, u2, SkirmishResult.DRAW_FLED, engageCounter);
             } else {
-                /*
-                Combat case.
-                From the specification I got that a unit can break even if the other unit is defeated.
-                TODO: check if it is the intended behavior
-                 https://github.com/indexie/project#breaking-a-unit
-                 */
                 int[] casualties = engagement.casualties(u1, u2);
                 support.firePropertyChange("", null, "Your "+u1.getName()+" suffered "+casualties[0]+
                         " casualties, the enemy "+u2.getName()+" "+casualties[1]);

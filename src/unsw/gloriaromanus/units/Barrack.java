@@ -16,6 +16,7 @@ public class Barrack {
         this.soldierFactory = sf;
     }
 
+/*
     public boolean createSoldier(String soldier) {
         if (soldierSlot1 == null || turnToSlot1 <= 0) {
             soldierSlot1 = soldierFactory.createSoldier(soldier);
@@ -29,6 +30,7 @@ public class Barrack {
         }
         return false;
     }
+*/
     public boolean createSoldier(SoldierType soldier) {
         if (soldierSlot1 == null || turnToSlot1 <= 0) {
             soldierSlot1 = soldierFactory.createSoldier(soldier);
