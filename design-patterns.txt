@@ -1,0 +1,17 @@
+In order to accomplish good design, 5 patterns were used:
+ - Singleton: for the Game class, since only one instance of Game should be running,
+    and it must be available from the whole project (thinking about later javafx classes)
+ - Prototype+Factory: for the Soldier creation. SoldierFactory also accepts the faction
+    name to create special soldiers. It stores a map of SoldierType -> Soldier, where the
+    prototypes of Soldier are stored. When a new Soldier needs to be created the clone()
+    method of Soldier provides the right new instance. This is much lighter than loading
+    the single Soldier's statistics each time a new one is required, or creating single
+    classes for each Soldier.
+ - Observer: for presenting to the user the BattleResolver's battles. Each time something
+    relevant happens (battle started, engagement results, battle result) the TextReporter
+    prints/presents it. A direct advantage can be seen, as now the output is presented on
+    StdOut, but it is easy to adapt it for javafx or other uses, without touching the
+    BattleResolver code.
+ - Strategy: in the Skirmish class, to use the right Engagement. At the creation of the
+    Skirmish the correct Engagement is created (depending on the units involved). This
+    simplifies the code, since no other checks are required.
