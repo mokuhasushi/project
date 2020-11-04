@@ -6,6 +6,7 @@ import unsw.gloriaromanus.units.*;
 import java.util.ArrayList;
 
 public class Province {
+
     private int wealth;
     private int wealthGrowth;
     private int taxes;
@@ -18,31 +19,8 @@ public class Province {
     private Barrack barrack;
     private ArrayList<String> neighbours;
 
-    public Province(int wealth, int wealthGrowth, int taxes, int taxLevel, int moraleModifier, String name, String owner, Army army, boolean justConquered, Barrack barrack) {
-        this.wealth = wealth;
-        this.wealthGrowth = wealthGrowth;
-        this.taxes = taxes;
-        this.taxLevel = TaxLevel.values()[taxLevel];
-        this.moraleModifier = moraleModifier;
-        this.name = name;
-        this.owner = owner;
-        this.army = army;
-        this.justConquered = justConquered;
-        this.barrack = barrack;
-        this.neighbours = new ArrayList<>();
-    }
     public Province(){}
 
-    public Province(int wealth, int wealthGrowth, int taxes, TaxLevel taxLevel, int moraleModifier, String name, Army army, Faction owner) {
-        this.wealth = wealth;
-        this.wealthGrowth = wealthGrowth;
-        this.taxes = taxes;
-        this.taxLevel = taxLevel;
-        this.moraleModifier = moraleModifier;
-        this.name = name;
-        this.army = army;
-        this.neighbours = new ArrayList<>();
-    }
     public Province(String name, String owner) {
         this.wealth = 100;
         this.wealthGrowth = 0;
@@ -67,18 +45,18 @@ public class Province {
         this.justConquered = false;
         this.neighbours = new ArrayList<>();
     }
-    public Province(String name, Faction owner) {
-        this.wealth = 100;
-        this.wealthGrowth = 0;
-        this.taxes = 15;
-        this.taxLevel = TaxLevel.NORMAL_TAX;
-        this.moraleModifier = 0;
+    public Province(int wealth, int wealthGrowth, int taxes, TaxLevel taxLevel, int moraleModifier, String name, String owner, Army army, boolean justConquered, Barrack barrack, ArrayList<String> neighbours) {
+        this.wealth = wealth;
+        this.wealthGrowth = wealthGrowth;
+        this.taxes = taxes;
+        this.taxLevel = taxLevel;
+        this.moraleModifier = moraleModifier;
         this.name = name;
-        this.owner = owner.getName();
-        this.army = new Army();
-        this.justConquered = false;
-        this.barrack = new Barrack(owner.getName());
-        this.neighbours = new ArrayList<>();
+        this.owner = owner;
+        this.army = army;
+        this.justConquered = justConquered;
+        this.barrack = barrack;
+        this.neighbours = neighbours;
     }
 
     public int getTaxRevenue () {
@@ -92,7 +70,6 @@ public class Province {
                 taxes = 10;
                 wealthGrowth = 10;
                 break;
-
             case NORMAL_TAX :
                 taxes = 15;
                 wealthGrowth = 0;
@@ -161,6 +138,7 @@ public class Province {
         this.army.addUnit(s);
     }
 
+    // This method accepts the army which has moved
     public void moveTroops(Army army) {
         army.moved(1);
         this.army.joinArmy(army);

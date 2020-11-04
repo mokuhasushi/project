@@ -27,9 +27,9 @@ public class GameInvasionTest {
     @BeforeEach
     public void init() {
         attacker = new Faction("attacker");
-        attacking = new Province("roma", attacker);
+        attacking = new Province("roma", attacker.getName());
         defender = new Faction("defender");
-        invaded = new Province("egypt", defender);
+        invaded = new Province("egypt", defender.getName());
         attacker.addProvince(attacking);
         defender.addProvince(invaded);
         GameState c = new GameState(attacker.getName(),new Faction[]{attacker,defender});

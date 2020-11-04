@@ -24,8 +24,8 @@ public class GameTest {
     @BeforeEach
     public void init() {
         player = new Faction("player");
-        from = new Province("roma", player);
-        to = new Province("egypt", player);
+        from = new Province("roma", player.getName());
+        to = new Province("egypt", player.getName());
         player.addProvince(from);
         player.addProvince(to);
         game = Game.getInstance(new GameState(player.getName(), new Faction[]{player}));
