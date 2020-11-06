@@ -133,13 +133,7 @@ public class Game {
             ai.playTurn();
         }
         campaign.addTurn();
-        int totalWealth = 0;
-        for (Province p : player.getProvinces()) {
-            p.update();
-            player.addTreasure(p.getTaxRevenue());
-            totalWealth += p.getWealth();
-        }
-        player.setWealth(totalWealth);
+        player.update();
         return false;
     }
 

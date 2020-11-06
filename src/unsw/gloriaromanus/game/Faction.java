@@ -67,6 +67,9 @@ public class Faction {
     public int getTreasure() {
         return treasure;
     }
+    public void setTreasure (int treasure) {
+        this.treasure = treasure;
+    }
 
     @Override
     public String toString() {
@@ -83,11 +86,21 @@ public class Faction {
         }
         return p;
     }
-    public int updateWealth () {
+/*
+    public void updateWealth () {
         int wealth = 0;
         for (Province p: provinces)
             wealth += p.getWealth();
         this.wealth = wealth;
-        return wealth;
+    }
+*/
+    public void update() {
+        int wealth = 0;
+        for (Province p: provinces){
+            p.update();
+            this.addTreasure(p.getTaxRevenue());
+            wealth += p.getWealth();
+        }
+        this.wealth = wealth;
     }
 }

@@ -126,7 +126,7 @@ public class GameState {
      * This can be avoided by creating a config file with all provinces
      * TODO
      */
-    private void initArmies() {
+    public void initArmies() {
         for (String province: provincesToOwner.keySet()) {
             Province p = getProvince(province);
             Army army = new Army();
@@ -140,7 +140,7 @@ public class GameState {
     /**
      * reads from config file all the adjacencies of Provinces and initialize them
      */
-    private void initProvince() {
+    public void initProvince() {
         String content = null;
         try {
             content = Files.readString(Paths.get("src/unsw/gloriaromanus/province_adjacency_matrix_fully_connected.json"));
@@ -159,7 +159,7 @@ public class GameState {
     }
 
 
-    private void initFactions() {
+    public void initFactions() {
         Map<String, Faction> factions = getFactionsFromConfigFile();
         if (factions == null) {
             System.err.println("Something went wrong in newGame initialization!");
@@ -174,7 +174,7 @@ public class GameState {
      * Reads a json with the initial province ownerships and initializes the factions
      * @return a map containing the factions
      */
-    private static Map<String, Faction> getFactionsFromConfigFile() {
+    public static Map<String, Faction> getFactionsFromConfigFile() {
         String content = null;
         try {
             content = Files.readString(Paths.get(
