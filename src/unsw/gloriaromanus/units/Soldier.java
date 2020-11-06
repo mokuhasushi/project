@@ -60,6 +60,10 @@ public class Soldier {
         this.name = name;
     }
 
+    /**
+     * For the Prototype pattern
+     * @return a clone of this soldier
+     */
     public Soldier clone () {
         return new Soldier(this.numTroops, this.ranged, this.armour, this.morale,
                 this.speed, this.attack, this.defenseSkill, this.shieldDefense, this.trainingTime,

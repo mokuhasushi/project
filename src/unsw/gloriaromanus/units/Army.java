@@ -63,6 +63,10 @@ public class Army {
         }
     }
 
+    /**
+     * movement of an Army equals its slowest soldier movement
+     * @return movement of Army
+     */
     public int getMovement() {
         int movement = -1;
         for (Soldier s: army) {

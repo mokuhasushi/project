@@ -22,7 +22,7 @@ import java.util.Random;
 public class GameState {
     private Map<String, Faction> factions;
     private static Map<String, String> provincesToOwner;
-    private Faction player;
+    private String player;
 
     private int goal;
     @JsonIgnore private BattleResolver battleResolver;
@@ -33,6 +33,10 @@ public class GameState {
         return factions;
     }
 
+    /**
+     * Set the factions from a Map, and updates also provinceToOwner
+     * @param factions Map
+     */
     public void setFactions(Map<String, Faction> factions) {
         this.factions = factions;
         provincesToOwner = new HashMap<>();
@@ -41,7 +45,7 @@ public class GameState {
                 provincesToOwner.put(p.getName(), f.getName());
     }
 
-    public void setPlayer(Faction player) {
+    public void setPlayer(String player) {
         this.player = player;
     }
 
@@ -49,6 +53,11 @@ public class GameState {
         this.turn = turn;
     }
 
+    /**
+     * Once the game has been won, if the player decides to keep playing,
+     * it must not be presented again the Victory screen
+     * @return won
+     */
     public boolean isWon() {
         return won;
     }
@@ -64,6 +73,10 @@ public class GameState {
     public void setProvincesToOwner(Map<String, String> provincesToOwner) {
         GameState.provincesToOwner = provincesToOwner;
     }
+
+    /**
+     * updates probincesToOwner according to the factions Map
+     */
     public void provincesToOwnerFromFactions () {
         provincesToOwner = new HashMap<>();
         for (Faction f: factions.values())
@@ -71,15 +84,10 @@ public class GameState {
                 provincesToOwner.put(p.getName(), f.getName());
     }
 
-    public GameState() {
-        factions = new HashMap<>();
-        provincesToOwner = new HashMap<>();
-        battleResolver = new BattleResolver();
-        battleResolver.setTextReport(new BattleReporter());
-        turn = 0;
-        player = new Faction("player");
-        this.goal = new Random().nextInt(7);
-    }
+    /**
+     * for JSON serialization and tests
+     */
+    public GameState() {};
 
     //This one should be called!
     public GameState(String player) {
@@ -91,21 +99,31 @@ public class GameState {
         initFactions();
         initProvince();
         initArmies();
-        this.player = factions.get(player);
+        this.player = player;
         this.goal = new Random().nextInt(7);
     }
 
 
+    /**
+     * For testing purposes
+     * @param player String
+     * @param factions Array Faction
+     */
     public GameState(String player, Faction [] factions) {
         this.factions = new HashMap<>();
         provincesToOwner = new HashMap<>();
         battleResolver = new BattleResolver();
         turn = 0;
         setFactionsFromArray(factions);
-        this.player = this.factions.get(player);
+        this.player = player;
         this.goal = new Random().nextInt(7);
     }
 
+    /**
+     * Starts each province with two units.
+     * This can be avoided by creating a config file with all provinces
+     * TODO
+     */
     private void initArmies() {
         for (String province: provincesToOwner.keySet()) {
             Province p = getProvince(province);
@@ -117,6 +135,9 @@ public class GameState {
         }
     }
 
+    /**
+     * reads from config file all the adjacencies of Provinces and initialize them
+     */
     private void initProvince() {
         String content = null;
         try {
@@ -145,7 +166,12 @@ public class GameState {
         this.setFactions(factions);
 
     }
-    //From GloriaRomanusController, adapted
+
+    /**
+     * From GloriaRomanusController, adapted
+     * Reads a json with the initial province ownerships and initializes the factions
+     * @return a map containing the factions
+     */
     private static Map<String, Faction> getFactionsFromConfigFile() {
         String content = null;
         try {
@@ -184,8 +210,8 @@ public class GameState {
     }
 
     public Faction getFaction(String faction) {
-        if (faction.equals(player.getName()))
-            return player;
+        if (faction.equals(player))
+            return factions.get(player);
         return factions.get(faction);
     }
 
@@ -201,6 +227,10 @@ public class GameState {
         turn += 1;
     }
 
+    /**
+     * This is only used for test setup
+     * @param factions array of Faction
+     */
     public void setFactionsFromArray(Faction[] factions) {
         this.factions = new HashMap<>();
         for (Faction f: factions) {
@@ -209,8 +239,15 @@ public class GameState {
         provincesToOwnerFromFactions();
     }
 
-    public Faction getPlayer() {
+    /**
+     * for Json serializer
+     * @return String
+     */
+    public String getPlayer() {
         return player;
+    }
+    public Faction getPlayerFaction() {
+        return factions.get(player);
     }
 
     public Province getProvince(String province) {
@@ -224,14 +261,19 @@ public class GameState {
         this.goal = goal;
     }
     public boolean conquestGoal() {
-        return player.getProvinces().size() == provincesToOwner.size();
+        return factions.get(player).getProvinces().size() == provincesToOwner.size();
     }
     public boolean treasureGoal() {
-        return player.getTreasure() > 100000;
+        return factions.get(player).getTreasure() > 100000;
     }
     public boolean wealthGoal() {
-        return player.getWealth() > 400000;
+        return factions.get(player).getWealth() > 400000;
     }
+
+    /**
+     * Since there are only 8 win conditions possible, it makes sense to hard code them
+     * @return if the player has won
+     */
     public boolean winGoals() {
         switch (goal) {
             case 0:
@@ -254,6 +296,11 @@ public class GameState {
                 return false;
         }
     }
+
+    /**
+     * If the player has already won, it must return always false.
+     * @return true if won and never won before
+     */
     public boolean hasWon () {
         if (winGoals() && !won){
             won = true;
@@ -287,6 +334,11 @@ public class GameState {
         }
     }
 
+    /**
+     * Updates provinceToOwner with a new owner for invaded Province
+     * @param invaded Province
+     * @param owner String
+     */
     public void changeOwnership(Province invaded, String owner) {
         provincesToOwner.replace(invaded.getName(), owner);
     }

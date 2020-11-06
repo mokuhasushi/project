@@ -28,7 +28,7 @@ public class GameStateTest {
         gaul = new Faction("gaul");
         gaul.addProvince(dalmatia);
         gs.setFactionsFromArray(new Faction[]{player, gaul});
-        gs.setPlayer(player);
+        gs.setPlayer("rome");
     }
     @Test
     public void wealthGoalSuccess() {

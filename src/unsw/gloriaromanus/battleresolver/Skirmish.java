@@ -21,8 +21,12 @@ public class Skirmish {
     private final Random rng;
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-    // Constructor instantiates engagement with the right instance
-    // Strategy pattern
+    /**
+     * Constructor instantiates engagement with the right instance
+     * Implementing the strategy pattern
+     * @param u1 first soldier
+     * @param u2 second soldier
+     */
     public Skirmish (Soldier u1, Soldier u2) {
         this.u1 = u1;
         this.u2 = u2;
@@ -36,11 +40,20 @@ public class Skirmish {
         }
         else engagement = new MeleeEngagement();
     }
-    public Skirmish (Soldier u1, Soldier u2, PropertyChangeListener textReport) {
+
+    /**
+     * Constructor instantiates engagement with the right instance
+     * Implementing the strategy pattern
+     * Firing changes to reporter (Observer pattern)
+     * @param u1 Soldier
+     * @param u2 Soldier
+     * @param reporter Observer
+     */
+    public Skirmish (Soldier u1, Soldier u2, PropertyChangeListener reporter) {
         this.u1 = u1;
         this.u2 = u2;
         rng = new Random();
-        support.addPropertyChangeListener(textReport);
+        support.addPropertyChangeListener(reporter);
 
         if (u1.isRanged() != u2.isRanged()) {
             engagement = new MixedEngagement();
@@ -66,7 +79,10 @@ public class Skirmish {
         this.support.addPropertyChangeListener(listener);
     }
 
-    //solves the engagement between two units
+    /**
+     * Solves the skirmish between two units
+     * @return a SkirmishReport, containing the units, the result, and the engagement counter
+     */
     public SkirmishReport solve () {
         support.firePropertyChange("", null, "Your "+u1.getName()+" engages enemy "+u2.getName());
         while (true) {
@@ -134,7 +150,14 @@ public class Skirmish {
 
     }
 
-    //calculates the chances of the unit breaking
+    /**
+     * Calculates the chances of the unit soldier breaking
+     * @param soldier unit to break
+     * @param enemy enemy unit
+     * @param casualtiesUnit the casualties of the unit, to calculate chances
+     * @param casualtiesEnemy the casualties of the enemy
+     * @return a double 0.05 &lt;= x &lt;= 1, containing the chances
+     */
     public static double breakChances(Soldier soldier, Soldier enemy, int casualtiesUnit, int casualtiesEnemy) {
         int base = clamp(0, 100 - soldier.getMorale()*10,100);
         double addition =
@@ -144,7 +167,12 @@ public class Skirmish {
         return clamp(5, base+addition, 100) / 100;
     }
 
-    //calculates the chances of the unit fleeing
+    /**
+     * Calculates the chances of the unit fleeing
+     * @param fleeing Soldier
+     * @param pursuing Soldier
+     * @return a double 0.1 &lt;= x &lt;= 100
+     */
     public static double fleeChances(Soldier fleeing, Soldier pursuing) {
         return (clamp(10, 50 + 10.0 * (fleeing.getSpeed() - pursuing.getSpeed()), 100))/100;
     }

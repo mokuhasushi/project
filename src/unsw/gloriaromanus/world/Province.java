@@ -101,6 +101,11 @@ public class Province {
 
     }
 
+    /**
+     * Updates the Province according to the new Owner
+     * @param faction String
+     * @param army Army
+     */
     public void conqueredBy(String faction, Army army) {
         this.army = army;
         this.owner = faction;
@@ -148,6 +153,9 @@ public class Province {
         this.barrack.createSoldier(soldier);
     }
 
+    /**
+     * Updates the province for the passed turn
+     */
     public void update() {
         this.wealth = Math.max(0, wealth+wealthGrowth);
         justConquered = false;

@@ -122,8 +122,8 @@ public class SaveLoadTest {
 
         GameState gameState_in = new GameState();
 
-        gameState_in.setFactionsFromArray(new Faction[] {gaul, new Faction("egypt")});
- //       gameState_in.provincesToOwnerFromFactions();
+        gameState_in.setFactionsFromArray(new Faction[] {faction, gaul, new Faction("egypt")});
+        gameState_in.setPlayer(faction.getName());
 
         String filename = "src/test/resources/g1.json";
         try {

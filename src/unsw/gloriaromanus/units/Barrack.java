@@ -16,21 +16,12 @@ public class Barrack {
         this.soldierFactory = sf;
     }
 
-/*
-    public boolean createSoldier(String soldier) {
-        if (soldierSlot1 == null || turnToSlot1 <= 0) {
-            soldierSlot1 = soldierFactory.createSoldier(soldier);
-            turnToSlot1 = soldierSlot1.getTrainingTime();
-            return true;
-        }
-        else if (soldierSlot2 == null || turnToSlot2 <= 0) {
-            soldierSlot2 = soldierFactory.createSoldier(soldier);
-            turnToSlot2 = soldierSlot2.getTrainingTime();
-            return true;
-        }
-        return false;
-    }
-*/
+    /**
+     * Sets up a slot with a soldier, if there are any empty.
+     * Returns true if the operation has success
+     * @param soldier SoldierType
+     * @return true if success
+     */
     public boolean createSoldier(SoldierType soldier) {
         if (soldierSlot1 == null || turnToSlot1 <= 0) {
             soldierSlot1 = soldierFactory.createSoldier(soldier);
@@ -58,6 +49,10 @@ public class Barrack {
         this.turnToSlot2 = turnToSlot2 - 1;
     }
 
+    /**
+     *
+     * @return null if the Soldier isn't ready or not set
+     */
     public Soldier getSoldierSlot1() {
         Soldier s = soldierSlot1;
         if (turnToSlot1 == 0){
@@ -66,6 +61,10 @@ public class Barrack {
         return null;
     }
 
+    /**
+     *
+     * @return null if the Soldier isn't ready or not set
+     */
     public Soldier getSoldierSlot2() {
         Soldier s = soldierSlot2;
         if (turnToSlot2 == 0){
