@@ -12,5 +12,6 @@
   "canMove":true,
   "name":"melee-infantry",
   "broken":false,
-  "defeated":false
+  "defeated":false,
+  "cost": 100
 }

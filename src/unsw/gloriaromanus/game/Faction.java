@@ -1,5 +1,6 @@
 package unsw.gloriaromanus.game;
 
+import unsw.gloriaromanus.units.SoldierFactory;
 import unsw.gloriaromanus.world.Province;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ public class Faction {
     private int wealth;
     private int treasure;
     private String name;
+    private SoldierFactory soldierFactory;
 
     public Faction() {}
 
@@ -17,6 +19,13 @@ public class Faction {
         this.name = name;
         this.wealth = 0;
         this.treasure = 0;
+        this.soldierFactory = new SoldierFactory(name);
+    }
+
+    //TODO: pass this factory around, instead of creating/destroying one each time
+    //      each time a province changes its state/is created
+    public SoldierFactory getSoldierFactory() {
+        return soldierFactory;
     }
 
     public ArrayList<Province> getProvinces() {

@@ -12,5 +12,6 @@
   "canMove":true,
   "name":"melee-artillery",
   "broken":false,
-  "defeated":false
+  "defeated":false,
+  "cost": 150
 }

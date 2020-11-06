@@ -105,31 +105,62 @@ public class MainTextual {
                             System.out.println("There are "+ slots +" slots available");
                             if (slots != 0){
                                 System.out.println("Which unit to train?");
-                                printAListOfOptions(6, new String[] {"melee infantry", "melee chivalry",
-                                    "melee artillery", "ranged infantry", "ranged chivalry", "ranged artillery"});
+                                printAListOfOptions(6, new String[] {"melee infantry: 100", "melee chivalry: 180",
+                                    "melee artillery: 150", "ranged infantry: 100", "ranged chivalry: 150", "ranged artillery: 160"});
+                                boolean recruited;
                                 int choice1 = readInt(in);
-                                    switch (choice1) {
-                                        case 1:
-                                            province.recruit(SoldierType.MELEE_INFANTRY);
-                                            break;
-                                        case 2:
-                                            province.recruit(SoldierType.MELEE_CHIVALRY);
-                                            break;
-                                        case 3:
-                                            province.recruit(SoldierType.MELEE_ARTILLERY);
-                                            break;
-                                        case 4:
-                                            province.recruit(SoldierType.RANGED_INFANTRY);
-                                            break;
-                                        case 5:
-                                            province.recruit(SoldierType.RANGED_CHIVALRY);
-                                            break;
-                                        case 6:
-                                            province.recruit(SoldierType.RANGED_ARTILLERY);
-                                            break;
-                                        default:
-                                            break;
-                                    }
+                                switch (choice1) {
+                                    case 1:
+                                        recruited = game.recruit(province, SoldierType.MELEE_INFANTRY);
+                                        break;
+                                    case 2:
+                                        recruited = game.recruit(province, SoldierType.MELEE_CHIVALRY);
+                                        break;
+                                    case 3:
+                                        recruited = game.recruit(province, SoldierType.MELEE_ARTILLERY);
+                                        break;
+                                    case 4:
+                                        recruited = game.recruit(province, SoldierType.RANGED_INFANTRY);
+                                        break;
+                                    case 5:
+                                        recruited = game.recruit(province, SoldierType.RANGED_CHIVALRY);
+                                        break;
+                                    case 6:
+                                        recruited = game.recruit(province, SoldierType.RANGED_ARTILLERY);
+                                        break;
+                                    default:
+                                        recruited = false;
+                                        break;
+                                }
+/*
+                                switch (choice1) {
+                                    case 1:
+                                        recruited = game.recruit(game.getPlayer(), province, SoldierType.MELEE_INFANTRY);
+                                        break;
+                                    case 2:
+                                        recruited = game.recruit(game.getPlayer(), province, SoldierType.MELEE_CHIVALRY);
+                                        break;
+                                    case 3:
+                                        recruited = game.recruit(game.getPlayer(), province, SoldierType.MELEE_ARTILLERY);
+                                        break;
+                                    case 4:
+                                        recruited = game.recruit(game.getPlayer(), province, SoldierType.RANGED_INFANTRY);
+                                        break;
+                                    case 5:
+                                        recruited = game.recruit(game.getPlayer(), province, SoldierType.RANGED_CHIVALRY);
+                                        break;
+                                    case 6:
+                                        recruited = game.recruit(game.getPlayer(), province, SoldierType.RANGED_ARTILLERY);
+                                        break;
+                                    default:
+                                        recruited = false;
+                                        break;
+                                }
+*/
+                                if (recruited)
+                                    System.out.println("Training!");
+                                else
+                                    System.out.println("Not enough gold!");
                             }
                             break;
                         case MOVE_TROOPS:

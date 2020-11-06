@@ -29,6 +29,42 @@ public class GameState {
     private int turn;
     private boolean won = false;
 
+    /**
+     * for JSON serialization and tests
+     */
+    public GameState() {};
+
+    //This one should be called!
+    public GameState(String player) {
+        factions = new HashMap<>();
+        provincesToOwner = new HashMap<>();
+        battleResolver = new BattleResolver();
+        battleResolver.setTextReport(new BattleReporter());
+        turn = 0;
+        initFactions();
+        initProvince();
+        initArmies();
+        this.player = player;
+        this.goal = new Random().nextInt(7);
+    }
+
+
+    /**
+     * For testing purposes
+     * @param player String
+     * @param factions Array Faction
+     */
+    public GameState(String player, Faction [] factions) {
+        this.factions = new HashMap<>();
+        provincesToOwner = new HashMap<>();
+        battleResolver = new BattleResolver();
+        turn = 0;
+        setFactionsFromArray(factions);
+        this.player = player;
+        this.goal = new Random().nextInt(7);
+    }
+
+
     public Map<String, Faction> getFactions() {
         return factions;
     }
@@ -84,40 +120,6 @@ public class GameState {
                 provincesToOwner.put(p.getName(), f.getName());
     }
 
-    /**
-     * for JSON serialization and tests
-     */
-    public GameState() {};
-
-    //This one should be called!
-    public GameState(String player) {
-        factions = new HashMap<>();
-        provincesToOwner = new HashMap<>();
-        battleResolver = new BattleResolver();
-        battleResolver.setTextReport(new BattleReporter());
-        turn = 0;
-        initFactions();
-        initProvince();
-        initArmies();
-        this.player = player;
-        this.goal = new Random().nextInt(7);
-    }
-
-
-    /**
-     * For testing purposes
-     * @param player String
-     * @param factions Array Faction
-     */
-    public GameState(String player, Faction [] factions) {
-        this.factions = new HashMap<>();
-        provincesToOwner = new HashMap<>();
-        battleResolver = new BattleResolver();
-        turn = 0;
-        setFactionsFromArray(factions);
-        this.player = player;
-        this.goal = new Random().nextInt(7);
-    }
 
     /**
      * Starts each province with two units.

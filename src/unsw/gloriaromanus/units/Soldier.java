@@ -58,6 +58,7 @@ public class Soldier {
         this.canMove = true;
         this.movement = max_movement;
         this.name = name;
+        this.cost = cost;
     }
 
     /**

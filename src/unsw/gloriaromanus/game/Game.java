@@ -3,6 +3,7 @@ package unsw.gloriaromanus.game;
 import unsw.gloriaromanus.battleresolver.BattleResolver;
 import unsw.gloriaromanus.battleresolver.BattleResult;
 import unsw.gloriaromanus.units.Army;
+import unsw.gloriaromanus.units.SoldierType;
 import unsw.gloriaromanus.world.Province;
 import unsw.gloriaromanus.world.TaxLevel;
 
@@ -15,19 +16,15 @@ public class Game {
     public GameState campaign;
     private Faction player;
     private BattleResolver battleResolver;
+    private ArrayList <AI> ais;
 
     private Game(GameState campaign) {
         this.campaign = campaign;
         this.player = campaign.getPlayerFaction();
         this.battleResolver = campaign.getBattleResolver();
+        this.ais = new ArrayList<>();
     }
-/*
-    public static Game getInstance(GameState campaign, Faction player) {
-        if (instance == null)
-            instance = new Game(campaign, player);
-        return instance;
-    }
-*/
+
     public static Game getInstance(GameState campaign) {
         if (instance == null)
             instance = new Game(campaign);
@@ -132,6 +129,9 @@ public class Game {
         if (campaign.hasWon()){
             saveGame("autosave.save");
             return true;}
+        for (AI ai: ais) {
+            ai.playTurn();
+        }
         campaign.addTurn();
         int totalWealth = 0;
         for (Province p : player.getProvinces()) {
@@ -180,7 +180,8 @@ public class Game {
         Game.clear();
         GameState gs = new GameState(player);
 
-        Game.getInstance(gs);
+        //UGLY TODO
+        Game.getInstance(gs).initAI();
     }
 
     public int getTurn() {
@@ -215,6 +216,34 @@ public class Game {
             this.move(p1, p2, p1.getArmy());
         else
             this.invade(p1, p2, p1.getArmy());
+    }
+
+    /**
+     * Recruits a unit if the faction can afford the cost and there are available
+     * slots. For design by contract no check is made about province's owner being faction
+     * @param province Province
+     * @param soldierType SoldierType
+     * @return true if enough money
+     */
+//    public boolean recruit (Faction faction, Province province, SoldierType soldierType) {
+    public boolean recruit (Province province, SoldierType soldierType) {
+        Faction faction = getFaction(province.getOwner());
+        int cost = faction.getSoldierFactory().createSoldier(soldierType).getCost();
+        System.out.println(cost);
+        if (cost < faction.getTreasure()){
+            faction.addTreasure(-cost);
+            return province.recruit(soldierType);}
+        return false;
+    }
+
+    /*
+     * Method to initialize AIs. At the moment very straightforward
+     */
+    public void initAI () {
+
+        for (String k: campaign.getFactions().keySet())
+            if (k != player.getName())
+                ais.add(new AI(k));
     }
 
     /**
