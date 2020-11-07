@@ -220,3 +220,4 @@ public class GameStateTest {
         assertEquals("Conquest OR Treasure OR Wealth", gs.goalReadable());
     }
 }
+

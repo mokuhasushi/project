@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import com.esri.arcgisruntime.ArcGISRuntimeEnvironment;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +18,7 @@ public class GloriaRomanusApplication extends Application {
   @Override
   public void start(Stage stage) throws IOException {
     // set up the scene
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("src/unsw/gloriaromanus/main.fxml"));
+    FXMLLoader loader = new FXMLLoader(new File("src/unsw/gloriaromanus/main.fxml").toURI().toURL());
 /*
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("main.fxml"));

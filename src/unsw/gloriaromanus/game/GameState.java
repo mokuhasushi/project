@@ -11,6 +11,7 @@ import unsw.gloriaromanus.units.SoldierFactory;
 import unsw.gloriaromanus.units.SoldierType;
 import unsw.gloriaromanus.world.Province;
 
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -343,5 +344,13 @@ public class GameState {
      */
     public void changeOwnership(Province invaded, String owner) {
         provincesToOwner.replace(invaded.getName(), owner);
+    }
+
+    public Faction getFactionFromProvince(String province) {
+        return getFaction(provincesToOwner.get(province));
+    }
+
+    public void setBattleReporter(PropertyChangeListener reporter) {
+        this.battleResolver.setTextReport(reporter);
     }
 }

@@ -1,5 +1,6 @@
 package unsw.gloriaromanus;
 
+import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -52,6 +53,9 @@ import org.geojson.LngLatAlt;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import unsw.gloriaromanus.game.BattleReporter;
+import unsw.gloriaromanus.game.Game;
+import unsw.gloriaromanus.world.Province;
 
 public class GloriaRomanusController{
 
@@ -66,31 +70,33 @@ public class GloriaRomanusController{
 
   private ArcGISMap map;
 
-  private Map<String, String> provinceToOwningFactionMap;
+//  private Map<String, String> provinceToOwningFactionMap;
 
-  private Map<String, Integer> provinceToNumberTroopsMap;
+//  private Map<String, Integer> provinceToNumberTroopsMap;
 
-  private String humanFaction;
+//  private String humanFaction;
 
   private Feature currentlySelectedHumanProvince;
   private Feature currentlySelectedEnemyProvince;
 
   private FeatureLayer featureLayer_provinces;
 
+  private Game game;
+
   @FXML
   private void initialize() throws JsonParseException, JsonMappingException, IOException {
     // TODO = you should rely on an object oriented design to determine ownership
+/*
     provinceToOwningFactionMap = getProvinceToOwningFactionMap();
 
     provinceToNumberTroopsMap = new HashMap<String, Integer>();
     Random r = new Random();
     for (String provinceName : provinceToOwningFactionMap.keySet()) {
       provinceToNumberTroopsMap.put(provinceName, r.nextInt(500));
-    }
-
-    // TODO = load this from a configuration file you create (user should be able to
-    // select in loading screen)
-    humanFaction = "Rome";
+*/
+    Game.newGame("Rome");
+    game = Game.getInstance();
+    game.setBattleReporter(new TextFXReporter());
 
     currentlySelectedHumanProvince = null;
     currentlySelectedEnemyProvince = null;
@@ -104,6 +110,7 @@ public class GloriaRomanusController{
       String humanProvince = (String)currentlySelectedHumanProvince.getAttributes().get("name");
       String enemyProvince = (String)currentlySelectedEnemyProvince.getAttributes().get("name");
       if (confirmIfProvincesConnected(humanProvince, enemyProvince)){
+/*
         // TODO = have better battle resolution than 50% chance of winning
         Random r = new Random();
         int choice = r.nextInt(2);
@@ -121,6 +128,10 @@ public class GloriaRomanusController{
           provinceToNumberTroopsMap.put(humanProvince, provinceToNumberTroopsMap.get(humanProvince)-numTroopsLost);
           printMessageToTerminal("Lost battle!");
         }
+        resetSelections();  // reset selections in UI
+        addAllPointGraphics(); // reset graphics
+*/
+        game.moveOrInvade(game.getProvince(humanProvince), game.getProvince(enemyProvince));
         resetSelections();  // reset selections in UI
         addAllPointGraphics(); // reset graphics
       }
@@ -179,11 +190,14 @@ public class GloriaRomanusController{
         Point curPoint = new Point(coor.getLongitude(), coor.getLatitude(), SpatialReferences.getWgs84());
         PictureMarkerSymbol s = null;
         String province = (String) f.getProperty("name");
-        String faction = provinceToOwningFactionMap.get(province);
+        String faction = game.getFactionFromProvince(province).getName();
 
+
+        //This is to Show troops under the province name
         TextSymbol t = new TextSymbol(10,
-            faction + "\n" + province + "\n" + provinceToNumberTroopsMap.get(province), 0xFFFF0000,
+            faction + "\n" + province, 0xFFFF0000, //  + "\n" + provinceToNumberTroopsMap.get(province),
             HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM);
+
 
         switch (faction) {
           case "Gaul":
@@ -266,7 +280,8 @@ public class GloriaRomanusController{
                 Feature f = features.get(0);
                 String province = (String)f.getAttributes().get("name");
 
-                if (provinceToOwningFactionMap.get(province).equals(humanFaction)){
+                //TODO CHECK
+                if (game.getFactionFromProvince(province).equals(game.getPlayer())){
                   // province owned by human
                   if (currentlySelectedHumanProvince != null){
                     featureLayer.unselectFeature(currentlySelectedHumanProvince);
@@ -314,13 +329,20 @@ public class GloriaRomanusController{
     return m;
   }
 
+/*
   private ArrayList<String> getHumanProvincesList() throws IOException {
     // https://developers.arcgis.com/labs/java/query-a-feature-layer/
 
+*/
+/*
     String content = Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
     JSONObject ownership = new JSONObject(content);
     return ArrayUtil.convert(ownership.getJSONArray(humanFaction));
+*//*
+
+    return game.getPlayerProvinces();
   }
+*/
 
   /**
    * returns query for arcgis to get features representing human provinces can
@@ -329,8 +351,13 @@ public class GloriaRomanusController{
    */
   private String getHumanProvincesQuery() throws IOException {
     LinkedList<String> l = new LinkedList<String>();
+/*
     for (String hp : getHumanProvincesList()) {
       l.add("name='" + hp + "'");
+    }
+*/
+    for (Province p : game.getPlayerProvinces()) {
+      l.add("name='" + p.getName() + "'");
     }
     return "(" + String.join(" OR ", l) + ")";
   }
@@ -360,6 +387,13 @@ public class GloriaRomanusController{
 
     if (mapView != null) {
       mapView.dispose();
+    }
+  }
+
+  class TextFXReporter extends BattleReporter {
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+      printMessageToTerminal(evt.getNewValue().toString());
     }
   }
 }

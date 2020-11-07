@@ -1,5 +1,6 @@
 package unsw.gloriaromanus.game;
 
+import unsw.gloriaromanus.GloriaRomanusController;
 import unsw.gloriaromanus.battleresolver.BattleResolver;
 import unsw.gloriaromanus.battleresolver.BattleResult;
 import unsw.gloriaromanus.units.Army;
@@ -7,6 +8,7 @@ import unsw.gloriaromanus.units.SoldierType;
 import unsw.gloriaromanus.world.Province;
 import unsw.gloriaromanus.world.TaxLevel;
 
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -248,5 +250,13 @@ public class Game {
         return "Player faction: " + player.getName() + "\n" +
                 "Factions in game: " + campaign.getFactions().keySet().toString() + "\n" +
                 "Campaign goal: " + campaign.goalReadable();
+    }
+
+    public Faction getFactionFromProvince(String province) {
+        return campaign.getFactionFromProvince(province);
+    }
+
+    public void setBattleReporter(PropertyChangeListener reporter) {
+        this.campaign.setBattleReporter(reporter);
     }
 }
