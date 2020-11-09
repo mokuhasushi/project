@@ -25,3 +25,7 @@
   .color-picker .color-picker-label {
      -fx-text-fill: black;
   }
+  .menu .label
+  {
+      -fx-text-fill: black;
+  }
