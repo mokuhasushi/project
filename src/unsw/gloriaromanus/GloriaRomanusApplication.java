@@ -18,7 +18,8 @@ public class GloriaRomanusApplication extends Application {
   @Override
   public void start(Stage stage) throws IOException {
     // set up the scene
-    FXMLLoader loader = new FXMLLoader(new File("src/unsw/gloriaromanus/main.fxml").toURI().toURL());
+//    FXMLLoader loader = new FXMLLoader(new File("src/unsw/gloriaromanus/main.fxml").toURI().toURL());
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
 /*
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(getClass().getResource("main.fxml"));

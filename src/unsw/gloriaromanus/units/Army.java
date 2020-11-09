@@ -1,6 +1,7 @@
 package unsw.gloriaromanus.units;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /*
  Stub for armies, to be passed in the BattleResolver
@@ -9,8 +10,8 @@ import java.util.ArrayList;
 public class Army {
     ArrayList<Soldier> army = new ArrayList<>();
 
-    public Army (ArrayList<Soldier> army) {
-        this.army = army;
+    public Army (List<Soldier> army) {
+        this.army = new ArrayList<>(army);
     }
 
     public Army (){}

@@ -84,3 +84,12 @@ sourceSets {
         }
     }
 }
+
+task copyFXML(type: Copy) {
+    from 'src/unsw/gloriaromanus/main.fxml'
+    into 'build/resources/main/unsw/gloriaromanus/'
+}
+task copyCSS(type: Copy){
+    from 'src/unsw/gloriaromanus/style.css'
+    into 'build/resources/main/'
+}

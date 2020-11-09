@@ -1,9 +1,13 @@
 package unsw.gloriaromanus.game;
 
+import unsw.gloriaromanus.units.Soldier;
 import unsw.gloriaromanus.units.SoldierFactory;
+import unsw.gloriaromanus.units.SoldierType;
 import unsw.gloriaromanus.world.Province;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class Faction {
     private ArrayList<Province> provinces;
@@ -26,6 +30,9 @@ public class Faction {
     //      each time a province changes its state/is created
     public SoldierFactory getSoldierFactory() {
         return soldierFactory;
+    }
+    public Map<SoldierType, Soldier> soldierMap () {
+        return soldierFactory.getNameToSoldier();
     }
 
     public ArrayList<Province> getProvinces() {

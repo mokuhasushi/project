@@ -7,19 +7,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -51,10 +49,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.geojson.FeatureCollection;
 import org.geojson.LngLatAlt;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import unsw.gloriaromanus.game.BattleReporter;
 import unsw.gloriaromanus.game.Game;
+import unsw.gloriaromanus.units.Army;
+import unsw.gloriaromanus.units.Soldier;
+import unsw.gloriaromanus.units.SoldierType;
 import unsw.gloriaromanus.world.Province;
 
 public class GloriaRomanusController{
@@ -67,6 +67,26 @@ public class GloriaRomanusController{
   private TextField opponent_province;
   @FXML
   private TextArea output_terminal;
+  @FXML
+  private TextField player_faction;
+  @FXML
+  private TextField player_treasure;
+  @FXML
+  private TextField player_wealth;
+  @FXML
+  private TextField current_turn;
+  @FXML
+  private TextField province_wealth;
+  @FXML
+  private TextField province_tax_level;
+  @FXML
+  private TextField province_tax_revenue;
+  @FXML
+  private TableView<Soldier> province_army;
+  private TableView.TableViewSelectionModel <Soldier> soldiersSelected;
+
+  @FXML
+  private TableView<Soldier> recruitment_table;
 
   private ArcGISMap map;
 
@@ -101,7 +121,13 @@ public class GloriaRomanusController{
     currentlySelectedHumanProvince = null;
     currentlySelectedEnemyProvince = null;
 
+    showPlayerInfo();
+    current_turn.setText(game.getTurn()+"");
     initializeProvinceLayers();
+    soldiersSelected = province_army.getSelectionModel();
+    soldiersSelected.setSelectionMode(SelectionMode.MULTIPLE);
+
+
   }
 
   @FXML
@@ -110,28 +136,8 @@ public class GloriaRomanusController{
       String humanProvince = (String)currentlySelectedHumanProvince.getAttributes().get("name");
       String enemyProvince = (String)currentlySelectedEnemyProvince.getAttributes().get("name");
       if (confirmIfProvincesConnected(humanProvince, enemyProvince)){
-/*
-        // TODO = have better battle resolution than 50% chance of winning
-        Random r = new Random();
-        int choice = r.nextInt(2);
-        if (choice == 0){
-          // human won. Transfer 40% of troops of human over. No casualties by human, but enemy loses all troops
-          int numTroopsToTransfer = provinceToNumberTroopsMap.get(humanProvince)*2/5;
-          provinceToNumberTroopsMap.put(enemyProvince, numTroopsToTransfer);
-          provinceToNumberTroopsMap.put(humanProvince, provinceToNumberTroopsMap.get(humanProvince)-numTroopsToTransfer);
-          provinceToOwningFactionMap.put(enemyProvince, humanFaction);
-          printMessageToTerminal("Won battle!");
-        }
-        else{
-          // enemy won. Human loses 60% of soldiers in the province
-          int numTroopsLost = provinceToNumberTroopsMap.get(humanProvince)*3/5;
-          provinceToNumberTroopsMap.put(humanProvince, provinceToNumberTroopsMap.get(humanProvince)-numTroopsLost);
-          printMessageToTerminal("Lost battle!");
-        }
-        resetSelections();  // reset selections in UI
-        addAllPointGraphics(); // reset graphics
-*/
-        game.moveOrInvade(game.getProvince(humanProvince), game.getProvince(enemyProvince));
+        game.invade(game.getProvince(humanProvince), game.getProvince(enemyProvince), new Army(soldiersSelected.getSelectedItems()));
+//        game.moveOrInvade(game.getProvince(humanProvince), game.getProvince(enemyProvince));
         resetSelections();  // reset selections in UI
         addAllPointGraphics(); // reset graphics
       }
@@ -142,6 +148,99 @@ public class GloriaRomanusController{
     }
   }
 
+  @FXML
+  public void clickedEndTurn(ActionEvent actionEvent) throws IOException {
+    game.pass();
+    showPlayerInfo();
+    current_turn.setText(game.getTurn()+"");
+    resetSelections();  // reset selections in UI
+    addAllPointGraphics(); // reset graphics
+  }
+
+  @FXML
+  public void recruitMeleeInfantry (ActionEvent actionEvent) {
+    Province province = game.getProvince((String)currentlySelectedHumanProvince.getAttributes().get("name"));
+    if (province.numberOfTrainingSlotsAvailable() == 0)
+      printMessageToTerminal("No training slots available!");
+    else if (currentlySelectedHumanProvince != null) {
+      if (game.recruit(province, SoldierType.MELEE_INFANTRY))
+        printMessageToTerminal("Training begun!");
+      else
+        printMessageToTerminal("Not enough gold!");
+    }
+    else
+      printMessageToTerminal("No province selected!");
+  }
+  @FXML
+  public void recruitRangedInfantry (ActionEvent actionEvent) {
+    Province province = game.getProvince((String)currentlySelectedHumanProvince.getAttributes().get("name"));
+    if (province.numberOfTrainingSlotsAvailable() == 0)
+      printMessageToTerminal("No training slots available!");
+    else if (currentlySelectedHumanProvince != null) {
+      if (game.recruit(province, SoldierType.RANGED_INFANTRY))
+        printMessageToTerminal("Training begun!");
+      else
+        printMessageToTerminal("Not enough gold!");
+    }
+    else
+      printMessageToTerminal("No province selected!");
+  }
+  @FXML
+  public void recruitMeleeChivalry (ActionEvent actionEvent) {
+    Province province = game.getProvince((String)currentlySelectedHumanProvince.getAttributes().get("name"));
+    if (province.numberOfTrainingSlotsAvailable() == 0)
+      printMessageToTerminal("No training slots available!");
+    else if (currentlySelectedHumanProvince != null) {
+      if (game.recruit(province, SoldierType.MELEE_CHIVALRY))
+        printMessageToTerminal("Training begun!");
+      else
+        printMessageToTerminal("Not enough gold!");
+    }
+    else
+      printMessageToTerminal("No province selected!");
+  }
+  @FXML
+  public void recruitRangedChivalry (ActionEvent actionEvent) {
+    Province province = game.getProvince((String)currentlySelectedHumanProvince.getAttributes().get("name"));
+    if (province.numberOfTrainingSlotsAvailable() == 0)
+      printMessageToTerminal("No training slots available!");
+    else if (currentlySelectedHumanProvince != null) {
+      if (game.recruit(province, SoldierType.RANGED_CHIVALRY))
+        printMessageToTerminal("Training begun!");
+      else
+        printMessageToTerminal("Not enough gold!");
+    }
+    else
+      printMessageToTerminal("No province selected!");
+  }
+  @FXML
+  public void recruitMeleeArtillery (ActionEvent actionEvent) {
+    Province province = game.getProvince((String)currentlySelectedHumanProvince.getAttributes().get("name"));
+    if (province.numberOfTrainingSlotsAvailable() == 0)
+      printMessageToTerminal("No training slots available!");
+    else if (currentlySelectedHumanProvince != null) {
+      if (game.recruit(province, SoldierType.MELEE_ARTILLERY))
+        printMessageToTerminal("Training begun!");
+      else
+        printMessageToTerminal("Not enough gold!");
+    }
+    else
+      printMessageToTerminal("No province selected!");
+  }
+  @FXML
+  public void recruitRangedArtillery (ActionEvent actionEvent) {
+    Province province = game.getProvince((String)currentlySelectedHumanProvince.getAttributes().get("name"));
+    if (province.numberOfTrainingSlotsAvailable() == 0)
+      printMessageToTerminal("No training slots available!");
+    else if (currentlySelectedHumanProvince != null) {
+      if (game.recruit(province, SoldierType.RANGED_ARTILLERY))
+        printMessageToTerminal("Training begun!");
+      else
+        printMessageToTerminal("Not enough gold!");
+    }
+    else
+      printMessageToTerminal("No province selected!");
+  }
   /**
    * run this initially to update province owner, change feature in each
    * FeatureLayer to be visible/invisible depending on owner. Can also update
@@ -173,6 +272,11 @@ public class GloriaRomanusController{
     });
 
     addAllPointGraphics();
+  }
+  public void showPlayerInfo () {
+    player_faction.setText(game.getPlayer().getName());
+    player_treasure.setText(game.getPlayerGold()+ " gold");
+    player_wealth.setText(game.getPlayerWealth()+ " total");
   }
 
   private void addAllPointGraphics() throws JsonParseException, JsonMappingException, IOException {
@@ -285,9 +389,11 @@ public class GloriaRomanusController{
                   // province owned by human
                   if (currentlySelectedHumanProvince != null){
                     featureLayer.unselectFeature(currentlySelectedHumanProvince);
+                    province_army.getItems().clear();
                   }
-                  currentlySelectedHumanProvince = f;
-                  invading_province.setText(province);
+                  updateHumanSelection(f);
+//                  currentlySelectedHumanProvince = f;
+//                  invading_province.setText(province);
                 }
                 else{
                   if (currentlySelectedEnemyProvince != null){
@@ -313,36 +419,18 @@ public class GloriaRomanusController{
     return flp;
   }
 
-  private Map<String, String> getProvinceToOwningFactionMap() throws IOException {
-    String content = Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
-    JSONObject ownership = new JSONObject(content);
-    Map<String, String> m = new HashMap<String, String>();
-    for (String key : ownership.keySet()) {
-      // key will be the faction name
-      JSONArray ja = ownership.getJSONArray(key);
-      // value is province name
-      for (int i = 0; i < ja.length(); i++) {
-        String value = ja.getString(i);
-        m.put(value, key);
-      }
-    }
-    return m;
+  private void updateHumanSelection(Feature f) {
+    Province province = game.getProvince((String)f.getAttributes().get("name"));
+    currentlySelectedHumanProvince = f;
+    invading_province.setText(province.getName());
+
+    province_wealth.setText(province.getWealth()+"");
+    province_tax_level.setText(province.getTaxLevel() +"");
+    province_tax_revenue.setText(province.getTaxRevenue() + "");
+
+    for (Soldier s: province.getArmy().getArmy())
+      province_army.getItems().add(s);
   }
-
-/*
-  private ArrayList<String> getHumanProvincesList() throws IOException {
-    // https://developers.arcgis.com/labs/java/query-a-feature-layer/
-
-*/
-/*
-    String content = Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
-    JSONObject ownership = new JSONObject(content);
-    return ArrayUtil.convert(ownership.getJSONArray(humanFaction));
-*//*
-
-    return game.getPlayerProvinces();
-  }
-*/
 
   /**
    * returns query for arcgis to get features representing human provinces can
@@ -369,11 +457,20 @@ public class GloriaRomanusController{
   }
 
   private void resetSelections(){
-    featureLayer_provinces.unselectFeatures(Arrays.asList(currentlySelectedEnemyProvince, currentlySelectedHumanProvince));
+    if (currentlySelectedHumanProvince != null && currentlySelectedEnemyProvince != null)
+      featureLayer_provinces.unselectFeatures(Arrays.asList(currentlySelectedEnemyProvince, currentlySelectedHumanProvince));
+    else if (currentlySelectedHumanProvince != null)
+      featureLayer_provinces.unselectFeatures(Arrays.asList(currentlySelectedHumanProvince));
+    else if (currentlySelectedEnemyProvince != null)
+      featureLayer_provinces.unselectFeatures(Arrays.asList(currentlySelectedEnemyProvince));
     currentlySelectedEnemyProvince = null;
     currentlySelectedHumanProvince = null;
     invading_province.setText("");
     opponent_province.setText("");
+    province_tax_revenue.setText("");
+    province_tax_level.setText("");
+    province_wealth.setText("");
+    province_army.getItems().clear();
   }
 
   private void printMessageToTerminal(String message){

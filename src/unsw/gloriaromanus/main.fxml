@@ -15,10 +15,14 @@
 <?import javafx.scene.layout.BackgroundFill?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Box?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <StackPane fx:controller="unsw.gloriaromanus.GloriaRomanusController" xmlns:fx="http://javafx.com/fxml"
            stylesheets="style.css">
     <MapView fx:id="mapView"/>
-    <VBox StackPane.alignment="TOP_LEFT" spacing="10" maxWidth="250" styleClass="panel-region">
+    <VBox StackPane.alignment="TOP_LEFT" spacing="10" maxWidth="300" styleClass="panel-region">
         <padding>
             <Insets topRightBottomLeft="10"/>
         </padding>
@@ -34,19 +38,97 @@
             </Background>
         </background>
         <HBox>
-            <VBox>
-                <Label text="Your province"/>
-                <TextField fx:id="invading_province" text="" editable="false"/>
-            </VBox>
-            <VBox>
-                <Label text="Enemy province"/>
-                <TextField fx:id="opponent_province" text="" editable="false"/>
-            </VBox>
+            <Label text="Province:        "/>
+            <TextField fx:id="invading_province" text="" editable="false"/>
+        </HBox>
+        <HBox>
+            <Label text="Wealth:          "/>
+            <TextField fx:id="province_wealth" text="" editable="false"/>
+        </HBox>
+        <HBox>
+            <Label text="Tax level:       "/>
+            <TextField fx:id="province_tax_level" text="" editable="false"/>
+        </HBox>
+        <HBox>
+            <Label text="Tax revenue:  "/>
+            <TextField fx:id="province_tax_revenue" text="" editable="false"/>
+        </HBox>
+        <VBox>
+            <TableView fx:id="province_army" maxHeight="300">
+                <columns>
+                    <TableColumn text="Unit">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="name"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                <TableColumn text="Troops">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="numTroops"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Movement">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="movement"/>
+                    </cellValueFactory>
+                </TableColumn>
+                </columns>
+            </TableView>
+        </VBox>
+        <HBox>
+            <Button text="Recruit melee infantry" onAction="#recruitMeleeInfantry" />
+            <Button text="Recruit ranged infantry" onAction="#recruitRangedInfantry" />
+        </HBox>
+        <HBox>
+            <Button text="Recruit melee chivalry" onAction="#recruitMeleeChivalry" />
+            <Button text="Recruit ranged chivalry" onAction="#recruitRangedChivalry" />
+        </HBox>
+        <HBox>
+            <Button text="Recruit melee artillery" onAction="#recruitMeleeArtillery" />
+            <Button text="Recruit ranged artillery" onAction="#recruitRangedArtillery" />
+        </HBox>
+        <HBox>
+            <Label text="Enemy province"/>
+            <TextField fx:id="opponent_province" text="" editable="false"/>
         </HBox>
         <Button text="Invade" onAction="#clickedInvadeButton"/>
+    </VBox>
+    <VBox StackPane.alignment="TOP_RIGHT" spacing="10" maxWidth="280" styleClass="panel-region">
+        <padding>
+            <Insets topRightBottomLeft="10"/>
+        </padding>
+        <background>
+            <Background>
+                <fills>
+                    <BackgroundFill>
+                        <fill>
+                            <Color opacity="0.3"/>
+                        </fill>
+                    </BackgroundFill>
+                </fills>
+            </Background>
+        </background>
+        <HBox>
+            <TextField StackPane.alignment="CENTER_RIGHT" fx:id="player_faction" text="" editable="false"/>
+        </HBox>
+        <HBox>
+            <Label text="Treasure:    "/>
+            <TextField fx:id="player_treasure" text="" editable="false"/>
+        </HBox>
+        <HBox>
+            <Label text="Wealth:       "/>
+            <TextField fx:id="player_wealth" text="" editable="false"/>
+        </HBox>
         <VBox>
             <Label text="Output from interactions"/>
             <TextArea fx:id="output_terminal" text="" editable="false"/>
+        </VBox>
+        <VBox minHeight="500"></VBox>
+        <VBox StackPane.alignment="BOTTOM_CENTER" maxWidth="280" maxHeight="200">
+            <HBox >
+                <Label text="Turn:    "/>
+                <TextField fx:id="current_turn" text="" editable="false"/>
+            </HBox>
+            <Button text="End Turn" onAction="#clickedEndTurn"/>
         </VBox>
     </VBox>
 </StackPane>

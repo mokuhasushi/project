@@ -106,11 +106,11 @@ public class Province {
      * @param faction String
      * @param army Army
      */
-    public void conqueredBy(String faction, Army army) {
+    public void conqueredBy(Faction faction, Army army) {
         this.army = army;
-        this.owner = faction;
+        this.owner = faction.getName();
         this.justConquered = true;
-        this.barrack = new Barrack(new SoldierFactory(faction));
+        this.barrack = new Barrack(faction.getSoldierFactory());
     }
 
     public String getOwner() {

@@ -56,7 +56,7 @@ public class Game {
                 if(defender.getProvinces().size() == 0)
                     if (defender.equals(player))
                         gameLost();
-                invaded.conqueredBy(attacking.getOwner(), attacker);
+                invaded.conqueredBy(getFactionFromProvince(attacking.getName()), attacker);
                 getFaction(attacking.getOwner()).addProvince(invaded);
                 changeOwnership(invaded, attacking.getOwner());
                 break;
@@ -225,7 +225,6 @@ public class Game {
     public boolean recruit (Province province, SoldierType soldierType) {
         Faction faction = getFaction(province.getOwner());
         int cost = faction.getSoldierFactory().createSoldier(soldierType).getCost();
-        System.out.println(cost);
         if (cost < faction.getTreasure()){
             faction.addTreasure(-cost);
             return province.recruit(soldierType);}
