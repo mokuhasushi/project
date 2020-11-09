@@ -56,6 +56,7 @@ import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.units.Soldier;
 import unsw.gloriaromanus.units.SoldierType;
 import unsw.gloriaromanus.world.Province;
+import unsw.gloriaromanus.world.TaxLevel;
 
 public class GloriaRomanusController{
 
@@ -159,68 +160,37 @@ public class GloriaRomanusController{
 
   @FXML
   public void recruitMeleeInfantry (ActionEvent actionEvent) {
-    Province province = game.getProvince((String)currentlySelectedHumanProvince.getAttributes().get("name"));
-    if (province.numberOfTrainingSlotsAvailable() == 0)
-      printMessageToTerminal("No training slots available!");
-    else if (currentlySelectedHumanProvince != null) {
-      if (game.recruit(province, SoldierType.MELEE_INFANTRY))
-        printMessageToTerminal("Training begun!");
-      else
-        printMessageToTerminal("Not enough gold!");
-    }
-    else
-      printMessageToTerminal("No province selected!");
+    recruitUnit(SoldierType.MELEE_INFANTRY);
   }
   @FXML
   public void recruitRangedInfantry (ActionEvent actionEvent) {
-    Province province = game.getProvince((String)currentlySelectedHumanProvince.getAttributes().get("name"));
-    if (province.numberOfTrainingSlotsAvailable() == 0)
-      printMessageToTerminal("No training slots available!");
-    else if (currentlySelectedHumanProvince != null) {
-      if (game.recruit(province, SoldierType.RANGED_INFANTRY))
-        printMessageToTerminal("Training begun!");
-      else
-        printMessageToTerminal("Not enough gold!");
-    }
-    else
-      printMessageToTerminal("No province selected!");
+    recruitUnit(SoldierType.RANGED_INFANTRY);
   }
   @FXML
   public void recruitMeleeChivalry (ActionEvent actionEvent) {
-    Province province = game.getProvince((String)currentlySelectedHumanProvince.getAttributes().get("name"));
-    if (province.numberOfTrainingSlotsAvailable() == 0)
-      printMessageToTerminal("No training slots available!");
-    else if (currentlySelectedHumanProvince != null) {
-      if (game.recruit(province, SoldierType.MELEE_CHIVALRY))
-        printMessageToTerminal("Training begun!");
-      else
-        printMessageToTerminal("Not enough gold!");
-    }
-    else
-      printMessageToTerminal("No province selected!");
+    recruitUnit(SoldierType.MELEE_CHIVALRY);
   }
   @FXML
   public void recruitRangedChivalry (ActionEvent actionEvent) {
-    Province province = game.getProvince((String)currentlySelectedHumanProvince.getAttributes().get("name"));
-    if (province.numberOfTrainingSlotsAvailable() == 0)
-      printMessageToTerminal("No training slots available!");
-    else if (currentlySelectedHumanProvince != null) {
-      if (game.recruit(province, SoldierType.RANGED_CHIVALRY))
-        printMessageToTerminal("Training begun!");
-      else
-        printMessageToTerminal("Not enough gold!");
-    }
-    else
-      printMessageToTerminal("No province selected!");
+    recruitUnit(SoldierType.RANGED_CHIVALRY);
   }
   @FXML
   public void recruitMeleeArtillery (ActionEvent actionEvent) {
-    Province province = game.getProvince((String)currentlySelectedHumanProvince.getAttributes().get("name"));
-    if (province.numberOfTrainingSlotsAvailable() == 0)
-      printMessageToTerminal("No training slots available!");
-    else if (currentlySelectedHumanProvince != null) {
-      if (game.recruit(province, SoldierType.MELEE_ARTILLERY))
+    recruitUnit(SoldierType.MELEE_ARTILLERY);
+  }
+  @FXML
+  public void recruitRangedArtillery (ActionEvent actionEvent) {
+    recruitUnit(SoldierType.RANGED_ARTILLERY);
+  }
+  private void recruitUnit (SoldierType soldierType) {
+    if (currentlySelectedHumanProvince != null) {
+      Province province = game.getProvince((String) currentlySelectedHumanProvince.getAttributes().get("name"));
+      if (province.numberOfTrainingSlotsAvailable() == 0)
+        printMessageToTerminal("No training slots available!");
+      else if (game.recruit(province, soldierType)){
         printMessageToTerminal("Training begun!");
+        player_treasure.setText(game.getPlayerGold() + " gold");
+      }
       else
         printMessageToTerminal("Not enough gold!");
     }
@@ -228,18 +198,28 @@ public class GloriaRomanusController{
       printMessageToTerminal("No province selected!");
   }
   @FXML
-  public void recruitRangedArtillery (ActionEvent actionEvent) {
-    Province province = game.getProvince((String)currentlySelectedHumanProvince.getAttributes().get("name"));
-    if (province.numberOfTrainingSlotsAvailable() == 0)
-      printMessageToTerminal("No training slots available!");
-    else if (currentlySelectedHumanProvince != null) {
-      if (game.recruit(province, SoldierType.RANGED_ARTILLERY))
-        printMessageToTerminal("Training begun!");
-      else
-        printMessageToTerminal("Not enough gold!");
+  public void lowTaxesClicked (ActionEvent actionEvent) {
+    setTaxes(TaxLevel.LOW_TAX);
+  }
+  @FXML
+  public void normalTaxesClicked (ActionEvent actionEvent) {
+    setTaxes(TaxLevel.NORMAL_TAX);
+  }
+  @FXML
+  public void highTaxesClicked (ActionEvent actionEvent) {
+    setTaxes(TaxLevel.HIGH_TAX);
+  }
+  @FXML
+  public void veryHighTaxesClicked (ActionEvent actionEvent) {
+    setTaxes(TaxLevel.VERY_HIGH_TAX);
+  }
+  private void setTaxes(TaxLevel taxLevel) {
+    if (currentlySelectedHumanProvince != null){
+      Province province = game.getProvince((String)currentlySelectedHumanProvince.getAttributes().get("name"));
+      province.setTaxLevel(taxLevel);
+      province_tax_level.setText(province.getTaxLevel() + "");
+      province_tax_revenue.setText(province.getTaxRevenue() + "");
     }
-    else
-      printMessageToTerminal("No province selected!");
   }
   /**
    * run this initially to update province owner, change feature in each

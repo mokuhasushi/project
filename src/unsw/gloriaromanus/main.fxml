@@ -19,6 +19,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
 <StackPane fx:controller="unsw.gloriaromanus.GloriaRomanusController" xmlns:fx="http://javafx.com/fxml"
            stylesheets="style.css">
     <MapView fx:id="mapView"/>
@@ -46,7 +49,16 @@
             <TextField fx:id="province_wealth" text="" editable="false"/>
         </HBox>
         <HBox>
-            <Label text="Tax level:       "/>
+            <MenuBar fx:id="tax_level_menu">
+                <Menu text="Tax level">
+                    <items>
+                        <MenuItem text="Low" onAction="#lowTaxesClicked"/>
+                        <MenuItem text="Normal" onAction="#normalTaxesClicked"/>
+                        <MenuItem text="High" onAction="#highTaxesClicked"/>
+                        <MenuItem text="Very high" onAction="#veryHighTaxesClicked"/>
+                    </items>
+                </Menu>
+            </MenuBar>
             <TextField fx:id="province_tax_level" text="" editable="false"/>
         </HBox>
         <HBox>
