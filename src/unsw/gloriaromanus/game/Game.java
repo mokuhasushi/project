@@ -1,6 +1,5 @@
 package unsw.gloriaromanus.game;
 
-import unsw.gloriaromanus.GloriaRomanusController;
 import unsw.gloriaromanus.battleresolver.BattleResolver;
 import unsw.gloriaromanus.battleresolver.BattleResult;
 import unsw.gloriaromanus.units.Army;
@@ -9,10 +8,14 @@ import unsw.gloriaromanus.world.Province;
 import unsw.gloriaromanus.world.TaxLevel;
 
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class Game {
+    public final int ONE_PROVINCE_TRAVERSED = 4;
+
     private static Game instance = null;
 
     public GameState campaign;
@@ -20,11 +23,14 @@ public class Game {
     private BattleResolver battleResolver;
     private ArrayList <AI> ais;
 
+    private PropertyChangeSupport support;
+
     private Game(GameState campaign) {
         this.campaign = campaign;
         this.player = campaign.getPlayerFaction();
         this.battleResolver = campaign.getBattleResolver();
         this.ais = new ArrayList<>();
+        this.support = new PropertyChangeSupport(this);
     }
 
     public static Game getInstance(GameState campaign) {
@@ -40,6 +46,9 @@ public class Game {
         instance = null;
     }
 
+    public void addReporter (PropertyChangeListener reporter) {
+        support.addPropertyChangeListener(reporter);
+    }
     /**
      * The method to invade a Province from another, indicating the Army
      * @param attacking the Province which starts the attack
@@ -47,11 +56,24 @@ public class Game {
      * @param attacker the Army of the attacker
      */
     public void invade (Province attacking, Province invaded, Army attacker) {
+        if (attacking.isJustConquered()){
+            support.firePropertyChange("message",
+                    null, attacking.getName() + " has just been conquered");
+            return;
+        }
+        if (attacker.getMovement() < ONE_PROVINCE_TRAVERSED){
+            support.firePropertyChange("message", null, "Not enough movement!");
+            return;}
+        support.firePropertyChange("factions", null, new String[]{attacking.getOwner(), invaded.getOwner()});
+        support.firePropertyChange("message", null, "Battle for " + invaded.getName() +" begun!");
         attacking.removeTroops(attacker);
-        BattleResult battleResult = battleResolver.battle(attacker, invaded.getArmy());
+        attacker.moved(ONE_PROVINCE_TRAVERSED);
+        BattleResult battleResult = battleResolver.battle(attacker, invaded.getArmy(),
+                support.getPropertyChangeListeners().length > 0 ? support.getPropertyChangeListeners()[0] : null);
         Faction defender = getFaction(invaded.getOwner());
         switch (battleResult) {
             case ATTACKER_WON:
+                support.firePropertyChange("message", null, attacking.getOwner()+" won!");
                 defender.removeProvince(invaded);
                 if(defender.getProvinces().size() == 0)
                     if (defender.equals(player))
@@ -61,9 +83,12 @@ public class Game {
                 changeOwnership(invaded, attacking.getOwner());
                 break;
             case ATTACKER_DEFEATED:
+                support.firePropertyChange("message", null, attacking.getOwner() + " lost!");
                 attacking.addTroops(attacker);
                 break;
             case DRAW:
+                support.firePropertyChange("message", null,
+                        "The battle ended in a draw!");
                 attacking.addTroops(attacker);
                 break;
         }
@@ -93,8 +118,14 @@ public class Game {
      * @param army Army
      */
     public void move (Province from, Province to, Army army) {
+        if (from.isJustConquered()){
+            support.firePropertyChange("message",
+                    null, from.getName() + " has just been conquered!");
+            return;
+        }
         from.removeTroops(army);
-        to.moveTroops(army);
+        army.moved(ONE_PROVINCE_TRAVERSED);
+        to.addTroops(army);
     }
 
     /**
@@ -153,6 +184,20 @@ public class Game {
         }
         return true;
     }
+    /**
+     * Save the game
+     * @param file File
+     * @return true if no exception were raised
+     */
+    public boolean saveGame (File file) {
+        try {
+            SaveLoad.saveGame(campaign, file.getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Load a game
@@ -162,6 +207,14 @@ public class Game {
     public static boolean loadGame (String filename) {
         Game.clear();
         GameState gs = SaveLoad.loadGame(filename);
+        if (gs == null)
+            return false;
+        Game.getInstance(gs);
+        return true;
+    }
+    public static boolean loadGame (File file) {
+        Game.clear();
+        GameState gs = SaveLoad.loadGame(file.getName());
         if (gs == null)
             return false;
         Game.getInstance(gs);
@@ -253,9 +306,5 @@ public class Game {
 
     public Faction getFactionFromProvince(String province) {
         return campaign.getFactionFromProvince(province);
-    }
-
-    public void setBattleReporter(PropertyChangeListener reporter) {
-        this.campaign.setBattleReporter(reporter);
     }
 }

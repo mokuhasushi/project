@@ -9,6 +9,7 @@
   "shieldDefense":5,
   "trainingTime":2,
   "movement":4,
+  "max_movement":4,
   "canMove":true,
   "name":"melee-artillery",
   "broken":false,

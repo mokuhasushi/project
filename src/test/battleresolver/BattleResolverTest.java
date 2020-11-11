@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import unsw.gloriaromanus.battleresolver.BattleResolver;
 import unsw.gloriaromanus.battleresolver.BattleResult;
-import unsw.gloriaromanus.game.BattleReporter;
 import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.units.Soldier;
 
@@ -33,7 +32,7 @@ public class BattleResolverTest {
     public void ifDefenderHasEmptyArmyAttackerWon() {
         attacker.addUnit(new Soldier());
 
-        BattleResult br =  battleResolver.battle(attacker, defender);
+        BattleResult br =  battleResolver.battle(attacker, defender, null);
 
         assertEquals(BattleResult.ATTACKER_WON, br);
     }
@@ -44,7 +43,7 @@ public class BattleResolverTest {
             attacker.addUnit(new Soldier());
             defender.addUnit(new Soldier());
         }
-        BattleResult br = battleResolver.battle(attacker, defender);
+        BattleResult br = battleResolver.battle(attacker, defender, null);
 
         assertEquals(BattleResult.DRAW, br);
     }
@@ -65,7 +64,7 @@ public class BattleResolverTest {
         }
         // To have result in terminal (and later on in javafx) uncomment
 //        battleResolver.setTextReport(new BattleReporter());
-        BattleResult br = battleResolver.battle(attacker, defender);
+        BattleResult br = battleResolver.battle(attacker, defender, null);
 
         assertEquals(BattleResult.ATTACKER_WON, br);
         assertEquals(10, attacker.getSize());

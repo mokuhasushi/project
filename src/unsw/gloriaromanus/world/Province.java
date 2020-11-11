@@ -90,6 +90,10 @@ public class Province {
         return this.taxLevel;
     }
 
+    public boolean isJustConquered() {
+        return justConquered;
+    }
+
     public Army getArmy() {
 //        return new Army((ArrayList<Soldier>) army.getArmy().clone());
 
@@ -141,12 +145,6 @@ public class Province {
     }
     public void addTroop(Soldier s) {
         this.army.addUnit(s);
-    }
-
-    // This method accepts the army which has moved
-    public void moveTroops(Army army) {
-        army.moved(1);
-        this.army.joinArmy(army);
     }
 
     public boolean recruit(SoldierType soldier) {

@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 
@@ -46,6 +46,13 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.geojson.FeatureCollection;
 import org.geojson.LngLatAlt;
 
@@ -60,6 +67,8 @@ import unsw.gloriaromanus.world.TaxLevel;
 
 public class GloriaRomanusController{
 
+  @FXML
+  private StackPane root;
   @FXML
   private MapView mapView;
   @FXML
@@ -117,7 +126,7 @@ public class GloriaRomanusController{
 */
     Game.newGame("Rome");
     game = Game.getInstance();
-    game.setBattleReporter(new TextFXReporter());
+    game.addReporter(new TextFXReporter());
 
     currentlySelectedHumanProvince = null;
     currentlySelectedEnemyProvince = null;
@@ -132,13 +141,94 @@ public class GloriaRomanusController{
   }
 
   @FXML
+  public void gamePaused (ActionEvent e) {
+    VBox pauseRoot = new VBox(10);
+    pauseRoot.getChildren().add(new Label("Main Menu"));
+    pauseRoot.setStyle("-fx-background-color: rgba(0, 0, 0, 0.8);");
+    pauseRoot.setAlignment(Pos.CENTER);
+    pauseRoot.setPadding(new Insets(20));
+
+    Button resume = new Button("Continue");
+    pauseRoot.getChildren().add(resume);
+
+    Button newGame = new Button("New Game");
+    pauseRoot.getChildren().add(newGame);
+
+    Button saveGame = new Button("Save Game");
+    pauseRoot.getChildren().add(saveGame);
+
+    Button loadGame = new Button("Load Game");
+    pauseRoot.getChildren().add(loadGame);
+
+    Button exit = new Button("Quit");
+    pauseRoot.getChildren().add(exit);
+
+    Stage popupStage = new Stage(StageStyle.TRANSPARENT);
+    popupStage.initOwner(root.getScene().getWindow());
+    popupStage.initModality(Modality.APPLICATION_MODAL);
+    popupStage.setScene(new Scene(pauseRoot, Color.TRANSPARENT));
+
+
+    resume.setOnAction(event -> {
+      root.setEffect(null);
+      popupStage.hide();
+    });
+
+    newGame.setOnAction(event -> {
+      Game.newGame("Rome");
+      game = Game.getInstance();
+      root.setEffect(null);
+      popupStage.hide();
+    });
+    saveGame.setOnAction(event -> {
+      FileChooser fileChooser = new FileChooser();
+
+      //Set extension filter for text files
+      FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Save files (*.save)", "*.save");
+      fileChooser.getExtensionFilters().add(extFilter);
+
+      //Show save file dialog
+      File file = fileChooser.showSaveDialog(popupStage);
+
+      if (file != null) {
+        game.saveGame(file);
+      }
+    });
+    loadGame.setOnAction(event -> {
+      FileChooser fileChooser = new FileChooser();
+
+      //Set extension filter for text files
+      FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Save files (*.save)", "*.save");
+      fileChooser.getExtensionFilters().add(extFilter);
+
+      //Show save file dialog
+      File file = fileChooser.showOpenDialog(popupStage);
+
+      if (file != null) {
+        game.loadGame(file);
+        game = Game.getInstance();
+        root.setEffect(null);
+        popupStage.hide();
+      }
+
+    });
+    exit.setOnAction(event -> {System.exit(0);}); //System.exit()
+
+    popupStage.show();
+  }
+
+  @FXML
   public void clickedInvadeButton(ActionEvent e) throws IOException {
     if (currentlySelectedHumanProvince != null && currentlySelectedEnemyProvince != null){
+      if (soldiersSelected.isEmpty()) {
+        printMessageToTerminal("No army selected!");
+        return;
+      }
       String humanProvince = (String)currentlySelectedHumanProvince.getAttributes().get("name");
       String enemyProvince = (String)currentlySelectedEnemyProvince.getAttributes().get("name");
-      if (confirmIfProvincesConnected(humanProvince, enemyProvince)){
-        game.invade(game.getProvince(humanProvince), game.getProvince(enemyProvince), new Army(soldiersSelected.getSelectedItems()));
-//        game.moveOrInvade(game.getProvince(humanProvince), game.getProvince(enemyProvince));
+      if (confirmIfProvincesConnected(humanProvince, enemyProvince)) {
+        Army army = new Army(soldiersSelected.getSelectedItems());
+        game.invade(game.getProvince(humanProvince), game.getProvince(enemyProvince), army);
         resetSelections();  // reset selections in UI
         addAllPointGraphics(); // reset graphics
       }
@@ -468,9 +558,31 @@ public class GloriaRomanusController{
   }
 
   class TextFXReporter extends BattleReporter {
+    private String faction1;
+    private String faction2;
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-      printMessageToTerminal(evt.getNewValue().toString());
+      switch (evt.getPropertyName()) {
+        case "factions":
+          String [] factions = (String [])evt.getNewValue();
+          faction1 = factions[0];
+          faction2 = factions[1];
+          break;
+        case "battlef1f2":
+          printMessageToTerminal(String.format(evt.getNewValue().toString(), faction1, faction2));
+          break;
+        case "battlef1":
+          printMessageToTerminal(String.format(evt.getNewValue().toString(), faction1));
+          break;
+        case "battlef2":
+          printMessageToTerminal(String.format(evt.getNewValue().toString(), faction2));
+          break;
+        case "message":
+          printMessageToTerminal(evt.getNewValue().toString());
+          break;
+        default:
+          printMessageToTerminal(evt.getNewValue().toString());
+      }
     }
   }
 }

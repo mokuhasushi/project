@@ -40,7 +40,6 @@ public class GameState {
         factions = new HashMap<>();
         provincesToOwner = new HashMap<>();
         battleResolver = new BattleResolver();
-        battleResolver.setTextReport(new BattleReporter());
         turn = 0;
         initFactions();
         initProvince();
@@ -350,7 +349,4 @@ public class GameState {
         return getFaction(provincesToOwner.get(province));
     }
 
-    public void setBattleReporter(PropertyChangeListener reporter) {
-        this.battleResolver.setTextReport(reporter);
-    }
 }

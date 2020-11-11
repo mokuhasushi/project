@@ -10,29 +10,9 @@ import java.util.Random;
 public class BattleResolver {
     private final Random rng;
     private static BattleResolver instance = null;
-    private PropertyChangeListener reporter;
-    private PropertyChangeSupport support;
 
     public BattleResolver() {
-        this.rng = new Random();this.support = new PropertyChangeSupport(this);
-    }
-
-    /**
-     * @param reporter to show information to the user
-     */
-    public void setTextReport(PropertyChangeListener reporter) {
-        support.removePropertyChangeListener(this.reporter);
-        this.reporter = reporter;
-        support.addPropertyChangeListener(reporter);
-    }
-
-    /**
-     * Reset the reporter
-     */
-    public void clearTextReport(){
-        if (this.reporter != null) {
-            this.reporter = null;
-        }
+        this.rng = new Random();
     }
 
     /**
@@ -41,12 +21,10 @@ public class BattleResolver {
      *
      * @param attacker the Army of the attacker
      * @param defender the Army of the defender
+     * @param reporter
      * @return the result of the Battle
      */
-    public BattleResult battle(Army attacker, Army defender) {
-        if (reporter != null) {
-            support.firePropertyChange("", null, "Battle begun!");
-        }
+    public BattleResult battle(Army attacker, Army defender, PropertyChangeListener reporter) {
         int engagementsTotal = 0;
         Army attackerRouted = new Army();
         Army defenderRouted = new Army();
@@ -98,22 +76,15 @@ public class BattleResolver {
         if (engagementsTotal > 200 || (attacker.isDefeated() && defender.isDefeated())) {
             attacker.joinArmy(attackerRouted);
             defender.joinArmy(defenderRouted);
-            if (reporter != null)
-                support.firePropertyChange("", null,
-                        "The battle ended in a draw!");
             return BattleResult.DRAW;
         }
         if (defender.isDefeated()){
             attacker.joinArmy(attackerRouted);
-            if (reporter != null)
-                support.firePropertyChange("", null, "You won!");
             return BattleResult.ATTACKER_WON;
         }
         if (attacker.isDefeated()){
             attacker.joinArmy(attackerRouted);
             defender.joinArmy(defenderRouted);
-            if (reporter != null)
-                support.firePropertyChange("", null, "You lost!");
             return BattleResult.ATTACKER_DEFEATED;
         }
 

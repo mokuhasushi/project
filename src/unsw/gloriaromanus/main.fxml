@@ -23,7 +23,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuItem?>
 <StackPane fx:controller="unsw.gloriaromanus.GloriaRomanusController" xmlns:fx="http://javafx.com/fxml"
-           stylesheets="style.css">
+           stylesheets="style.css" fx:id="root">
     <MapView fx:id="mapView"/>
     <VBox StackPane.alignment="TOP_LEFT" spacing="10" maxWidth="300" styleClass="panel-region">
         <padding>
@@ -40,6 +40,7 @@
                 </fills>
             </Background>
         </background>
+        <Button fx:id="menu_button" text="Menu" onAction="#gamePaused"/>
         <HBox>
             <Label text="Province:        "/>
             <TextField fx:id="invading_province" text="" editable="false"/>

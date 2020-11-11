@@ -9,6 +9,7 @@
   "shieldDefense":2,
   "trainingTime":2,
   "movement":15,
+  "max_movement":15,
   "canMove":true,
   "name":"melee-chivalry",
   "broken":false,

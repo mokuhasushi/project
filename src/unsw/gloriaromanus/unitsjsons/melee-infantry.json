@@ -9,6 +9,7 @@
   "shieldDefense":5,
   "trainingTime":1,
   "movement":10,
+  "max_movement":10,
   "canMove":true,
   "name":"melee-infantry",
   "broken":false,

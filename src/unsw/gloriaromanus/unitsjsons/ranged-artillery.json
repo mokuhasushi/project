@@ -9,6 +9,7 @@
   "shieldDefense":1,
   "trainingTime":1,
   "movement":10,
+  "max_movement":4,
   "canMove":true,
   "name":"ranged-artillery",
   "broken":false,

@@ -84,11 +84,11 @@ public class Skirmish {
      * @return a SkirmishReport, containing the units, the result, and the engagement counter
      */
     public SkirmishReport solve () {
-        support.firePropertyChange("", null, "Your "+u1.getName()+" engages enemy "+u2.getName());
+        support.firePropertyChange("battlef1f2", null, "%s's "+u1.getName()+" engages %s's "+u2.getName());
         while (true) {
             if (u1.isBroken() && !u2.isBroken()) {
                 if (rng.nextDouble() < fleeChances(u1, u2)) {
-                    support.firePropertyChange("", null, "Your " + u1.getName() + " flees the battle!");
+                    support.firePropertyChange("battlef1", null, "%s's " + u1.getName() + " flees the battle!");
                     return new SkirmishReport(u1, u2, SkirmishResult.U1_FLEE, engageCounter);
                 } else {
                     /*
@@ -99,48 +99,47 @@ public class Skirmish {
                      */
                     int[] cas = engagement.casualties(u1, u2);
                     u1.removeTroops(cas[0]);
-                    support.firePropertyChange("", null, "Your " + u1.getName() +
+                    support.firePropertyChange("battlef1", null, "%s " + u1.getName() +
                             " suffers " + cas[0] + " casualties while trying to escape!");
                 }
             } else if (!u1.isBroken() && u2.isBroken()) {
                 if (rng.nextDouble() < fleeChances(u2, u1)) {
-                    support.firePropertyChange("", null, "Enemy " + u2.getName() + " flees the battle!");
+                    support.firePropertyChange("battlef2", null, "%s's " + u2.getName() + " flees the battle!");
                     return new SkirmishReport(u1, u2, SkirmishResult.U2_FLEE, engageCounter);
                 } else {
                     int[] cas = engagement.casualties(u1, u2);
                     u2.removeTroops(cas[1]);
-                    support.firePropertyChange("", null, "Enemy " + u2.getName() +
+                    support.firePropertyChange("battlef2", null, "%s's " + u2.getName() +
                             " suffers " + cas[1] + " casualties while trying to escape!");
                 }
             } else if (u1.isBroken() && u2.isBroken()) {
-                support.firePropertyChange("", null, "Both units flee the battle!");
+                support.firePropertyChange("message", null, "Both units flee the battle!");
                 return new SkirmishReport(u1, u2, SkirmishResult.DRAW_FLED, engageCounter);
             } else {
                 int[] casualties = engagement.casualties(u1, u2);//TODO check specs
-                support.firePropertyChange("", null, "Your "+u1.getName()+" suffered "+casualties[0]+
-                        " casualties, the enemy "+u2.getName()+" "+casualties[1]);
+                support.firePropertyChange("battlef1f2", null, "%s's "+u1.getName()+" suffered "+casualties[0]+
+                        " casualties, the %s's "+u2.getName()+" "+casualties[1]);
                 if (breakChances(u1, u2, casualties[0], casualties[1]) > rng.nextDouble()) {
                     u1.setBroken(true);
-                    support.firePropertyChange("", null, "Your " + u1.getName() + " is routing!");
+                    support.firePropertyChange("battlef1", null, "%s's " + u1.getName() + " is routing!");
                 }
                 if (breakChances(u2, u1, casualties[1], casualties[0]) > rng.nextDouble()){
                     u2.setBroken(true);
-                    support.firePropertyChange("", null, "Enemy " + u2.getName() + " is routing!");
+                    support.firePropertyChange("battlef2", null, "%s's " + u2.getName() + " is routing!");
                 }
                 u1.removeTroops(casualties[0]);
                 u2.removeTroops(casualties[1]);
             }
             if (u1.isDefeated() && u2.isDefeated()) {
-                // From the spec is not clear, I assume both defeated is a draw
-                support.firePropertyChange("", null, "Both units are defeated!");
+                support.firePropertyChange("message", null, "Both units are defeated!");
                 return new SkirmishReport(u1,u2,SkirmishResult.DRAW_DEFEATED, engageCounter);
             }
             else if (u1.isDefeated()) {
-                support.firePropertyChange("", null, "Your "+u1.getName()+" is defeated!");
+                support.firePropertyChange("battlef1", null, "%s's "+u1.getName()+" is defeated!");
                 return new SkirmishReport(u1,u2,SkirmishResult.U1_DEFEAT, engageCounter);
             }
             else if (u2.isDefeated()){
-                support.firePropertyChange("", null, "Enemy "+u2.getName()+ "is defeated!");
+                support.firePropertyChange("battlef2", null, "%s's "+u2.getName()+ "is defeated!");
                 return new SkirmishReport(u1,u2,SkirmishResult.U2_DEFEAT, engageCounter);
             }
             else {

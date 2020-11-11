@@ -12,6 +12,8 @@ import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.units.Soldier;
 import unsw.gloriaromanus.world.Province;
 
+import java.beans.PropertyChangeListener;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GameInvasionTest {
@@ -87,7 +89,7 @@ public class GameInvasionTest {
     private static class BattleResolverStub extends BattleResolver {
         static BattleResult br;
         @Override
-        public BattleResult battle(Army attacker, Army defender) {
+        public BattleResult battle(Army attacker, Army defender, PropertyChangeListener reporter) {
             return br;
         }
         public void setBattleResult(BattleResult br) {

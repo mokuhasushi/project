@@ -33,7 +33,7 @@ public class Soldier {
         this.shieldDefense = 1;
         this.isBroken = false;
         this.trainingTime = 1;
-        this.max_movement = 1;
+        this.max_movement = 10;
         this.movement = max_movement;
         this.canMove = true;
         this.name = "";
@@ -91,6 +91,9 @@ public class Soldier {
     }
     public int getMorale() {
         return morale;
+    }
+    public int getMax_movement() {
+        return max_movement;
     }
     public int getSpeed() {
         return speed;
