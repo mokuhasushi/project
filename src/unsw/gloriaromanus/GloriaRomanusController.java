@@ -5,8 +5,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.Buffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -46,6 +49,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -96,7 +100,7 @@ public class GloriaRomanusController{
   private TableView.TableViewSelectionModel <Soldier> soldiersSelected;
 
   @FXML
-  private TableView<Soldier> recruitment_table;
+  private Button invadeButton;
 
   private ArcGISMap map;
 
@@ -107,29 +111,31 @@ public class GloriaRomanusController{
 //  private String humanFaction;
 
   private Feature currentlySelectedHumanProvince;
-  private Feature currentlySelectedEnemyProvince;
+  private Feature currentlySelectedOtherProvince;
 
   private FeatureLayer featureLayer_provinces;
 
   private Game game;
 
+  int playerNumber;
+  String [] factions;
+  ArrayList<String> players;
+  String [] players2;
+
   @FXML
   private void initialize() throws JsonParseException, JsonMappingException, IOException {
-    // TODO = you should rely on an object oriented design to determine ownership
-/*
-    provinceToOwningFactionMap = getProvinceToOwningFactionMap();
-
-    provinceToNumberTroopsMap = new HashMap<String, Integer>();
-    Random r = new Random();
-    for (String provinceName : provinceToOwningFactionMap.keySet()) {
-      provinceToNumberTroopsMap.put(provinceName, r.nextInt(500));
-*/
-    Game.newGame("Rome");
-    game = Game.getInstance();
-    game.addReporter(new TextFXReporter());
-
+    if (players2 == null) {
+      Game.newGame("Rome");
+      game = Game.getInstance();
+      game.addReporter(new TextFXReporter());
+    }
+    else {
+      Game.newGame(players2);
+      game = Game.getInstance();
+      game.addReporter(new TextFXReporter());
+    }
     currentlySelectedHumanProvince = null;
-    currentlySelectedEnemyProvince = null;
+    currentlySelectedOtherProvince = null;
 
     showPlayerInfo();
     current_turn.setText(game.getTurn()+"");
@@ -137,7 +143,8 @@ public class GloriaRomanusController{
     soldiersSelected = province_army.getSelectionModel();
     soldiersSelected.setSelectionMode(SelectionMode.MULTIPLE);
 
-
+    factions = game.getFactions();
+    players2 = null;
   }
 
   @FXML
@@ -167,6 +174,8 @@ public class GloriaRomanusController{
     popupStage.initOwner(root.getScene().getWindow());
     popupStage.initModality(Modality.APPLICATION_MODAL);
     popupStage.setScene(new Scene(pauseRoot, Color.TRANSPARENT));
+    popupStage.setMinWidth(400);
+    popupStage.setMinHeight(400);
 
 
     resume.setOnAction(event -> {
@@ -175,8 +184,71 @@ public class GloriaRomanusController{
     });
 
     newGame.setOnAction(event -> {
-      Game.newGame("Rome");
-      game = Game.getInstance();
+//      ArrayList<String> players = new ArrayList<>();
+      VBox newGameRoot = new VBox(10);
+      newGameRoot.minWidth(500);
+      newGameRoot.minHeight(500);
+      newGameRoot.getChildren().add(new Label("Main Menu"));
+      newGameRoot.setStyle("-fx-background-color: rgba(0, 0, 0, 0.8);");
+      newGameRoot.setAlignment(Pos.CENTER);
+      newGameRoot.setPadding(new Insets(20));
+
+      Button onePlayer = new Button("Single Player");
+      newGameRoot.getChildren().add(onePlayer);
+
+      Button twoPlayer = new Button("2 Players");
+      newGameRoot.getChildren().add(twoPlayer);
+
+      HBox hb1 = new HBox(10);
+      hb1.minWidth(400);
+      for (String s : factions) {
+        ToggleButton b = new ToggleButton(s);
+        hb1.getChildren().add(b);
+        b.setOnAction(event1 -> {players2[0] = s;});
+      }
+      HBox hb2 = new HBox(10);
+      hb2.minWidth(400);
+      for (String s : factions) {
+        ToggleButton b = new ToggleButton(s);
+        hb2.getChildren().add(b);
+        b.setOnAction(event1 -> {players2[1] = s;});
+      }
+
+      Button startButton = new Button("Start");
+
+      onePlayer.setOnAction(event1 -> {
+        players2 = new String[1];
+        newGameRoot.getChildren().clear();
+        newGameRoot.getChildren().add(new Label("Player 1:"));
+        newGameRoot.getChildren().add(hb1);
+        newGameRoot.getChildren().add(startButton);
+      });
+      twoPlayer.setOnAction(event1 -> {
+        players2 = new String[2];
+        newGameRoot.getChildren().clear();
+        newGameRoot.getChildren().add(new Label("Player 1:"));
+        newGameRoot.getChildren().add(hb1);
+        newGameRoot.getChildren().add(new Label("Player 2:"));
+        newGameRoot.getChildren().add(hb2);
+        newGameRoot.getChildren().add(startButton);
+    });
+
+      Stage newGameStage = new Stage(StageStyle.TRANSPARENT);
+      newGameStage.initOwner(root.getScene().getWindow());
+      newGameStage.initModality(Modality.APPLICATION_MODAL);
+      newGameStage.setScene(new Scene(newGameRoot, Color.TRANSPARENT));
+      newGameStage.setMinHeight(400);
+      newGameStage.setMinWidth(400);
+
+      newGameStage.show();
+      startButton.setOnAction(event1 -> {
+        try {
+          initialize();
+        } catch (IOException ioException) {
+          ioException.printStackTrace();
+        }
+        newGameStage.hide();
+      });
       root.setEffect(null);
       popupStage.hide();
     });
@@ -219,16 +291,16 @@ public class GloriaRomanusController{
 
   @FXML
   public void clickedInvadeButton(ActionEvent e) throws IOException {
-    if (currentlySelectedHumanProvince != null && currentlySelectedEnemyProvince != null){
+    if (currentlySelectedHumanProvince != null && currentlySelectedOtherProvince != null){
       if (soldiersSelected.isEmpty()) {
         printMessageToTerminal("No army selected!");
         return;
       }
       String humanProvince = (String)currentlySelectedHumanProvince.getAttributes().get("name");
-      String enemyProvince = (String)currentlySelectedEnemyProvince.getAttributes().get("name");
+      String enemyProvince = (String) currentlySelectedOtherProvince.getAttributes().get("name");
       if (confirmIfProvincesConnected(humanProvince, enemyProvince)) {
         Army army = new Army(soldiersSelected.getSelectedItems());
-        game.invade(game.getProvince(humanProvince), game.getProvince(enemyProvince), army);
+        game.moveOrInvade(game.getProvince(humanProvince), game.getProvince(enemyProvince), army);
         resetSelections();  // reset selections in UI
         addAllPointGraphics(); // reset graphics
       }
@@ -454,23 +526,30 @@ public class GloriaRomanusController{
                 Feature f = features.get(0);
                 String province = (String)f.getAttributes().get("name");
 
-                //TODO CHECK
                 if (game.getFactionFromProvince(province).equals(game.getPlayer())){
                   // province owned by human
-                  if (currentlySelectedHumanProvince != null){
-                    featureLayer.unselectFeature(currentlySelectedHumanProvince);
-                    province_army.getItems().clear();
+                  if (soldiersSelected.isEmpty()) {
+                    if (currentlySelectedHumanProvince != null){
+                      resetSelections();
+                    }
+                    updateHumanSelection(f);
                   }
-                  updateHumanSelection(f);
-//                  currentlySelectedHumanProvince = f;
-//                  invading_province.setText(province);
+                  else {
+                    if (currentlySelectedOtherProvince != null)
+                      featureLayer.unselectFeature(currentlySelectedOtherProvince);
+                    currentlySelectedOtherProvince = f;
+                    opponent_province.setText(province);
+                    invadeButton.setText("Move");
+                  }
+
                 }
                 else{
-                  if (currentlySelectedEnemyProvince != null){
-                    featureLayer.unselectFeature(currentlySelectedEnemyProvince);
+                  if (currentlySelectedOtherProvince != null){
+                    featureLayer.unselectFeature(currentlySelectedOtherProvince);
                   }
-                  currentlySelectedEnemyProvince = f;
+                  currentlySelectedOtherProvince = f;
                   opponent_province.setText(province);
+                  invadeButton.setText("Invade");
                 }
 
                 featureLayer.selectFeature(f);                
@@ -527,13 +606,14 @@ public class GloriaRomanusController{
   }
 
   private void resetSelections(){
-    if (currentlySelectedHumanProvince != null && currentlySelectedEnemyProvince != null)
-      featureLayer_provinces.unselectFeatures(Arrays.asList(currentlySelectedEnemyProvince, currentlySelectedHumanProvince));
+    if (currentlySelectedHumanProvince != null && currentlySelectedOtherProvince != null)
+      featureLayer_provinces.unselectFeatures(Arrays.asList(currentlySelectedOtherProvince, currentlySelectedHumanProvince));
     else if (currentlySelectedHumanProvince != null)
-      featureLayer_provinces.unselectFeatures(Arrays.asList(currentlySelectedHumanProvince));
-    else if (currentlySelectedEnemyProvince != null)
-      featureLayer_provinces.unselectFeatures(Arrays.asList(currentlySelectedEnemyProvince));
-    currentlySelectedEnemyProvince = null;
+      featureLayer_provinces.unselectFeature(currentlySelectedHumanProvince);
+    else if (currentlySelectedOtherProvince != null)
+      featureLayer_provinces.unselectFeature(currentlySelectedOtherProvince);
+    soldiersSelected.clearSelection();
+    currentlySelectedOtherProvince = null;
     currentlySelectedHumanProvince = null;
     invading_province.setText("");
     opponent_province.setText("");
@@ -541,6 +621,7 @@ public class GloriaRomanusController{
     province_tax_level.setText("");
     province_wealth.setText("");
     province_army.getItems().clear();
+    invadeButton.setText("");
   }
 
   private void printMessageToTerminal(String message){

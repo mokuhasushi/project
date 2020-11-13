@@ -12,6 +12,9 @@ import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Game {
     public final int ONE_PROVINCE_TRAVERSED = 4;
@@ -25,12 +28,17 @@ public class Game {
 
     private PropertyChangeSupport support;
 
+    //for multiplayer
+    private int playerCounter;
+
     private Game(GameState campaign) {
         this.campaign = campaign;
         this.player = campaign.getPlayerFaction();
         this.battleResolver = campaign.getBattleResolver();
         this.ais = new ArrayList<>();
         this.support = new PropertyChangeSupport(this);
+        playerCounter = 0;
+        player.update();
     }
 
     public static Game getInstance(GameState campaign) {
@@ -112,7 +120,6 @@ public class Game {
 
     /**
      * Method to move an army from one Province to another
-     * TODO: not checking anything
      * @param from Province
      * @param to Province
      * @param army Army
@@ -121,6 +128,10 @@ public class Game {
         if (from.isJustConquered()){
             support.firePropertyChange("message",
                     null, from.getName() + " has just been conquered!");
+            return;
+        }
+        if (army.getMovement() < ONE_PROVINCE_TRAVERSED) {
+            support.firePropertyChange("message", null, "Not enough movement!");
             return;
         }
         from.removeTroops(army);
@@ -146,6 +157,9 @@ public class Game {
         campaign.setFactionsFromArray(factions);
     }
 
+    //TODO check
+    public String [] getFactions () {return campaign.getFactions().keySet().toArray(new String[0]);}
+
     public Faction getFaction (String faction) {
         return campaign.getFaction(faction);
     }
@@ -162,11 +176,17 @@ public class Game {
         if (campaign.hasWon()){
             saveGame("autosave.save");
             return true;}
+        playerCounter = (playerCounter + 1) % campaign.getPlayers().length;
+        if (playerCounter < campaign.getPlayers().length){
+            campaign.setPlayer(campaign.getPlayers()[playerCounter]);
+            player = getFaction(campaign.getPlayer());
+            player.update();
+            return false;
+        }
         for (AI ai: ais) {
             ai.playTurn();
         }
         campaign.addTurn();
-        player.update();
         return false;
     }
 
@@ -229,7 +249,12 @@ public class Game {
         Game.clear();
         GameState gs = new GameState(player);
 
-        //UGLY TODO
+        Game.getInstance(gs).initAI();
+    }
+    public static void newGame(String [] players) {
+        Game.clear();
+        GameState gs = new GameState(players);
+
         Game.getInstance(gs).initAI();
     }
 
@@ -238,11 +263,11 @@ public class Game {
     }
 
     public int getPlayerGold() {
-        return campaign.getPlayerFaction().getTreasure();
+        return player.getTreasure();
     }
 
     public int getPlayerWealth() {
-        return campaign.getPlayerFaction().getWealth();
+        return player.getWealth();
     }
     public Faction getPlayer () {
         return player;
@@ -266,6 +291,12 @@ public class Game {
         else
             this.invade(p1, p2, p1.getArmy());
     }
+    public void moveOrInvade(Province p1, Province p2, Army army) {
+        if (p1.getOwner().equals(p2.getOwner()))
+            this.move(p1, p2, army);
+        else
+            this.invade(p1, p2, army);
+    }
 
     /**
      * Recruits a unit if the faction can afford the cost and there are available
@@ -288,9 +319,11 @@ public class Game {
      * Method to initialize AIs. At the moment very straightforward
      */
     public void initAI () {
+        Set <String> aiFactions = new HashSet<>(campaign.getFactions().keySet());
+        aiFactions.removeAll(Arrays.asList(campaign.getPlayers()));
 
-        for (String k: campaign.getFactions().keySet())
-            if (k != player.getName())
+        for (String k: aiFactions)
+            if (!k.equals(player.getName()))
                 ais.add(new AI(k));
     }
 

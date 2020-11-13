@@ -15,15 +15,13 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class GameState {
     private Map<String, Faction> factions;
     private static Map<String, String> provincesToOwner;
     private String player;
+    private String [] players;
 
     private int goal;
     @JsonIgnore private BattleResolver battleResolver;
@@ -45,6 +43,19 @@ public class GameState {
         initProvince();
         initArmies();
         this.player = player;
+        this.players = new String[]{player};
+        this.goal = new Random().nextInt(7);
+    }
+    public GameState(String [] players) {
+        factions = new HashMap<>();
+        provincesToOwner = new HashMap<>();
+        battleResolver = new BattleResolver();
+        turn = 0;
+        initFactions();
+        initProvince();
+        initArmies();
+        this.player = players[0];
+        this.players = players;
         this.goal = new Random().nextInt(7);
     }
 
@@ -61,6 +72,7 @@ public class GameState {
         turn = 0;
         setFactionsFromArray(factions);
         this.player = player;
+        this.players = new String[]{player};
         this.goal = new Random().nextInt(7);
     }
 
@@ -83,6 +95,18 @@ public class GameState {
 
     public void setPlayer(String player) {
         this.player = player;
+    }
+
+    public String[] getPlayers() {
+        return players;
+    }
+    public void removePlayer(String player) {
+        ArrayList<String> newPlayers = new ArrayList<>();
+        for (int i = 0; i < players.length; i++) {
+            if (!players[i].equals(player))
+                newPlayers.add(players[i]);
+        }
+        players = newPlayers.toArray(new String[players.length - 1]);
     }
 
     public void setTurn(int turn) {
