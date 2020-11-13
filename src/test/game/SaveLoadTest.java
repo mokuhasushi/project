@@ -17,7 +17,7 @@ public class SaveLoadTest {
     @Test
     public void simpleSaveLoadTestSoldier() {
         Soldier s_in = new Soldier();
-        String filename = "src/test/resources/s1.json";
+        String filename = "src/test/s1.json";
         try {
             SaveLoad.saveSoldier(s_in, filename);
         } catch (IOException e) {
@@ -37,7 +37,7 @@ public class SaveLoadTest {
         army_in.addUnit(new Soldier());
         army_in.addUnit(new Soldier());
 
-        String filename = "src/test/resources/a1.json";
+        String filename = "src/test/a1.json";
         try {
             SaveLoad.saveArmy(army_in, filename);
         } catch (IOException e) {
@@ -62,7 +62,7 @@ public class SaveLoadTest {
         Province province_in = new Province("rome", "player");
         province_in.addTroops(army);
 
-        String filename = "src/test/resources/p1.json";
+        String filename = "src/test/p1.json";
         try {
             SaveLoad.saveProvince(province_in, filename);
         } catch (IOException e) {
@@ -91,7 +91,7 @@ public class SaveLoadTest {
         Faction faction_in = new Faction("player");
         faction_in.addProvince(province);
 
-        String filename = "src/test/resources/f1.json";
+        String filename = "src/test/f1.json";
         try {
             SaveLoad.saveFaction(faction_in, filename);
         } catch (IOException e) {
@@ -125,7 +125,7 @@ public class SaveLoadTest {
         gameState_in.setFactionsFromArray(new Faction[] {faction, gaul, new Faction("egypt")});
         gameState_in.setPlayer(faction.getName());
 
-        String filename = "src/test/resources/g1.json";
+        String filename = "src/test/g1.json";
         try {
             SaveLoad.saveGame(gameState_in, filename);
         } catch (IOException e) {
