@@ -5,10 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.Buffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +14,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -117,20 +114,18 @@ public class GloriaRomanusController{
 
   private Game game;
 
-  int playerNumber;
   String [] factions;
-  ArrayList<String> players;
-  String [] players2;
+  String [] players;
 
   @FXML
   private void initialize() throws JsonParseException, JsonMappingException, IOException {
-    if (players2 == null) {
+    if (players == null) {
       Game.newGame("Rome");
       game = Game.getInstance();
       game.addReporter(new TextFXReporter());
     }
     else {
-      Game.newGame(players2);
+      Game.newGame(players);
       game = Game.getInstance();
       game.addReporter(new TextFXReporter());
     }
@@ -144,7 +139,7 @@ public class GloriaRomanusController{
     soldiersSelected.setSelectionMode(SelectionMode.MULTIPLE);
 
     factions = game.getFactions();
-    players2 = null;
+    players = null;
   }
 
   @FXML
@@ -199,37 +194,20 @@ public class GloriaRomanusController{
       Button twoPlayer = new Button("2 Players");
       newGameRoot.getChildren().add(twoPlayer);
 
-      HBox hb1 = new HBox(10);
-      hb1.minWidth(400);
-      for (String s : factions) {
-        ToggleButton b = new ToggleButton(s);
-        hb1.getChildren().add(b);
-        b.setOnAction(event1 -> {players2[0] = s;});
-      }
-      HBox hb2 = new HBox(10);
-      hb2.minWidth(400);
-      for (String s : factions) {
-        ToggleButton b = new ToggleButton(s);
-        hb2.getChildren().add(b);
-        b.setOnAction(event1 -> {players2[1] = s;});
-      }
 
       Button startButton = new Button("Start");
 
       onePlayer.setOnAction(event1 -> {
-        players2 = new String[1];
+
+        players = new String[1];
         newGameRoot.getChildren().clear();
-        newGameRoot.getChildren().add(new Label("Player 1:"));
-        newGameRoot.getChildren().add(hb1);
+        newGameRoot.getChildren().add(createSelectionBox(1));
         newGameRoot.getChildren().add(startButton);
       });
       twoPlayer.setOnAction(event1 -> {
-        players2 = new String[2];
+        players = new String[2];
         newGameRoot.getChildren().clear();
-        newGameRoot.getChildren().add(new Label("Player 1:"));
-        newGameRoot.getChildren().add(hb1);
-        newGameRoot.getChildren().add(new Label("Player 2:"));
-        newGameRoot.getChildren().add(hb2);
+        newGameRoot.getChildren().add(createSelectionBox(2));
         newGameRoot.getChildren().add(startButton);
     });
 
@@ -287,6 +265,27 @@ public class GloriaRomanusController{
     exit.setOnAction(event -> {System.exit(0);}); //System.exit()
 
     popupStage.show();
+  }
+
+  private VBox createSelectionBox (int playerNumber) {
+    VBox selectionBox = new VBox(10);
+
+    for (int i = 0; i < playerNumber; i++) {
+      selectionBox.getChildren().add(new Label("Player " + i + ":"));
+
+      HBox hb = new HBox(10);
+      hb.minWidth(400);
+      for (String s : factions) {
+        ToggleButton b = new ToggleButton(s);
+        b.setUserData(i);
+        hb.getChildren().add(b);
+        b.setOnAction(event1 -> {
+          players[(Integer) b.getUserData()] = s;
+        });
+      }
+      selectionBox.getChildren().add(hb);
+    }
+    return selectionBox;
   }
 
   @FXML
