@@ -176,19 +176,21 @@ public class Game {
         if (campaign.hasWon()){
             saveGame("autosave.save");
             return true;}
-        playerCounter = (playerCounter + 1) % campaign.getPlayers().length;
+
+        playerCounter = playerCounter + 1;
         if (playerCounter < campaign.getPlayers().length){
             campaign.setPlayer(campaign.getPlayers()[playerCounter]);
             player = getFaction(campaign.getPlayer());
             player.update();
             return false;
-        }
+        }else {
+        playerCounter %= campaign.getPlayers().length;
         for (AI ai: ais) {
             ai.playTurn();
         }
         campaign.addTurn();
         return false;
-    }
+    }}
 
     /**
      * Save the game
