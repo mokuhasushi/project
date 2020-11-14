@@ -22,6 +22,8 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <StackPane fx:controller="unsw.gloriaromanus.GloriaRomanusController" xmlns:fx="http://javafx.com/fxml"
            stylesheets="style.css" fx:id="root">
     <MapView fx:id="mapView"/>
@@ -88,16 +90,14 @@
             </TableView>
         </VBox>
         <HBox>
-            <Button text="Recruit melee infantry" onAction="#recruitMeleeInfantry" />
-            <Button text="Recruit ranged infantry" onAction="#recruitRangedInfantry" />
+            <Button fx:id="recruitMIButton" onAction="#recruitMeleeInfantry" />
+            <Button fx:id="recruitRIButton" onAction="#recruitRangedInfantry" />
+            <Button fx:id="recruitMCButton" onAction="#recruitMeleeChivalry" />
         </HBox>
         <HBox>
-            <Button text="Recruit melee chivalry" onAction="#recruitMeleeChivalry" />
-            <Button text="Recruit ranged chivalry" onAction="#recruitRangedChivalry" />
-        </HBox>
-        <HBox>
-            <Button text="Recruit melee artillery" onAction="#recruitMeleeArtillery" />
-            <Button text="Recruit ranged artillery" onAction="#recruitRangedArtillery" />
+            <Button fx:id="recruitRCButton" onAction="#recruitRangedChivalry" />
+            <Button fx:id="recruitRAButton" onAction="#recruitRangedArtillery" />
+            <Button fx:id="recruitMAButton" onAction="#recruitMeleeArtillery" />
         </HBox>
         <HBox>
             <Label text="Enemy province"/>

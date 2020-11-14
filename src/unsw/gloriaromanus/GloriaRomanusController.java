@@ -21,6 +21,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 
 import com.esri.arcgisruntime.concurrent.ListenableFuture;
@@ -62,6 +63,7 @@ import unsw.gloriaromanus.game.BattleReporter;
 import unsw.gloriaromanus.game.Game;
 import unsw.gloriaromanus.units.Army;
 import unsw.gloriaromanus.units.Soldier;
+import unsw.gloriaromanus.units.SoldierFactory;
 import unsw.gloriaromanus.units.SoldierType;
 import unsw.gloriaromanus.world.Province;
 import unsw.gloriaromanus.world.TaxLevel;
@@ -98,6 +100,18 @@ public class GloriaRomanusController{
 
   @FXML
   private Button invadeButton;
+  @FXML
+  private Button recruitMIButton;
+  @FXML
+  private Button recruitRIButton;
+  @FXML
+  private Button recruitMCButton;
+  @FXML
+  private Button recruitRCButton;
+  @FXML
+  private Button recruitMAButton;
+  @FXML
+  private Button recruitRAButton;
 
   private ArcGISMap map;
 
@@ -140,6 +154,32 @@ public class GloriaRomanusController{
 
     factions = game.getFactions();
     players = null;
+
+    setRecruitButtons();
+  }
+
+  private void setRecruitButtons() {
+    SoldierFactory sf = game.getPlayer().getSoldierFactory();
+    recruitMIButton.setGraphic(getSoldierImageView("mi.png"));
+    recruitMIButton.setTooltip(new Tooltip(sf.createSoldier(SoldierType.MELEE_INFANTRY).getCost() + " gold"));
+    recruitRIButton.setGraphic(getSoldierImageView("ri.png"));
+    recruitRIButton.setTooltip(new Tooltip(sf.createSoldier(SoldierType.RANGED_INFANTRY).getCost() + " gold"));
+    recruitMCButton.setGraphic(getSoldierImageView("mc.png"));
+    recruitMCButton.setTooltip(new Tooltip(sf.createSoldier(SoldierType.MELEE_CHIVALRY).getCost() + " gold"));
+    recruitRCButton.setGraphic(getSoldierImageView("rc.png"));
+    recruitRCButton.setTooltip(new Tooltip(sf.createSoldier(SoldierType.RANGED_CHIVALRY).getCost() + " gold"));
+    recruitMAButton.setGraphic(getSoldierImageView("ma.png"));
+    recruitMAButton.setTooltip(new Tooltip(sf.createSoldier(SoldierType.MELEE_ARTILLERY).getCost() + " gold"));
+    recruitRAButton.setGraphic(getSoldierImageView("ra.png"));
+    recruitRAButton.setTooltip(new Tooltip(sf.createSoldier(SoldierType.RANGED_ARTILLERY).getCost() + " gold"));
+  }
+
+  private ImageView getSoldierImageView(String s) {
+    ImageView ivmi = new ImageView(new File("images/" + game.getPlayer().getName() + "/" + s).toURI().toString());
+    ivmi.setFitHeight(75);
+    ivmi.setFitWidth(100);
+    ivmi.setPreserveRatio(true);
+    return ivmi;
   }
 
   @FXML
