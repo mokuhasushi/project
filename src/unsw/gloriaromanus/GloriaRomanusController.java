@@ -353,6 +353,7 @@ public class GloriaRomanusController{
   @FXML
   public void clickedEndTurn(ActionEvent actionEvent) throws IOException {
     game.pass();
+    setRecruitButtons();
     showPlayerInfo();
     current_turn.setText(game.getTurn()+"");
     resetSelections();  // reset selections in UI

@@ -90,6 +90,9 @@
             </TableView>
         </VBox>
         <HBox>
+            <Label text="Recruitment:" />
+        </HBox>
+        <HBox>
             <Button fx:id="recruitMIButton" onAction="#recruitMeleeInfantry" />
             <Button fx:id="recruitRIButton" onAction="#recruitRangedInfantry" />
             <Button fx:id="recruitMCButton" onAction="#recruitMeleeChivalry" />
