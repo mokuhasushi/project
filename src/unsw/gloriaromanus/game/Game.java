@@ -189,6 +189,9 @@ public class Game {
             ai.playTurn();
         }
         campaign.addTurn();
+        campaign.setPlayer(campaign.getPlayers()[playerCounter]);
+        player = getFaction(campaign.getPlayer());
+        player.update();
         return false;
     }}
 
